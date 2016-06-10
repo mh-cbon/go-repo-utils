@@ -84,11 +84,14 @@ func main() {
   }
 
   tags := make([]string, 0)
-  tags, err := listtags.List(vcs, path)
+  tags, _ := listtags.List(vcs, path)
   fmt.Println(tags)
 
-  isClean, err := listtags.IsClean(vcs, path)
+  isClean, _ := listtags.IsClean(vcs, path)
   fmt.Println(isClean)
+
+  ok, _ := listtags.CreateTag(vcs, path, "1.0.3")
+  fmt.Println(ok)
 }
 
 ```
