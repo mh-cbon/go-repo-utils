@@ -20,16 +20,16 @@ go install .
 Go repo utils
 
 Usage:
-  go-repo-utils [cmd] [--path=<path>|-p <path>]
-  go-repo-utils list-tags [-j|--json] [-a|--any] [-r|--reverse]
-  go-repo-utils is-clean [-j|--json]
+  go-repo-utils list-tags [-j|--json] [-a|--any] [-r|--reverse] [--path=<path>|-p=<path>]
+  go-repo-utils is-clean [-j|--json] [--path=<path>|-p=<path>]
+  go-repo-utils create-tag <tag> [-j|--json] [--path=<path>|-p=<path>]
   go-repo-utils -h | --help
   go-repo-utils -v | --version
 
 Options:
   -h --help             Show this screen.
   -v --version          Show version.
-  -p <c> --path=<c>     Path to lookup [default: cwd].
+  -p=<c> --path=<c>     Path to lookup [default: cwd].
   -j --json             Print JSON encoded data.
   -a --any              List all tags.
   -r --reverse          Reverse tags ordering.
@@ -37,6 +37,7 @@ Options:
 Notes:
   list-tags will list only valid semver tags unless -a|--any options is provided.
   is-clean ignores untracked files.
+  create-tag does not work with subversion.
 ```
 
 #### Examples
