@@ -49,6 +49,8 @@ go-repo-utils list-tags
 go-repo-utils list-tags -j --path=/some/where
 # check if a directory is clean
 go-repo-utis is-clean -p /some/where
+# create tag
+go-repo-utils create-tag 1.0.3
 ```
 
 
