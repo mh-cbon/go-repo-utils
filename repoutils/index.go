@@ -4,11 +4,11 @@ import (
 	"errors"
 	"sort"
 
+	"github.com/Masterminds/semver"
 	"github.com/mh-cbon/go-repo-utils/bzr"
 	"github.com/mh-cbon/go-repo-utils/git"
 	"github.com/mh-cbon/go-repo-utils/hg"
 	"github.com/mh-cbon/go-repo-utils/svn"
-	"github.com/Masterminds/semver"
 )
 
 type IsIt func(path string) bool

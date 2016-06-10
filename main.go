@@ -6,9 +6,9 @@ import (
 	"log"
 	"os"
 
-  "github.com/mh-cbon/verbose"
 	"github.com/docopt/docopt.go"
 	"github.com/mh-cbon/go-repo-utils/repoutils"
+	"github.com/mh-cbon/verbose"
 )
 
 var logger = verbose.Auto()
@@ -39,14 +39,14 @@ Notes:
 
 	arguments, err := docopt.Parse(usage, nil, true, "Go repo utils", false)
 
-  logger.Println(arguments);
+	logger.Println(arguments)
 
 	if err != nil {
 		log.Println(err)
 		os.Exit(1)
 	}
 
-  cmd := getCommand(arguments)
+	cmd := getCommand(arguments)
 
 	path := getPath(arguments)
 	if path == "" {
@@ -63,42 +63,42 @@ Notes:
 		os.Exit(1)
 	}
 
-  if cmd=="list-tags" {
-    cmdListTags(arguments, vcs, path)
-  } else if cmd=="is-clean" {
-    cmdIsClean(arguments, vcs, path)
-  } else if cmd=="create-tag" {
-    cmdCreateTag(arguments, vcs, path)
-  } else if cmd=="" {
-    fmt.Println("Wrong usage: Missing command\n")
-    fmt.Println(usage)
+	if cmd == "list-tags" {
+		cmdListTags(arguments, vcs, path)
+	} else if cmd == "is-clean" {
+		cmdIsClean(arguments, vcs, path)
+	} else if cmd == "create-tag" {
+		cmdCreateTag(arguments, vcs, path)
+	} else if cmd == "" {
+		fmt.Println("Wrong usage: Missing command\n")
+		fmt.Println(usage)
 		os.Exit(1)
-  } else {
+	} else {
 		log.Println("Unknown command: '" + cmd + "'")
 		os.Exit(1)
-  }
+	}
 }
 
-func cmdIsClean (arguments map[string]interface{}, vcs string, path string) {
-  isClean, err := repoutils.IsClean(vcs, path)
-  if err != nil {
-    log.Println(err)
-    os.Exit(1)
-  }
+func cmdIsClean(arguments map[string]interface{}, vcs string, path string) {
+	isClean, err := repoutils.IsClean(vcs, path)
+	if err != nil {
+		log.Println(err)
+		os.Exit(1)
+	}
 
 	if isJson(arguments) {
 		jsoned, _ := json.Marshal(isClean)
 		fmt.Print(string(jsoned))
 	} else {
 		if isClean {
-      fmt.Println("yes")
-    } else {
-      fmt.Println("no")
-    }
+			fmt.Println("yes")
+		} else {
+			fmt.Println("no")
+		}
 	}
 }
 
-func cmdListTags (arguments map[string]interface{}, vcs string, path string) {
+func cmdListTags(arguments map[string]interface{}, vcs string, path string) {
 	tags := make([]string, 0)
 	dirtyTags, err := repoutils.List(vcs, path)
 	if err != nil {
@@ -130,18 +130,18 @@ func cmdListTags (arguments map[string]interface{}, vcs string, path string) {
 	}
 }
 
-func cmdCreateTag (arguments map[string]interface{}, vcs string, path string) {
+func cmdCreateTag(arguments map[string]interface{}, vcs string, path string) {
 
-  var tag string
-  p, ok := arguments["<tag>"]
-  if ok==false {
+	var tag string
+	p, ok := arguments["<tag>"]
+	if ok == false {
 		fmt.Println("Missing tag value")
 		os.Exit(1)
-  }
-  if tag, ok = p.(string); ok==false {
+	}
+	if tag, ok = p.(string); ok == false {
 		fmt.Println("Missing tag value")
 		os.Exit(1)
-  }
+	}
 
 	_, err := repoutils.CreateTag(vcs, path, tag)
 	if err != nil {
@@ -153,7 +153,7 @@ func cmdCreateTag (arguments map[string]interface{}, vcs string, path string) {
 		jsoned, _ := json.Marshal(true)
 		fmt.Print(string(jsoned))
 	} else {
-    fmt.Println("done")
+		fmt.Println("done")
 	}
 }
 
@@ -161,22 +161,22 @@ func getCommand(arguments map[string]interface{}) string {
 	p, ok := arguments["list-tags"]
 	if ok {
 		if b, ok := p.(bool); ok && b {
-  		return "list-tags"
+			return "list-tags"
 		}
 	}
 	p, ok = arguments["is-clean"]
 	if ok {
 		if b, ok := p.(bool); ok && b {
-  		return "is-clean"
+			return "is-clean"
 		}
 	}
 	p, ok = arguments["create-tag"]
 	if ok {
 		if b, ok := p.(bool); ok && b {
-  		return "create-tag"
+			return "create-tag"
 		}
 	}
-  return ""
+	return ""
 }
 
 func getPath(arguments map[string]interface{}) string {

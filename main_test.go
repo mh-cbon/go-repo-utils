@@ -1,8 +1,8 @@
 package main
 
 import (
-	"os/exec"
 	"fmt"
+	"os/exec"
 	"testing"
 )
 
@@ -61,7 +61,7 @@ func TestBzr(t *testing.T) {
 }
 
 func TestPathArgs(t *testing.T) {
-  DoTestFolderUnderVcsWithPath("/home/vagrant/git", t)
+	DoTestFolderUnderVcsWithPath("/home/vagrant/git", t)
 	DoTestFolderIsCleanWithPath("/home/vagrant/bzr", t)
 }
 
@@ -80,28 +80,28 @@ func TestFolderNotUnderVcs(t *testing.T) {
 }
 
 func ExecSuccessCommand(t *testing.T, cmd string, cwd string, args []string) string {
-  fmt.Printf("%s: %s %s\n", cwd, cmd, args)
+	fmt.Printf("%s: %s %s\n", cwd, cmd, args)
 	execCmd := exec.Command(cmd, args...)
 	execCmd.Dir = cwd
 
 	out, err := execCmd.CombinedOutput()
 	if err != nil {
-    fmt.Println(string(out))
+		fmt.Println(string(out))
 		t.Errorf("Expected err=nil, got err=%s\n", err)
-    return ""
+		return ""
 	}
 	if execCmd.ProcessState != nil && execCmd.ProcessState.Success() == false {
 		t.Errorf("Expected success=true, got success=%q\n", false)
-    return ""
+		return ""
 	}
 
-  return string(out)
+	return string(out)
 }
 
 func DoTestFolderUnderVcsWithPath(path string, t *testing.T) {
-  cmd := "/vagrant/build/go-repo-utils"
+	cmd := "/vagrant/build/go-repo-utils"
 	args := []string{"list-tags", "-p", path}
-  out := ExecSuccessCommand(t, cmd, "/home", args)
+	out := ExecSuccessCommand(t, cmd, "/home", args)
 
 	expectedOut := "1.0.0\n1.0.2\n1.0.3\n"
 	if out != expectedOut {
@@ -110,9 +110,9 @@ func DoTestFolderUnderVcsWithPath(path string, t *testing.T) {
 }
 
 func DoTestFolderIsCleanWithPath(path string, t *testing.T) {
-  cmd := "/vagrant/build/go-repo-utils"
-  args := []string{"is-clean", "--path="+path}
-  out := ExecSuccessCommand(t, cmd, "/home", args)
+	cmd := "/vagrant/build/go-repo-utils"
+	args := []string{"is-clean", "--path=" + path}
+	out := ExecSuccessCommand(t, cmd, "/home", args)
 
 	expectedOut := "yes\n"
 	if out != expectedOut {
@@ -121,9 +121,9 @@ func DoTestFolderIsCleanWithPath(path string, t *testing.T) {
 }
 
 func DoCreateTag(path string, t *testing.T) {
-  cmd := "/vagrant/build/go-repo-utils"
+	cmd := "/vagrant/build/go-repo-utils"
 	args := []string{"create-tag", "1.0.3"}
-  out := ExecSuccessCommand(t, cmd, path, args)
+	out := ExecSuccessCommand(t, cmd, path, args)
 
 	expectedOut := "done\n"
 	if out != expectedOut {
@@ -132,12 +132,12 @@ func DoCreateTag(path string, t *testing.T) {
 }
 
 func DoFailCreateTag(path string, t *testing.T) {
-  args := []string{"create-tag", "1.0.3"}
+	args := []string{"create-tag", "1.0.3"}
 	cmd := exec.Command("/vagrant/build/go-repo-utils", args...)
 	cmd.Dir = path
 
 	err := cmd.Run()
-	if err==nil {
+	if err == nil {
 		t.Errorf("Expected err!=nil, got err=%s\n", err)
 	}
 	if cmd.ProcessState.Success() {
@@ -146,12 +146,12 @@ func DoFailCreateTag(path string, t *testing.T) {
 }
 
 func DoFailCreateTagMissTagName(path string, t *testing.T) {
-  args := []string{"create-tag"}
+	args := []string{"create-tag"}
 	cmd := exec.Command("/vagrant/build/go-repo-utils", args...)
 	cmd.Dir = path
 
 	err := cmd.Run()
-	if err==nil {
+	if err == nil {
 		t.Errorf("Expected err!=nil, got err=%s\n", err)
 	}
 	if cmd.ProcessState.Success() {
@@ -160,9 +160,9 @@ func DoFailCreateTagMissTagName(path string, t *testing.T) {
 }
 
 func DoTestFolderUnderVcs(path string, t *testing.T) {
-  cmd := "/vagrant/build/go-repo-utils"
+	cmd := "/vagrant/build/go-repo-utils"
 	args := []string{"list-tags"}
-  out := ExecSuccessCommand(t, cmd, path, args)
+	out := ExecSuccessCommand(t, cmd, path, args)
 
 	expectedOut := "1.0.0\n1.0.2\n"
 	if out != expectedOut {
@@ -171,9 +171,9 @@ func DoTestFolderUnderVcs(path string, t *testing.T) {
 }
 
 func DoTestFolderUnderVcsAsJson(path string, t *testing.T) {
-  cmd := "/vagrant/build/go-repo-utils"
+	cmd := "/vagrant/build/go-repo-utils"
 	args := []string{"list-tags", "-j"}
-  out := ExecSuccessCommand(t, cmd, path, args)
+	out := ExecSuccessCommand(t, cmd, path, args)
 
 	expectedOut := "[\"1.0.0\",\"1.0.2\"]"
 	if out != expectedOut {
@@ -182,9 +182,9 @@ func DoTestFolderUnderVcsAsJson(path string, t *testing.T) {
 }
 
 func DoTestFolderUnderVcsAny(path string, t *testing.T) {
-  cmd := "/vagrant/build/go-repo-utils"
+	cmd := "/vagrant/build/go-repo-utils"
 	args := []string{"list-tags", "-a"}
-  out := ExecSuccessCommand(t, cmd, path, args)
+	out := ExecSuccessCommand(t, cmd, path, args)
 
 	expectedOut := "1.0.0\n1.0.2\nnotsemvertag\n"
 	if out != expectedOut {
@@ -193,9 +193,9 @@ func DoTestFolderUnderVcsAny(path string, t *testing.T) {
 }
 
 func DoTestFolderUnderVcsAnyReversed(path string, t *testing.T) {
-  cmd := "/vagrant/build/go-repo-utils"
+	cmd := "/vagrant/build/go-repo-utils"
 	args := []string{"list-tags", "-a", "-r"}
-  out := ExecSuccessCommand(t, cmd, path, args)
+	out := ExecSuccessCommand(t, cmd, path, args)
 
 	expectedOut := "notsemvertag\n1.0.2\n1.0.0\n"
 	if out != expectedOut {
@@ -204,9 +204,9 @@ func DoTestFolderUnderVcsAnyReversed(path string, t *testing.T) {
 }
 
 func DoTestFolderIsClean(path string, t *testing.T) {
-  cmd := "/vagrant/build/go-repo-utils"
-  args := []string{"is-clean"}
-  out := ExecSuccessCommand(t, cmd, path, args)
+	cmd := "/vagrant/build/go-repo-utils"
+	args := []string{"is-clean"}
+	out := ExecSuccessCommand(t, cmd, path, args)
 
 	expectedOut := "yes\n"
 	if out != expectedOut {
@@ -215,9 +215,9 @@ func DoTestFolderIsClean(path string, t *testing.T) {
 }
 
 func DoTestFolderIsCleanJson(path string, t *testing.T) {
-  cmd := "/vagrant/build/go-repo-utils"
-  args := []string{"is-clean", "-j"}
-  out := ExecSuccessCommand(t, cmd, path, args)
+	cmd := "/vagrant/build/go-repo-utils"
+	args := []string{"is-clean", "-j"}
+	out := ExecSuccessCommand(t, cmd, path, args)
 
 	expectedOut := "true"
 	if out != expectedOut {
@@ -226,9 +226,9 @@ func DoTestFolderIsCleanJson(path string, t *testing.T) {
 }
 
 func DoTestFolderIsDirty(path string, t *testing.T) {
-  cmd := "/vagrant/build/go-repo-utils"
-  args := []string{"is-clean"}
-  out := ExecSuccessCommand(t, cmd, path, args)
+	cmd := "/vagrant/build/go-repo-utils"
+	args := []string{"is-clean"}
+	out := ExecSuccessCommand(t, cmd, path, args)
 
 	expectedOut := "no\n"
 	if out != expectedOut {
@@ -236,9 +236,9 @@ func DoTestFolderIsDirty(path string, t *testing.T) {
 	}
 }
 func DoTestFolderIsCleanEvenWithUntrackedFiles(path string, t *testing.T) {
-  cmd := "/vagrant/build/go-repo-utils"
-  args := []string{"is-clean"}
-  out := ExecSuccessCommand(t, cmd, path, args)
+	cmd := "/vagrant/build/go-repo-utils"
+	args := []string{"is-clean"}
+	out := ExecSuccessCommand(t, cmd, path, args)
 
 	expectedOut := "yes\n"
 	if out != expectedOut {
