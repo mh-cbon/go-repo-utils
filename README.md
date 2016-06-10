@@ -2,7 +2,7 @@
 
 Go tool to speak with repositories.
 
-It can list tags, tell if a directory is clean.
+It can list tags, tell if a directory is clean, create tag.
 
 It can speak with `hg` `git` `bzr` `svn`
 
