@@ -1,0 +1,27 @@
+hash: ca332ea6d3f9cecc07e4c28f84a700f430c1b0d37d5a8870c5b9399fe590b105
+updated: 2016-06-10T14:09:20.734674308+02:00
+imports:
+- name: github.com/docopt/docopt.go
+  version: 784ddc588536785e7299f7272f39101f7faccc3f
+- name: github.com/fatih/color
+  version: 533cd7fd8a85905f67a1753afb4deddc85ea174f
+  repo: git@github.com:fatih/color.git
+  vcs: git
+- name: github.com/Masterminds/semver
+  version: 7e56b5cd00f9666fc899aa9c11c9a7d51f2a9995
+- name: github.com/mattn/go-colorable
+  version: 9cbef7c35391cca05f15f8181dc0b18bc9736dbb
+  repo: https://github.com/mattn/go-colorable
+- name: github.com/mattn/go-isatty
+  version: 56b76bdf51f7708750eac80fa38b952bb9f32639
+  repo: https://github.com/mattn/go-isatty
+- name: github.com/mh-cbon/verbose
+  version: c8f315468e581eb736cc1f4f79e785a60ea370e6
+  subpackages:
+  - color
+  - printer
+- name: golang.org/x/sys
+  version: b44883b474ffefa37335017174e397412b633a4f
+  subpackages:
+  - unix
+devImports: []
