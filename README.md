@@ -70,27 +70,27 @@ package main
 import (
   "fmt"
 
-  "github.com/mh-cbon/go-repo-utils/list-tags"
+  "github.com/mh-cbon/go-repo-utils/repoutils"
 )
 
 func main() {
 
   path := "path/to/folder"
 
-  vcs, err := listtags.WhichVcs(path)
+  vcs, err := repoutils.WhichVcs(path)
   if err!=nil {
     log.Println(err)
     os.Exit(1)
   }
 
   tags := make([]string, 0)
-  tags, _ := listtags.List(vcs, path)
+  tags, _ := repoutils.List(vcs, path)
   fmt.Println(tags)
 
-  isClean, _ := listtags.IsClean(vcs, path)
+  isClean, _ := repoutils.IsClean(vcs, path)
   fmt.Println(isClean)
 
-  ok, _ := listtags.CreateTag(vcs, path, "1.0.3")
+  ok, _ := repoutils.CreateTag(vcs, path, "1.0.3")
   fmt.Println(ok)
 }
 
