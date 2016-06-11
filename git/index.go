@@ -78,11 +78,11 @@ func IsClean(path string) (bool, error) {
 	return len(string(out)) == 0, nil
 }
 
-func CreateTag(path string, tag string) (bool, error) {
+func CreateTag(path string, tag string) (bool, string, error) {
 	bin, err := exec.LookPath("git")
 	if err != nil {
 		logger.Printf("err=", err)
-		return false, nil
+		return false, "", nil
 	}
 
 	args := []string{"tag", tag}
@@ -94,9 +94,9 @@ func CreateTag(path string, tag string) (bool, error) {
 	out, err := cmd.CombinedOutput()
 	if err != nil {
 		logger.Printf("err=", err)
-		return false, err
+		return false, "", err
 	}
 
 	logger.Printf("out=", string(out))
-	return true, nil
+	return true, string(out), nil
 }

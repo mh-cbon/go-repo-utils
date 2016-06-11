@@ -99,22 +99,22 @@ func IsClean(path string) (bool, error) {
 	return len(changes) == 0, nil
 }
 
-func CreateTag(path string, tag string) (bool, error) {
+func CreateTag(path string, tag string) (bool, string, error) {
 
 	tags, err := List(path)
 	if err != nil {
 		logger.Printf("err=", err)
-		return false, err
+		return false, "", err
 	}
 
 	if contains(tags, tag) {
-		return false, errors.New("Tag '" + tag + "' already exists")
+		return false, "", errors.New("Tag '" + tag + "' already exists")
 	}
 
 	bin, err := exec.LookPath("bzr")
 	if err != nil {
 		logger.Printf("err=", err)
-		return false, nil
+		return false, "", nil
 	}
 
 	args := []string{"tag", tag}
@@ -126,11 +126,11 @@ func CreateTag(path string, tag string) (bool, error) {
 	out, err := cmd.CombinedOutput()
 	if err != nil {
 		logger.Printf("err=", err)
-		return false, err
+		return false, "", err
 	}
 
 	logger.Printf("out=", string(out))
-	return true, nil
+	return true, string(out), nil
 }
 
 func contains(s []string, e string) bool {

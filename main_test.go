@@ -43,7 +43,9 @@ func TestSvn(t *testing.T) {
 	DoTestFolderIsCleanJson("/home/vagrant/svn_work", t)
 	DoTestFolderIsDirty("/home/vagrant/svn_dirty_work", t)
 	DoTestFolderIsCleanEvenWithUntrackedFiles("/home/vagrant/svn_untracked_work", t)
+	DoCreateTag("/home/vagrant/svn_work", t)
 	DoFailCreateTag("/home/vagrant/svn_work", t)
+	DoFailCreateTagMissTagName("/home/vagrant/svn_work", t)
 }
 
 func TestBzr(t *testing.T) {

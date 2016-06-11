@@ -14,7 +14,7 @@ import (
 type IsIt func(path string) bool
 type ListIt func(path string) ([]string, error)
 type IsItClean func(path string) (bool, error)
-type DoCreateTag func(path string, tag string) (bool, error)
+type DoCreateTag func(path string, tag string) (bool, string, error)
 
 type isVcsResult struct {
 	name  string
@@ -91,7 +91,7 @@ func IsClean(vcs string, path string) (bool, error) {
 	return isItClean(path)
 }
 
-func CreateTag(vcs string, path string, tag string) (bool, error) {
+func CreateTag(vcs string, path string, tag string) (bool, string, error) {
 	vcsCreateTag := map[string]DoCreateTag{
 		"git": git.CreateTag,
 		"bzr": bzr.CreateTag,
@@ -100,7 +100,7 @@ func CreateTag(vcs string, path string, tag string) (bool, error) {
 	}
 	createTag, ok := vcsCreateTag[vcs]
 	if ok == false {
-		return false, errors.New("Unknown VCS '" + vcs + "'")
+		return false, "", errors.New("Unknown VCS '" + vcs + "'")
 	}
 	return createTag(path, tag)
 }

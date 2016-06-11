@@ -85,6 +85,112 @@ func IsClean(path string) (bool, error) {
 	return len(string(out)) == 0, nil
 }
 
-func CreateTag(path string, tag string) (bool, error) {
-	return true, errors.New("Cannot create tag with svn")
+func CreateTag(path string, tag string) (bool, string, error) {
+
+	tags, err := List(path)
+	if err != nil {
+		logger.Printf("err=", err)
+		return false, "", err
+	}
+
+	if contains(tags, tag) {
+		return false, "", errors.New("Tag '" + tag + "' already exists")
+	}
+
+	root, err := GetRepositoryRoot(path)
+	if err != nil {
+		logger.Printf("err=", err)
+		return false, "", err
+	}
+
+	CreateTagDir(path)
+
+	bin, err := exec.LookPath("svn")
+	if err != nil {
+		logger.Printf("err=", err)
+		return false, "", nil
+	}
+
+	args := []string{"copy", root + "/trunk", root + "/tags/" + tag, "-m", "tag: " + tag}
+	cmd := exec.Command(bin, args...)
+	cmd.Dir = path
+
+	logger.Printf("%s %s (cwd=%s)", bin, args, path)
+
+	out, err := cmd.CombinedOutput()
+	if err != nil {
+		logger.Printf("err=", err)
+		return false, "", err
+	}
+
+	logger.Printf("out=", string(out))
+	return true, string(out), nil
+}
+
+func CreateTagDir(path string) (string, error) {
+	root, err := GetRepositoryRoot(path)
+	if err != nil {
+		logger.Printf("err=", err)
+		return "", err
+	}
+
+	bin, err := exec.LookPath("svn")
+	if err != nil {
+		logger.Printf("err=", err)
+		return "", nil
+	}
+
+	args := []string{"mkdir", root + "/tags/", "-m", "Create tag folder"}
+	cmd := exec.Command(bin, args...)
+	cmd.Dir = path
+
+	logger.Printf("%s %s (cwd=%s)", bin, args, path)
+
+	out, err := cmd.CombinedOutput()
+	if err != nil {
+		logger.Printf("err=", err)
+		return "", err
+	}
+
+	logger.Printf("out=", string(out))
+	return string(out), nil
+}
+
+func GetRepositoryRoot(path string) (string, error) {
+	bin, err := exec.LookPath("svn")
+	if err != nil {
+		logger.Printf("err=", err)
+		return "", err
+	}
+
+	args := []string{"info", "."}
+	cmd := exec.Command(bin, args...)
+	cmd.Dir = path
+
+	logger.Printf("%s %s (cwd=%s)", bin, args, path)
+
+	out, err := cmd.CombinedOutput()
+	if err != nil {
+		logger.Printf("err=", err)
+		return "", err
+	}
+
+	logger.Printf("out=", string(out))
+	p := "Repository Root:"
+	root := ""
+	for _, line := range strings.Split(string(out), "\n") {
+		if strings.Index(line, p) == 0 {
+			root = line[len(p)+1:]
+		}
+	}
+	return root, nil
+}
+
+func contains(s []string, e string) bool {
+	for _, a := range s {
+		if a == e {
+			return true
+		}
+	}
+	return false
 }

@@ -35,9 +35,9 @@ Options:
   -r --reverse          Reverse tags ordering.
 
 Notes:
-  list-tags will list only valid semver tags unless -a|--any options is provided.
-  is-clean ignores untracked files.
-  create-tag does not work with subversion.
+  list-tags   List only valid semver tags unless -a|--any options is provided.
+  is-clean    Ignores untracked files.
+  create-tag  With svn, it always create a new tag folder at /tags/<tag>.
 ```
 
 #### Examples
@@ -90,7 +90,7 @@ func main() {
   isClean, _ := repoutils.IsClean(vcs, path)
   fmt.Println(isClean)
 
-  ok, _ := repoutils.CreateTag(vcs, path, "1.0.3")
+  ok, _, _ := repoutils.CreateTag(vcs, path, "1.0.3")
   fmt.Println(ok)
 }
 

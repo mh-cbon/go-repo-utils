@@ -32,9 +32,9 @@ Options:
   -r --reverse          Reverse tags ordering.
 
 Notes:
-  list-tags will list only valid semver tags unless -a|--any options is provided.
-  is-clean ignores untracked files.
-  create-tag does not work with subversion.
+  list-tags   List only valid semver tags unless -a|--any options is provided.
+  is-clean    Ignores untracked files.
+  create-tag  With svn, it always create a new tag folder at /tags/<tag>.
 `
 
 	arguments, err := docopt.Parse(usage, nil, true, "Go repo utils", false)
@@ -143,8 +143,9 @@ func cmdCreateTag(arguments map[string]interface{}, vcs string, path string) {
 		os.Exit(1)
 	}
 
-	_, err := repoutils.CreateTag(vcs, path, tag)
+	_, out, err := repoutils.CreateTag(vcs, path, tag)
 	if err != nil {
+		log.Println(out)
 		log.Println(err)
 		os.Exit(1)
 	}
