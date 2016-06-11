@@ -99,3 +99,9 @@ func main() {
 # Tests
 
 To run the tests, `sh vagrant/test.sh`, which will do all necessary stuff to run the tests
+
+# See also
+
+- https://github.com/Masterminds/vcs
+
+A way more complete api, with a different approach.
