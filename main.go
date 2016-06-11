@@ -142,6 +142,10 @@ func cmdCreateTag(arguments map[string]interface{}, vcs string, path string) {
 		fmt.Println("Missing tag value")
 		os.Exit(1)
 	}
+	if len(tag) == 0 {
+		fmt.Println("Missing tag value")
+		os.Exit(1)
+	}
 
 	_, out, err := repoutils.CreateTag(vcs, path, tag)
 	if err != nil {

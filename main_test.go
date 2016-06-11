@@ -71,6 +71,7 @@ func TestFolderNotUnderVcs(t *testing.T) {
 	args := []string{"list-tags"}
 	cmd := exec.Command("/vagrant/build/go-repo-utils", args...)
 	cmd.Dir = "/home/vagrant"
+	fmt.Printf("%s: %s %s\n", cmd.Dir, "/vagrant/build/go-repo-utils", args)
 
 	err := cmd.Run()
 	if err == nil {
@@ -137,6 +138,7 @@ func DoFailCreateTag(path string, t *testing.T) {
 	args := []string{"create-tag", "1.0.3"}
 	cmd := exec.Command("/vagrant/build/go-repo-utils", args...)
 	cmd.Dir = path
+	fmt.Printf("%s: %s %s\n", path, "/vagrant/build/go-repo-utils", args)
 
 	err := cmd.Run()
 	if err == nil {
@@ -151,6 +153,7 @@ func DoFailCreateTagMissTagName(path string, t *testing.T) {
 	args := []string{"create-tag"}
 	cmd := exec.Command("/vagrant/build/go-repo-utils", args...)
 	cmd.Dir = path
+	fmt.Printf("%s: %s %s\n", path, "/vagrant/build/go-repo-utils", args)
 
 	err := cmd.Run()
 	if err == nil {

@@ -38,7 +38,7 @@ func WhichVcs(path string) (string, error) {
 	}
 	for res := range out {
 		vcsTests[res.name] = res.found
-		if len(vcsTests) == 4 {
+		if len(vcsTests) == len(vcsTester) {
 			close(out)
 		}
 	}

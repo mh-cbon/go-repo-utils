@@ -124,13 +124,9 @@ func CreateTag(path string, tag string) (bool, string, error) {
 	logger.Printf("%s %s (cwd=%s)", bin, args, path)
 
 	out, err := cmd.CombinedOutput()
-	if err != nil {
-		logger.Printf("err=", err)
-		return false, "", err
-	}
-
+	logger.Printf("err=", err)
 	logger.Printf("out=", string(out))
-	return true, string(out), nil
+	return err == nil, string(out), err
 }
 
 func contains(s []string, e string) bool {
