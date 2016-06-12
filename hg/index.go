@@ -13,7 +13,7 @@ var logger = verbose.Auto()
 func IsIt(path string) bool {
 	bin, err := exec.LookPath("hg")
 	if err != nil {
-		logger.Printf("err=", err)
+		logger.Printf("err=%s", err)
 		return false
 	}
 
@@ -25,7 +25,7 @@ func IsIt(path string) bool {
 
 	out, err := cmd.CombinedOutput()
 	if err != nil {
-		logger.Printf("err=", err)
+		logger.Printf("err=%s", err)
 		return false
 	}
 
@@ -37,7 +37,7 @@ func List(path string) ([]string, error) {
 	tags := make([]string, 0)
 	bin, err := exec.LookPath("hg")
 	if err != nil {
-		logger.Printf("err=", err)
+		logger.Printf("err=%s", err)
 		return tags, err
 	}
 
@@ -49,7 +49,7 @@ func List(path string) ([]string, error) {
 
 	out, err := cmd.CombinedOutput()
 	if err != nil {
-		logger.Printf("err=", err)
+		logger.Printf("err=%s", err)
 		return tags, err
 	}
 
@@ -66,7 +66,7 @@ func List(path string) ([]string, error) {
 func IsClean(path string) (bool, error) {
 	bin, err := exec.LookPath("hg")
 	if err != nil {
-		logger.Printf("err=", err)
+		logger.Printf("err=%s", err)
 		return false, nil
 	}
 
@@ -78,7 +78,7 @@ func IsClean(path string) (bool, error) {
 
 	out, err := cmd.CombinedOutput()
 	if err != nil {
-		logger.Printf("err=", err)
+		logger.Printf("err=%s", err)
 		return false, err
 	}
 
@@ -90,7 +90,7 @@ func CreateTag(path string, tag string) (bool, string, error) {
 
 	tags, err := List(path)
 	if err != nil {
-		logger.Printf("err=", err)
+		logger.Printf("err=%s", err)
 		return false, "", err
 	}
 
@@ -100,7 +100,7 @@ func CreateTag(path string, tag string) (bool, string, error) {
 
 	bin, err := exec.LookPath("hg")
 	if err != nil {
-		logger.Printf("err=", err)
+		logger.Printf("err=%s", err)
 		return false, "", nil
 	}
 
@@ -111,8 +111,8 @@ func CreateTag(path string, tag string) (bool, string, error) {
 	logger.Printf("%s %s (cwd=%s)", bin, args, path)
 
 	out, err := cmd.CombinedOutput()
-	logger.Printf("err=", err)
-	logger.Printf("out=", string(out))
+	logger.Printf("err=%s", err)
+	logger.Printf("out=%s", string(out))
 	return err == nil, string(out), nil
 }
 

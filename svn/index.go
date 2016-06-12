@@ -25,7 +25,7 @@ func IsIt(path string) bool {
 
 	out, err := cmd.CombinedOutput()
 	if err != nil {
-		logger.Printf("err=", err)
+		logger.Printf("err=%s", err)
 		return false
 	}
 
@@ -37,7 +37,7 @@ func List(path string) ([]string, error) {
 	tags := make([]string, 0)
 	bin, err := exec.LookPath("svn")
 	if err != nil {
-		logger.Printf("err=", err)
+		logger.Printf("err=%s", err)
 		return tags, err
 	}
 
@@ -49,7 +49,7 @@ func List(path string) ([]string, error) {
 
 	out, err := cmd.CombinedOutput()
 	if err != nil {
-		logger.Printf("err=", err)
+		logger.Printf("err=%s", err)
 		return tags, err
 	}
 
@@ -65,7 +65,7 @@ func List(path string) ([]string, error) {
 func IsClean(path string) (bool, error) {
 	bin, err := exec.LookPath("svn")
 	if err != nil {
-		logger.Printf("err=", err)
+		logger.Printf("err=%s", err)
 		return false, err
 	}
 
@@ -77,7 +77,7 @@ func IsClean(path string) (bool, error) {
 
 	out, err := cmd.CombinedOutput()
 	if err != nil {
-		logger.Printf("err=", err)
+		logger.Printf("err=%s", err)
 		return false, err
 	}
 
@@ -99,7 +99,7 @@ func CreateTag(path string, tag string) (bool, string, error) {
 
 	root, err := GetRepositoryRoot(path)
 	if err != nil {
-		logger.Printf("err=", err)
+		logger.Printf("err=%s", err)
 		return false, "", err
 	}
 
@@ -107,7 +107,7 @@ func CreateTag(path string, tag string) (bool, string, error) {
 
 	bin, err := exec.LookPath("svn")
 	if err != nil {
-		logger.Printf("err=", err)
+		logger.Printf("err=%s", err)
 		return false, "", nil
 	}
 
@@ -118,21 +118,21 @@ func CreateTag(path string, tag string) (bool, string, error) {
 	logger.Printf("%s %s (cwd=%s)", bin, args, path)
 
 	out, err := cmd.CombinedOutput()
-	logger.Printf("err=", err)
-	logger.Printf("out=", string(out))
+	logger.Printf("err=%s", err)
+	logger.Printf("out=%s", string(out))
 	return err == nil, string(out), err
 }
 
 func CreateTagDir(path string) (string, error) {
 	root, err := GetRepositoryRoot(path)
 	if err != nil {
-		logger.Printf("err=", err)
+		logger.Printf("err=%s", err)
 		return "", err
 	}
 
 	bin, err := exec.LookPath("svn")
 	if err != nil {
-		logger.Printf("err=", err)
+		logger.Printf("err=%s", err)
 		return "", nil
 	}
 
@@ -143,15 +143,15 @@ func CreateTagDir(path string) (string, error) {
 	logger.Printf("%s %s (cwd=%s)", bin, args, path)
 
 	out, err := cmd.CombinedOutput()
-	logger.Printf("err=", err)
-	logger.Printf("out=", string(out))
+	logger.Printf("err=%s", err)
+	logger.Printf("out=%s", string(out))
 	return string(out), err
 }
 
 func GetRepositoryRoot(path string) (string, error) {
 	bin, err := exec.LookPath("svn")
 	if err != nil {
-		logger.Printf("err=", err)
+		logger.Printf("err=%s", err)
 		return "", err
 	}
 
@@ -163,7 +163,7 @@ func GetRepositoryRoot(path string) (string, error) {
 
 	out, err := cmd.CombinedOutput()
 	if err != nil {
-		logger.Printf("err=", err)
+		logger.Printf("err=%s", err)
 		return "", err
 	}
 
