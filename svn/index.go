@@ -167,7 +167,7 @@ func GetRepositoryRoot(path string) (string, error) {
 		return "", err
 	}
 
-	logger.Printf("out=", string(out))
+	logger.Printf("out=%s", string(out))
 	p := "Repository Root:"
 	root := ""
 	for _, line := range strings.Split(string(out), "\n") {
