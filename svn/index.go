@@ -34,10 +34,11 @@ func IsIt(path string) bool {
 }
 
 func List(path string) ([]string, error) {
+  tags := make([]string, 0)
 	bin, err := exec.LookPath("svn")
 	if err != nil {
 		logger.Printf("err=", err)
-		return make([]string, 0), err
+		return tags, err
 	}
 
 	args := []string{"ls", "^/tags"}
@@ -49,17 +50,16 @@ func List(path string) ([]string, error) {
 	out, err := cmd.CombinedOutput()
 	if err != nil {
 		logger.Printf("err=", err)
-		return make([]string, 0), err
+		return tags, err
 	}
 
 	logger.Printf("out=", string(out))
-	ret := strings.Split(string(out), "\n")
-	for i, v := range ret {
+	for _, v := range strings.Split(string(out), "\n") {
 		if len(v) > 0 {
-			ret[i] = v[0 : len(v)-1]
+      tags = append(tags, v[0 : len(v)-1])
 		}
 	}
-	return ret, nil
+	return tags, nil
 }
 
 func IsClean(path string) (bool, error) {

@@ -35,10 +35,11 @@ func IsIt(path string) bool {
 }
 
 func List(path string) ([]string, error) {
+  tags := make([]string, 0)
 	bin, err := exec.LookPath("bzr")
 	if err != nil {
 		logger.Printf("err=", err)
-		return make([]string, 0), err
+		return tags, err
 	}
 
 	args := []string{"tags"}
@@ -50,18 +51,17 @@ func List(path string) ([]string, error) {
 	out, err := cmd.CombinedOutput()
 	if err != nil {
 		logger.Printf("err=", err)
-		return make([]string, 0), err
+		return tags, err
 	}
 
 	logger.Printf("out=", string(out))
-	ret := strings.Split(string(out), "\n")
-	for i, v := range ret {
+	for _, v := range strings.Split(string(out), "\n") {
 		k := strings.Split(v, " ")
-		if len(k) > 0 {
-			ret[i] = k[0]
+		if len(k) > 0 && len(k[0])>0 {
+      tags = append(tags, k[0])
 		}
 	}
-	return ret, nil
+	return tags, nil
 }
 
 func IsClean(path string) (bool, error) {
