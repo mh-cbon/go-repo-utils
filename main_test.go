@@ -78,7 +78,7 @@ func TestFolderNotUnderVcs(t *testing.T) {
 		t.Errorf("Expected err!=nil, got err=%s\n", err)
 	}
 	if cmd.ProcessState.Success() {
-		t.Errorf("Expected success=false, got success=%q\n", true)
+		t.Errorf("Expected success=false, got success=%t\n", true)
 	}
 }
 
@@ -94,7 +94,7 @@ func ExecSuccessCommand(t *testing.T, cmd string, cwd string, args []string) str
 		return ""
 	}
 	if execCmd.ProcessState != nil && execCmd.ProcessState.Success() == false {
-		t.Errorf("Expected success=true, got success=%q\n", false)
+		t.Errorf("Expected success=true, got success=%t\n", false)
 		return ""
 	}
 
@@ -145,7 +145,7 @@ func DoFailCreateTag(path string, t *testing.T) {
 		t.Errorf("Expected err!=nil, got err=%s\n", err)
 	}
 	if cmd.ProcessState.Success() {
-		t.Errorf("Expected success=false, got success=%q\n", true)
+		t.Errorf("Expected success=false, got success=%t\n", true)
 	}
 }
 
@@ -160,7 +160,7 @@ func DoFailCreateTagMissTagName(path string, t *testing.T) {
 		t.Errorf("Expected err!=nil, got err=%s\n", err)
 	}
 	if cmd.ProcessState.Success() {
-		t.Errorf("Expected success=false, got success=%q\n", true)
+		t.Errorf("Expected success=false, got success=%t\n", true)
 	}
 }
 

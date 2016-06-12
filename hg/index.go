@@ -34,7 +34,7 @@ func IsIt(path string) bool {
 }
 
 func List(path string) ([]string, error) {
-  tags := make([]string, 0)
+	tags := make([]string, 0)
 	bin, err := exec.LookPath("hg")
 	if err != nil {
 		logger.Printf("err=", err)

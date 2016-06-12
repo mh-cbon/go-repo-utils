@@ -33,7 +33,7 @@ func IsIt(path string) bool {
 }
 
 func List(path string) ([]string, error) {
-  tags := make([]string, 0)
+	tags := make([]string, 0)
 	bin, err := exec.LookPath("git")
 	if err != nil {
 		logger.Printf("err=", err)
@@ -53,11 +53,11 @@ func List(path string) ([]string, error) {
 	}
 
 	logger.Printf("out=", string(out))
-  for _, line := range strings.Split(string(out), "\n") {
-    if len(line)>0 {
-      tags = append(tags, line)
-    }
-  }
+	for _, line := range strings.Split(string(out), "\n") {
+		if len(line) > 0 {
+			tags = append(tags, line)
+		}
+	}
 	return tags, nil
 }
 

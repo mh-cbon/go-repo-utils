@@ -13,7 +13,7 @@ var logger = verbose.Auto()
 func IsIt(path string) bool {
 	bin, err := exec.LookPath("svn")
 	if err != nil {
-		logger.Printf("err=", err)
+		logger.Printf("err=%s", err)
 		return false
 	}
 
@@ -34,7 +34,7 @@ func IsIt(path string) bool {
 }
 
 func List(path string) ([]string, error) {
-  tags := make([]string, 0)
+	tags := make([]string, 0)
 	bin, err := exec.LookPath("svn")
 	if err != nil {
 		logger.Printf("err=", err)
@@ -56,7 +56,7 @@ func List(path string) ([]string, error) {
 	logger.Printf("out=", string(out))
 	for _, v := range strings.Split(string(out), "\n") {
 		if len(v) > 0 {
-      tags = append(tags, v[0 : len(v)-1])
+			tags = append(tags, v[0:len(v)-1])
 		}
 	}
 	return tags, nil

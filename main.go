@@ -70,7 +70,8 @@ Notes:
 	} else if cmd == "create-tag" {
 		cmdCreateTag(arguments, vcs, path)
 	} else if cmd == "" {
-		fmt.Println("Wrong usage: Missing command\n")
+		fmt.Println("Wrong usage: Missing command")
+		fmt.Println("")
 		fmt.Println(usage)
 		os.Exit(1)
 	} else {
