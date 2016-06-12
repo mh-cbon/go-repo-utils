@@ -29,7 +29,7 @@ func IsIt(path string) bool {
 		return false
 	}
 
-	logger.Printf("out=", string(out))
+	logger.Printf("out=%s", string(out))
 	return cmd.ProcessState != nil && cmd.ProcessState.Success()
 }
 
@@ -53,7 +53,7 @@ func List(path string) ([]string, error) {
 		return tags, err
 	}
 
-	logger.Printf("out=", string(out))
+	logger.Printf("out=%s", string(out))
 	for _, v := range strings.Split(string(out), "\n") {
 		if len(v) > 0 {
 			tags = append(tags, v[0:len(v)-1])
@@ -81,7 +81,7 @@ func IsClean(path string) (bool, error) {
 		return false, err
 	}
 
-	logger.Printf("out=", string(out))
+	logger.Printf("out=%s", string(out))
 	return len(string(out)) == 0, nil
 }
 
@@ -89,7 +89,7 @@ func CreateTag(path string, tag string) (bool, string, error) {
 
 	tags, err := List(path)
 	if err != nil {
-		logger.Printf("err=", err)
+		logger.Printf("err=%s", err)
 		return false, "", err
 	}
 

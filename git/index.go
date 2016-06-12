@@ -28,7 +28,7 @@ func IsIt(path string) bool {
 		return false
 	}
 
-	logger.Printf("out=", string(out))
+	logger.Printf("out=%s", string(out))
 	return cmd.ProcessState != nil && cmd.ProcessState.Success()
 }
 
@@ -52,7 +52,7 @@ func List(path string) ([]string, error) {
 		return tags, err
 	}
 
-	logger.Printf("out=", string(out))
+	logger.Printf("out=%s", string(out))
 	for _, line := range strings.Split(string(out), "\n") {
 		if len(line) > 0 {
 			tags = append(tags, line)
