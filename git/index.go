@@ -84,7 +84,8 @@ func IsClean(path string) (bool, error) {
 	return len(string(out)) == 0, nil
 }
 
-func CreateTag(path string, tag string) (bool, string, error) {
+func CreateTag(path string, tag string, message string) (bool, string, error) {
+
 	bin, err := exec.LookPath("git")
 	if err != nil {
 		logger.Printf("err=%s", err)
@@ -92,6 +93,9 @@ func CreateTag(path string, tag string) (bool, string, error) {
 	}
 
 	args := []string{"tag", tag}
+  if len(message)>0 {
+    args = append(args, []string{"-m", message}...)
+  }
 	cmd := exec.Command(bin, args...)
 	cmd.Dir = path
 

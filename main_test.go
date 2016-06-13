@@ -16,8 +16,10 @@ func TestGit(t *testing.T) {
 	DoTestFolderIsDirty("/home/vagrant/git_dirty", t)
 	DoTestFolderIsCleanEvenWithUntrackedFiles("/home/vagrant/git_untracked", t)
 	DoCreateTag("/home/vagrant/git", t)
+  DoCreateTagWithMessage("/home/vagrant/git", t)
 	DoFailCreateTag("/home/vagrant/git", t)
 	DoFailCreateTagMissTagName("/home/vagrant/git", t)
+	DoListTags("/home/vagrant/git", t)
 }
 
 func TestHg(t *testing.T) {
@@ -30,8 +32,10 @@ func TestHg(t *testing.T) {
 	DoTestFolderIsDirty("/home/vagrant/hg_dirty", t)
 	DoTestFolderIsCleanEvenWithUntrackedFiles("/home/vagrant/hg_untracked", t)
 	DoCreateTag("/home/vagrant/hg", t)
+  DoCreateTagWithMessage("/home/vagrant/hg", t)
 	DoFailCreateTag("/home/vagrant/hg", t)
 	DoFailCreateTagMissTagName("/home/vagrant/hg", t)
+	DoListTags("/home/vagrant/hg", t)
 }
 
 func TestSvn(t *testing.T) {
@@ -44,8 +48,10 @@ func TestSvn(t *testing.T) {
 	DoTestFolderIsDirty("/home/vagrant/svn_dirty_work", t)
 	DoTestFolderIsCleanEvenWithUntrackedFiles("/home/vagrant/svn_untracked_work", t)
 	DoCreateTag("/home/vagrant/svn_work", t)
+  DoCreateTagWithMessage("/home/vagrant/svn_work", t)
 	DoFailCreateTag("/home/vagrant/svn_work", t)
 	DoFailCreateTagMissTagName("/home/vagrant/svn_work", t)
+	DoListTags("/home/vagrant/svn_work", t)
 }
 
 func TestBzr(t *testing.T) {
@@ -58,8 +64,10 @@ func TestBzr(t *testing.T) {
 	DoTestFolderIsDirty("/home/vagrant/bzr_dirty", t)
 	DoTestFolderIsCleanEvenWithUntrackedFiles("/home/vagrant/bzr_untracked", t)
 	DoCreateTag("/home/vagrant/bzr", t)
+  DoCreateTagWithMessage("/home/vagrant/bzr", t)
 	DoFailCreateTag("/home/vagrant/bzr", t)
 	DoFailCreateTagMissTagName("/home/vagrant/bzr", t)
+	DoListTags("/home/vagrant/bzr", t)
 }
 
 func TestPathArgs(t *testing.T) {
@@ -106,7 +114,7 @@ func DoTestFolderUnderVcsWithPath(path string, t *testing.T) {
 	args := []string{"list-tags", "-p", path}
 	out := ExecSuccessCommand(t, cmd, "/home", args)
 
-	expectedOut := "1.0.0\n1.0.2\n1.0.3\n"
+	expectedOut := "1.0.0\n1.0.2\n1.0.3\n1.0.4\n"
 	if out != expectedOut {
 		t.Errorf("Expected out=%q, got out=%q\n", expectedOut, out)
 	}
@@ -118,6 +126,28 @@ func DoTestFolderIsCleanWithPath(path string, t *testing.T) {
 	out := ExecSuccessCommand(t, cmd, "/home", args)
 
 	expectedOut := "yes\n"
+	if out != expectedOut {
+		t.Errorf("Expected out=%q, got out=%q\n", expectedOut, out)
+	}
+}
+
+func DoCreateTagWithMessage(path string, t *testing.T) {
+	cmd := "/vagrant/build/go-repo-utils"
+	args := []string{"create-tag", "1.0.4", "-m", "new tag"}
+	out := ExecSuccessCommand(t, cmd, path, args)
+
+	expectedOut := "done\n"
+	if out != expectedOut {
+		t.Errorf("Expected out=%q, got out=%q\n", expectedOut, out)
+	}
+}
+
+func DoListTags(path string, t *testing.T) {
+	cmd := "/vagrant/build/go-repo-utils"
+	args := []string{"list-tags"}
+	out := ExecSuccessCommand(t, cmd, path, args)
+
+	expectedOut := "1.0.0\n1.0.2\n1.0.3\n1.0.4\n"
 	if out != expectedOut {
 		t.Errorf("Expected out=%q, got out=%q\n", expectedOut, out)
 	}

@@ -99,13 +99,17 @@ func IsClean(path string) (bool, error) {
 	return len(changes) == 0, nil
 }
 
-func CreateTag(path string, tag string) (bool, string, error) {
+func CreateTag(path string, tag string, message string) (bool, string, error) {
 
 	tags, err := List(path)
 	if err != nil {
 		logger.Printf("err=%s", err)
 		return false, "", err
 	}
+
+  if len(message)>0 {
+    logger.Println("Unused message: " + message)
+  }
 
 	if contains(tags, tag) {
 		return false, "", errors.New("Tag '" + tag + "' already exists")

@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"log"
+	"errors"
 	"os"
 
 	"github.com/docopt/docopt.go"
@@ -17,51 +18,55 @@ func main() {
 	usage := `Go repo utils
 
 Usage:
-  go-repo-utils list-tags [-j|--json] [-a|--any] [-r|--reverse] [--path=<path>|-p=<path>]
+  go-repo-utils list-tags [-j|--json] [-a|--any] [-r|--reverse] [--path=<path>|-p <path>]
   go-repo-utils is-clean [-j|--json] [--path=<path>|-p=<path>]
-  go-repo-utils create-tag <tag> [-j|--json] [--path=<path>|-p=<path>]
+  go-repo-utils create-tag <tag> [-j|--json] [--path=<path>|-p <path>] [-m <message>]
   go-repo-utils -h | --help
   go-repo-utils -v | --version
 
 Options:
   -h --help             Show this screen.
   -v --version          Show version.
-  -p=<c> --path=<c>     Path to lookup [default: cwd].
+  -p <c> --path=<c>     Path to lookup [default: cwd].
   -j --json             Print JSON encoded data.
   -a --any              List all tags.
   -r --reverse          Reverse tags ordering.
+  -m                    Message for the tag.
 
 Notes:
   list-tags   List only valid semver tags unless -a|--any options is provided.
   is-clean    Ignores untracked files.
   create-tag  With svn, it always create a new tag folder at /tags/<tag>.
+
+Examples
+  # list tags
+  go-repo-utils list-tags
+
+  # list tags with json response
+  go-repo-utils list-tags -j --path=/some/where
+
+  # check if a directory is clean
+  go-repo-utis is-clean -p /some/where
+  
+  # create tag
+  go-repo-utils create-tag 1.0.3 -m "tag message"
 `
 
 	arguments, err := docopt.Parse(usage, nil, true, "Go repo utils", false)
 
 	logger.Println(arguments)
-
-	if err != nil {
-		log.Println(err)
-		os.Exit(1)
-	}
+  exitWithError(err)
 
 	cmd := getCommand(arguments)
 
 	path := getPath(arguments)
 	if path == "" {
 		path, err = os.Getwd()
-		if err != nil {
-			log.Println("Cannot find the cwd")
-			os.Exit(1)
-		}
+    exitWithError(err)
 	}
 
 	vcs, err := repoutils.WhichVcs(path)
-	if err != nil {
-		log.Println(err)
-		os.Exit(1)
-	}
+  exitWithError(err)
 
 	if cmd == "list-tags" {
 		cmdListTags(arguments, vcs, path)
@@ -82,10 +87,7 @@ Notes:
 
 func cmdIsClean(arguments map[string]interface{}, vcs string, path string) {
 	isClean, err := repoutils.IsClean(vcs, path)
-	if err != nil {
-		log.Println(err)
-		os.Exit(1)
-	}
+  exitWithError(err)
 
 	if isJson(arguments) {
 		jsoned, _ := json.Marshal(isClean)
@@ -102,10 +104,7 @@ func cmdIsClean(arguments map[string]interface{}, vcs string, path string) {
 func cmdListTags(arguments map[string]interface{}, vcs string, path string) {
 	tags := make([]string, 0)
 	dirtyTags, err := repoutils.List(vcs, path)
-	if err != nil {
-		log.Println(err)
-		os.Exit(1)
-	}
+  exitWithError(err)
 
 	if isAny(arguments) == false {
 		tags = repoutils.FilterSemverTags(dirtyTags)
@@ -133,26 +132,19 @@ func cmdListTags(arguments map[string]interface{}, vcs string, path string) {
 
 func cmdCreateTag(arguments map[string]interface{}, vcs string, path string) {
 
-	var tag string
-	p, ok := arguments["<tag>"]
-	if ok == false {
-		fmt.Println("Missing tag value")
-		os.Exit(1)
-	}
-	if tag, ok = p.(string); ok == false {
-		fmt.Println("Missing tag value")
-		os.Exit(1)
-	}
+	tag := getTag(arguments)
 	if len(tag) == 0 {
-		fmt.Println("Missing tag value")
-		os.Exit(1)
+    exitWithError(errors.New("Missing tag value"))
 	}
+  message := getMessage(arguments)
+  if len(message)==0 {
+    message = "tag: " + tag
+  }
 
-	_, out, err := repoutils.CreateTag(vcs, path, tag)
+	_, out, err := repoutils.CreateTag(vcs, path, tag, message)
 	if err != nil {
 		log.Println(out)
-		log.Println(err)
-		os.Exit(1)
+    exitWithError(err)
 	}
 
 	if isJson(arguments) {
@@ -205,6 +197,22 @@ func getPath(arguments map[string]interface{}) string {
 	return ""
 }
 
+func getTag(arguments map[string]interface{}) string {
+	tag := ""
+	if t, ok := arguments["<tag>"].(string); ok {
+		tag = t
+	}
+	return tag
+}
+
+func getMessage(arguments map[string]interface{}) string {
+	message := ""
+	if mess, ok := arguments["-m"].(string); ok {
+		message = mess
+	}
+	return message
+}
+
 func isAny(arguments map[string]interface{}) bool {
 	any := false
 	if isAny, ok := arguments["--any"].(bool); ok {
@@ -239,4 +247,11 @@ func isReversed(arguments map[string]interface{}) bool {
 		}
 	}
 	return reverse
+}
+
+func exitWithError(err error) {
+  if err!=nil {
+  	fmt.Println(err)
+  	os.Exit(1)
+  }
 }
