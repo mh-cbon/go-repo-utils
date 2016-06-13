@@ -203,9 +203,9 @@ func Add(path string, file string) error {
 
 func Commit(path string, message string, files []string) error {
 
-  if len(message) == 0 {
-    return errors.New("Message is required")
-  }
+	if len(message) == 0 {
+		return errors.New("Message is required")
+	}
 
 	bin, err := exec.LookPath("svn")
 	if err != nil {
@@ -214,9 +214,9 @@ func Commit(path string, message string, files []string) error {
 	}
 
 	args := []string{"commit", "-m", message}
-  if len(files) > 0 {
-    args = append(args, files...)
-  }
+	if len(files) > 0 {
+		args = append(args, files...)
+	}
 	cmd := exec.Command(bin, args...)
 	cmd.Dir = path
 

@@ -142,9 +142,9 @@ func Add(path string, file string) error {
 	}
 
 	args := []string{"add"}
-  if len(file) > 0 {
-    args = append(args, []string{file}...)
-  }
+	if len(file) > 0 {
+		args = append(args, []string{file}...)
+	}
 	cmd := exec.Command(bin, args...)
 	cmd.Dir = path
 
@@ -158,9 +158,9 @@ func Add(path string, file string) error {
 
 func Commit(path string, message string, files []string) error {
 
-  if len(message) == 0 {
-    return errors.New("Message is required")
-  }
+	if len(message) == 0 {
+		return errors.New("Message is required")
+	}
 
 	bin, err := exec.LookPath("bzr")
 	if err != nil {
@@ -169,9 +169,9 @@ func Commit(path string, message string, files []string) error {
 	}
 
 	args := []string{"commit", "-q", "--strict", "--local", "-m", message}
-  if len(files) > 0 {
-    args = append(args, files...)
-  }
+	if len(files) > 0 {
+		args = append(args, files...)
+	}
 	cmd := exec.Command(bin, args...)
 	cmd.Dir = path
 
