@@ -105,9 +105,9 @@ func CreateTag(path string, tag string, message string) (bool, string, error) {
 	}
 
 	args := []string{"tag", tag}
-  if len(message)>0 {
-    args = append(args, []string{"-m", message}...)
-  }
+	if len(message) > 0 {
+		args = append(args, []string{"-m", message}...)
+	}
 	cmd := exec.Command(bin, args...)
 	cmd.Dir = path
 

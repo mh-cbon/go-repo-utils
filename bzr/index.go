@@ -107,9 +107,9 @@ func CreateTag(path string, tag string, message string) (bool, string, error) {
 		return false, "", err
 	}
 
-  if len(message)>0 {
-    logger.Println("Unused message: " + message)
-  }
+	if len(message) > 0 {
+		logger.Println("Unused message: " + message)
+	}
 
 	if contains(tags, tag) {
 		return false, "", errors.New("Tag '" + tag + "' already exists")

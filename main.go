@@ -2,9 +2,9 @@ package main
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"log"
-	"errors"
 	"os"
 
 	"github.com/docopt/docopt.go"
@@ -55,18 +55,18 @@ Examples
 	arguments, err := docopt.Parse(usage, nil, true, "Go repo utils", false)
 
 	logger.Println(arguments)
-  exitWithError(err)
+	exitWithError(err)
 
 	cmd := getCommand(arguments)
 
 	path := getPath(arguments)
 	if path == "" {
 		path, err = os.Getwd()
-    exitWithError(err)
+		exitWithError(err)
 	}
 
 	vcs, err := repoutils.WhichVcs(path)
-  exitWithError(err)
+	exitWithError(err)
 
 	if cmd == "list-tags" {
 		cmdListTags(arguments, vcs, path)
@@ -87,7 +87,7 @@ Examples
 
 func cmdIsClean(arguments map[string]interface{}, vcs string, path string) {
 	isClean, err := repoutils.IsClean(vcs, path)
-  exitWithError(err)
+	exitWithError(err)
 
 	if isJson(arguments) {
 		jsoned, _ := json.Marshal(isClean)
@@ -104,7 +104,7 @@ func cmdIsClean(arguments map[string]interface{}, vcs string, path string) {
 func cmdListTags(arguments map[string]interface{}, vcs string, path string) {
 	tags := make([]string, 0)
 	dirtyTags, err := repoutils.List(vcs, path)
-  exitWithError(err)
+	exitWithError(err)
 
 	if isAny(arguments) == false {
 		tags = repoutils.FilterSemverTags(dirtyTags)
@@ -134,17 +134,17 @@ func cmdCreateTag(arguments map[string]interface{}, vcs string, path string) {
 
 	tag := getTag(arguments)
 	if len(tag) == 0 {
-    exitWithError(errors.New("Missing tag value"))
+		exitWithError(errors.New("Missing tag value"))
 	}
-  message := getMessage(arguments)
-  if len(message)==0 {
-    message = "tag: " + tag
-  }
+	message := getMessage(arguments)
+	if len(message) == 0 {
+		message = "tag: " + tag
+	}
 
 	_, out, err := repoutils.CreateTag(vcs, path, tag, message)
 	if err != nil {
 		log.Println(out)
-    exitWithError(err)
+		exitWithError(err)
 	}
 
 	if isJson(arguments) {
@@ -250,8 +250,8 @@ func isReversed(arguments map[string]interface{}) bool {
 }
 
 func exitWithError(err error) {
-  if err!=nil {
-  	fmt.Println(err)
-  	os.Exit(1)
-  }
+	if err != nil {
+		fmt.Println(err)
+		os.Exit(1)
+	}
 }
