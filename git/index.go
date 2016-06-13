@@ -2,6 +2,7 @@ package git
 
 import (
 	"os/exec"
+	"errors"
 	"strings"
 
 	"github.com/mh-cbon/verbose"
@@ -105,4 +106,54 @@ func CreateTag(path string, tag string, message string) (bool, string, error) {
 	logger.Printf("err=%s", err)
 	logger.Printf("out=%s", string(out))
 	return err == nil, string(out), err
+}
+
+func Add(path string, file string) error {
+
+	bin, err := exec.LookPath("git")
+	if err != nil {
+		logger.Printf("err=%s", err)
+		return err
+	}
+
+	args := []string{"add"}
+  if len(file) > 0 {
+    args = append(args, []string{file}...)
+  }
+	cmd := exec.Command(bin, args...)
+	cmd.Dir = path
+
+	logger.Printf("%s %s (cwd=%s)", bin, args, path)
+
+	out, err := cmd.CombinedOutput()
+	logger.Printf("err=%s", err)
+	logger.Printf("out=%s", string(out))
+	return err
+}
+
+func Commit(path string, message string, files []string) error {
+
+  if len(message) == 0 {
+    return errors.New("Message is required")
+  }
+
+	bin, err := exec.LookPath("git")
+	if err != nil {
+		logger.Printf("err=%s", err)
+		return err
+	}
+
+	args := []string{"commit", "-m", message}
+  if len(files) > 0 {
+    args = append(args, files...)
+  }
+	cmd := exec.Command(bin, args...)
+	cmd.Dir = path
+
+	logger.Printf("%s %s (cwd=%s)", bin, args, path)
+
+	out, err := cmd.CombinedOutput()
+	logger.Printf("err=%s", err)
+	logger.Printf("out=%s", string(out))
+	return err
 }

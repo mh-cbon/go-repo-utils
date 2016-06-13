@@ -181,6 +181,53 @@ func GetRepositoryRoot(path string) (string, error) {
 	return root, nil
 }
 
+func Add(path string, file string) error {
+
+	bin, err := exec.LookPath("svn")
+	if err != nil {
+		logger.Printf("err=%s", err)
+		return err
+	}
+
+	args := []string{"add", file}
+	cmd := exec.Command(bin, args...)
+	cmd.Dir = path
+
+	logger.Printf("%s %s (cwd=%s)", bin, args, path)
+
+	out, err := cmd.CombinedOutput()
+	logger.Printf("err=%s", err)
+	logger.Printf("out=%s", string(out))
+	return err
+}
+
+func Commit(path string, message string, files []string) error {
+
+  if len(message) == 0 {
+    return errors.New("Message is required")
+  }
+
+	bin, err := exec.LookPath("svn")
+	if err != nil {
+		logger.Printf("err=%s", err)
+		return err
+	}
+
+	args := []string{"commit", "-m", message}
+  if len(files) > 0 {
+    args = append(args, files...)
+  }
+	cmd := exec.Command(bin, args...)
+	cmd.Dir = path
+
+	logger.Printf("%s %s (cwd=%s)", bin, args, path)
+
+	out, err := cmd.CombinedOutput()
+	logger.Printf("err=%s", err)
+	logger.Printf("out=%s", string(out))
+	return err
+}
+
 func contains(s []string, e string) bool {
 	for _, a := range s {
 		if a == e {

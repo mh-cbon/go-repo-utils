@@ -15,6 +15,8 @@ type IsIt func(path string) bool
 type ListIt func(path string) ([]string, error)
 type IsItClean func(path string) (bool, error)
 type DoCreateTag func(path string, tag string, message string) (bool, string, error)
+type DoAdd func(path string, file string) error
+type DoCommit func(path string, message string, files []string) error
 
 type isVcsResult struct {
 	name  string
@@ -103,6 +105,34 @@ func CreateTag(vcs string, path string, tag string, message string) (bool, strin
 		return false, "", errors.New("Unknown VCS '" + vcs + "'")
 	}
 	return createTag(path, tag, message)
+}
+
+func Add(vcs string, path string, file string) error {
+	vcsAdd := map[string]DoAdd{
+		"git": git.Add,
+		"bzr": bzr.Add,
+		"hg":  hg.Add,
+		"svn": svn.Add,
+	}
+	doAdd, ok := vcsAdd[vcs]
+	if ok == false {
+		return errors.New("Unknown VCS '" + vcs + "'")
+	}
+	return doAdd(path, file)
+}
+
+func Commit(vcs string, path string, message string, files []string) error {
+	vcsCommit := map[string]DoCommit{
+		"git": git.Commit,
+		"bzr": bzr.Commit,
+		"hg":  hg.Commit,
+		"svn": svn.Commit,
+	}
+	doCommit, ok := vcsCommit[vcs]
+	if ok == false {
+		return errors.New("Unknown VCS '" + vcs + "'")
+	}
+	return doCommit(path, message, files)
 }
 
 func FilterSemverTags(dirtyTags []string) []string {
