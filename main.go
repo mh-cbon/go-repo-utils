@@ -53,7 +53,7 @@ Examples
   go-repo-utils create-tag 1.0.3 -m "tag message"
 `
 
-	arguments, err := docopt.Parse(usage, nil, true, "Go repo utils - " + GenVersionFile.Version(), false)
+	arguments, err := docopt.Parse(usage, nil, true, "Go repo utils - "+GenVersionFile.Version(), false)
 
 	logger.Println(arguments)
 	exitWithError(err)
