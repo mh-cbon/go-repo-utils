@@ -8,10 +8,15 @@ It can speak with `hg` `git` `bzr` `svn`
 
 # Install
 
+You can grab a pre-built binary file in the [releases page](https://github.com/mh-cbon/go-repo-utils/releases)
+
 ```sh
-glide get github.com/mh-cbon/go-repo-utils
-cd $GOPATH/github.com/mh-cbon/go-repo-utils
-go install .
+mkdir -p $GOPATH/github.com/mh-cbon
+cd $GOPATH/github.com/mh-cbon
+git clone https://github.com/mh-cbon/go-repo-utils.git
+cd go-repo-utils
+glide install
+go install
 ```
 
 # Usage

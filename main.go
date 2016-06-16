@@ -8,12 +8,13 @@ import (
 	"os"
 
 	"github.com/docopt/docopt.go"
-	"github.com/mh-cbon/go-repo-utils/GenVersionFile"
 	"github.com/mh-cbon/go-repo-utils/repoutils"
 	"github.com/mh-cbon/verbose"
 )
 
 var logger = verbose.Auto()
+
+var VERSION = "0.0.0"
 
 func main() {
 	usage := `Go repo utils
@@ -53,7 +54,7 @@ Examples
   go-repo-utils create-tag 1.0.3 -m "tag message"
 `
 
-	arguments, err := docopt.Parse(usage, nil, true, "Go repo utils - "+GenVersionFile.Version(), false)
+	arguments, err := docopt.Parse(usage, nil, true, "Go repo utils - "+VERSION, false)
 
 	logger.Println(arguments)
 	exitWithError(err)
