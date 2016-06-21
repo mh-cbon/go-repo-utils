@@ -93,7 +93,7 @@ func CreateTag(path string, tag string, message string) (bool, string, error) {
 		return false, "", nil
 	}
 
-	args := []string{"tag", tag}
+	args := []string{"tag", "-a", tag}
 	if len(message) > 0 {
 		args = append(args, []string{"-m", message}...)
 	}

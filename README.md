@@ -103,6 +103,9 @@ func main() {
 
 # Changelog
 
+- 0.0.6 - Use annotated tags for git (`git tag -a ...`)
+- 0.0.5 - Release scripts
+- 0.0.4 - Minor improvements
 - 0.0.2 - Add '-m' argument to set a tag message
 - 0.0.1 - initial release
 
