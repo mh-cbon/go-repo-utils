@@ -1,3 +1,4 @@
+// Git implementation of go-reop-utils
 package git
 
 import (
@@ -10,6 +11,7 @@ import (
 
 var logger = verbose.Auto()
 
+// Test if given path is managed by git with git status
 func IsIt(path string) bool {
 	bin, err := exec.LookPath("git")
 	if err != nil {
@@ -33,6 +35,7 @@ func IsIt(path string) bool {
 	return cmd.ProcessState != nil && cmd.ProcessState.Success()
 }
 
+// List tags on given path
 func List(path string) ([]string, error) {
 	tags := make([]string, 0)
 	bin, err := exec.LookPath("git")
@@ -62,6 +65,7 @@ func List(path string) ([]string, error) {
 	return tags, nil
 }
 
+// Check uncommited files with git status --porcelain --untracked-files=no
 func IsClean(path string) (bool, error) {
 	bin, err := exec.LookPath("git")
 	if err != nil {
@@ -85,6 +89,7 @@ func IsClean(path string) (bool, error) {
 	return len(string(out)) == 0, nil
 }
 
+// Create given tag on path with the provided message
 func CreateTag(path string, tag string, message string) (bool, string, error) {
 
 	bin, err := exec.LookPath("git")
@@ -108,6 +113,7 @@ func CreateTag(path string, tag string, message string) (bool, string, error) {
 	return err == nil, string(out), err
 }
 
+// Add given file to git on path
 func Add(path string, file string) error {
 
 	bin, err := exec.LookPath("git")
@@ -131,6 +137,7 @@ func Add(path string, file string) error {
 	return err
 }
 
+// Commit given files with message on path
 func Commit(path string, message string, files []string) error {
 
 	if len(message) == 0 {

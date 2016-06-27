@@ -1,3 +1,4 @@
+// Svn implementation of go-repo-utils
 package svn
 
 import (
@@ -10,6 +11,7 @@ import (
 
 var logger = verbose.Auto()
 
+// Test if path is managed by SVN using svn list
 func IsIt(path string) bool {
 	bin, err := exec.LookPath("svn")
 	if err != nil {
@@ -33,6 +35,7 @@ func IsIt(path string) bool {
 	return cmd.ProcessState != nil && cmd.ProcessState.Success()
 }
 
+// List svn tags with svn ls ^/tags of given path
 func List(path string) ([]string, error) {
 	tags := make([]string, 0)
 	bin, err := exec.LookPath("svn")
@@ -62,6 +65,7 @@ func List(path string) ([]string, error) {
 	return tags, nil
 }
 
+// Check uncommited files with svn -q of given path
 func IsClean(path string) (bool, error) {
 	bin, err := exec.LookPath("svn")
 	if err != nil {
@@ -85,6 +89,7 @@ func IsClean(path string) (bool, error) {
 	return len(string(out)) == 0, nil
 }
 
+// Create given tag at root/tags/[tag] on path with the provided message
 func CreateTag(path string, tag string, message string) (bool, string, error) {
 
 	tags, err := List(path)
@@ -126,6 +131,7 @@ func CreateTag(path string, tag string, message string) (bool, string, error) {
 	return err == nil, string(out), err
 }
 
+// Create root/tags directory
 func CreateTagDir(path string) (string, error) {
 	root, err := GetRepositoryRoot(path)
 	if err != nil {
@@ -151,6 +157,7 @@ func CreateTagDir(path string) (string, error) {
 	return string(out), err
 }
 
+// Get svn root path using svn info .
 func GetRepositoryRoot(path string) (string, error) {
 	bin, err := exec.LookPath("svn")
 	if err != nil {
@@ -181,6 +188,7 @@ func GetRepositoryRoot(path string) (string, error) {
 	return root, nil
 }
 
+// Add given file to svn on path
 func Add(path string, file string) error {
 
 	bin, err := exec.LookPath("svn")
@@ -201,6 +209,7 @@ func Add(path string, file string) error {
 	return err
 }
 
+// Commit given files with message on path
 func Commit(path string, message string, files []string) error {
 
 	if len(message) == 0 {

@@ -1,3 +1,4 @@
+// proxy implemntation to a vcs implementation
 package repoutils
 
 import (
@@ -11,6 +12,7 @@ import (
 	"github.com/mh-cbon/go-repo-utils/svn"
 )
 
+// Func type declarations
 type IsIt func(path string) bool
 type ListIt func(path string) ([]string, error)
 type IsItClean func(path string) (bool, error)
@@ -23,6 +25,7 @@ type isVcsResult struct {
 	found bool
 }
 
+// Determine the kind of VCS of given path
 func WhichVcs(path string) (string, error) {
 	vcsTester := map[string]IsIt{
 		"git": git.IsIt,
@@ -65,6 +68,7 @@ func WhichVcs(path string) (string, error) {
 	return vcsFound, nil
 }
 
+// List tags on given path according to given vcs
 func List(vcs string, path string) ([]string, error) {
 	vcsLister := map[string]ListIt{
 		"git": git.List,
@@ -79,6 +83,7 @@ func List(vcs string, path string) ([]string, error) {
 	return lister(path)
 }
 
+// Ensure given path does not contain uncommited files
 func IsClean(vcs string, path string) (bool, error) {
 	vcsIsClean := map[string]IsItClean{
 		"git": git.IsClean,
@@ -93,6 +98,7 @@ func IsClean(vcs string, path string) (bool, error) {
 	return isItClean(path)
 }
 
+// Create tag on given path
 func CreateTag(vcs string, path string, tag string, message string) (bool, string, error) {
 	vcsCreateTag := map[string]DoCreateTag{
 		"git": git.CreateTag,
@@ -107,6 +113,7 @@ func CreateTag(vcs string, path string, tag string, message string) (bool, strin
 	return createTag(path, tag, message)
 }
 
+// Add a file
 func Add(vcs string, path string, file string) error {
 	vcsAdd := map[string]DoAdd{
 		"git": git.Add,
@@ -121,6 +128,7 @@ func Add(vcs string, path string, file string) error {
 	return doAdd(path, file)
 }
 
+// Commit files on path with message
 func Commit(vcs string, path string, message string, files []string) error {
 	vcsCommit := map[string]DoCommit{
 		"git": git.Commit,
@@ -135,6 +143,7 @@ func Commit(vcs string, path string, message string, files []string) error {
 	return doCommit(path, message, files)
 }
 
+// Filter out invalid semver tags
 func FilterSemverTags(dirtyTags []string) []string {
 	tags := make([]string, 0)
 	for _, tag := range dirtyTags {
@@ -146,6 +155,7 @@ func FilterSemverTags(dirtyTags []string) []string {
 	return tags
 }
 
+// Sort given list of semver tags, invalid semver tags are appended to the end
 func SortSemverTags(unsortedTags []string) []string {
 	dirtyTags := make([]string, 0)
 	vs := make([]*semver.Version, 0)
