@@ -4,10 +4,10 @@ package hg
 import (
 	"errors"
 	"os/exec"
-	"strings"
 	"regexp"
+	"strings"
 
-  "github.com/mh-cbon/go-repo-utils/commit"
+	"github.com/mh-cbon/go-repo-utils/commit"
 	"github.com/mh-cbon/verbose"
 )
 
@@ -20,9 +20,9 @@ func getCmd(path string, args []string) (*exec.Cmd, error) {
 		return nil, err
 	}
 	logger.Printf("%s %s (cwd=%s)", bin, args, path)
-  cmd := exec.Command(bin, args...)
-  cmd.Dir = path
-  return cmd, nil
+	cmd := exec.Command(bin, args...)
+	cmd.Dir = path
+	return cmd, nil
 }
 
 // Test if given path is managed by hg with hg status
@@ -50,7 +50,7 @@ func List(path string) ([]string, error) {
 	args := []string{"tags"}
 	cmd, err := getCmd(path, args)
 	if err != nil {
-    return tags, err
+		return tags, err
 	}
 
 	out, err := cmd.CombinedOutput()
@@ -75,7 +75,7 @@ func IsClean(path string) (bool, error) {
 	args := []string{"status", "-q"}
 	cmd, err := getCmd(path, args)
 	if err != nil {
-    return false, nil
+		return false, nil
 	}
 
 	out, err := cmd.CombinedOutput()
@@ -107,7 +107,7 @@ func CreateTag(path string, tag string, message string) (bool, string, error) {
 	}
 	cmd, err := getCmd(path, args)
 	if err != nil {
-    return false, "", err
+		return false, "", err
 	}
 
 	out, err := cmd.CombinedOutput()
@@ -125,7 +125,7 @@ func Add(path string, file string) error {
 	}
 	cmd, err := getCmd(path, args)
 	if err != nil {
-    return err
+		return err
 	}
 
 	out, err := cmd.CombinedOutput()
@@ -147,7 +147,7 @@ func Commit(path string, message string, files []string) error {
 	}
 	cmd, err := getCmd(path, args)
 	if err != nil {
-    return err
+		return err
 	}
 
 	out, err := cmd.CombinedOutput()
@@ -166,74 +166,74 @@ func contains(s []string, e string) bool {
 }
 
 // List commits between two points
-func ListCommitsBetween (path string, since string, to string) ([]commit.Commit, error) {
-  ret := make([]commit.Commit, 0)
+func ListCommitsBetween(path string, since string, to string) ([]commit.Commit, error) {
+	ret := make([]commit.Commit, 0)
 
-  if to=="HEAD" {
-    to = "tip"
-  }
-  if since=="" {
-    since = "0"
-  }
+	if to == "HEAD" {
+		to = "tip"
+	}
+	if since == "" {
+		since = "0"
+	}
 
 	args := []string{"log", "-v"}
-  if len(since)+len(to)>0 {
-    args = append(args, "-r", since+".."+to)
-  }
+	if len(since)+len(to) > 0 {
+		args = append(args, "-r", since+".."+to)
+	}
 	cmd, err := getCmd(path, args)
 	if err != nil {
-    return ret, err
+		return ret, err
 	}
 
 	out, err := cmd.CombinedOutput()
 	logger.Printf("err=%s", err)
 	logger.Printf("out=%s", string(out))
 
-  ret = ParseHgLogs(string(out))
+	ret = ParseHgLogs(string(out))
 
 	return ret, err
 }
 
-func ParseHgLogs (log string) []commit.Commit {
-  ret := make([]commit.Commit, 0)
+func ParseHgLogs(log string) []commit.Commit {
+	ret := make([]commit.Commit, 0)
 
-  commitRe := regexp.MustCompile(`^changeset:\s+[0-9]+:([^\s]+)$`)
-  authorRe := regexp.MustCompile(`^user:\s+([^<]+)\s+<([^>]+)>$`)
-  dateRe := regexp.MustCompile(`^date:\s*(.+)$`)
-  messageRe := regexp.MustCompile(`description:$`)
-  isInMessage := false
-  var c *commit.Commit
-  for _, line := range strings.Split(log, "\n") {
-    line = strings.TrimSpace(line)
-    if commitRe.MatchString(line) {
-      if c!=nil {
-        ret = append(ret, *c)
-      }
-      c = &commit.Commit{}
-      isInMessage = false
-      res := commitRe.FindStringSubmatch(line)
-      c.Revision = res[1]
-    } else if c!=nil && authorRe.MatchString(line) {
-      res := authorRe.FindStringSubmatch(line)
-      c.Author = strings.TrimSpace(res[1])
-      c.Email = res[2]
-    } else if c!=nil && dateRe.MatchString(line) {
-      res := dateRe.FindStringSubmatch(line)
-      c.Date = res[1]
-    } else if c!=nil && messageRe.MatchString(line) {
-      isInMessage = true
-    } else if c!=nil && isInMessage && line != "" {
-        if c.Message=="" {
-          c.Message = line
-        } else {
-          c.Message = c.Message+"\n"+line
-        }
-    }
-  }
-  if c!=nil && c.Revision!="" {
-    ret = append(ret, *c)
-  }
-  return ret
+	commitRe := regexp.MustCompile(`^changeset:\s+[0-9]+:([^\s]+)$`)
+	authorRe := regexp.MustCompile(`^user:\s+([^<]+)\s+<([^>]+)>$`)
+	dateRe := regexp.MustCompile(`^date:\s*(.+)$`)
+	messageRe := regexp.MustCompile(`description:$`)
+	isInMessage := false
+	var c *commit.Commit
+	for _, line := range strings.Split(log, "\n") {
+		line = strings.TrimSpace(line)
+		if commitRe.MatchString(line) {
+			if c != nil {
+				ret = append(ret, *c)
+			}
+			c = &commit.Commit{}
+			isInMessage = false
+			res := commitRe.FindStringSubmatch(line)
+			c.Revision = res[1]
+		} else if c != nil && authorRe.MatchString(line) {
+			res := authorRe.FindStringSubmatch(line)
+			c.Author = strings.TrimSpace(res[1])
+			c.Email = res[2]
+		} else if c != nil && dateRe.MatchString(line) {
+			res := dateRe.FindStringSubmatch(line)
+			c.Date = res[1]
+		} else if c != nil && messageRe.MatchString(line) {
+			isInMessage = true
+		} else if c != nil && isInMessage && line != "" {
+			if c.Message == "" {
+				c.Message = line
+			} else {
+				c.Message = c.Message + "\n" + line
+			}
+		}
+	}
+	if c != nil && c.Revision != "" {
+		ret = append(ret, *c)
+	}
+	return ret
 }
 
 // Get revision of a tag
@@ -243,7 +243,7 @@ func GetRevisionTag(path string, tag string) (string, error) {
 	args := []string{"tags"}
 	cmd, err := getCmd(path, args)
 	if err != nil {
-    return tag, err
+		return tag, err
 	}
 
 	out, err := cmd.CombinedOutput()
@@ -252,16 +252,16 @@ func GetRevisionTag(path string, tag string) (string, error) {
 		return tag, err
 	}
 
-  revRe := regexp.MustCompile(`^[0-9]+[:;](.+)$`)
+	revRe := regexp.MustCompile(`^[0-9]+[:;](.+)$`)
 	logger.Printf("out=%s", string(out))
 	for _, v := range strings.Split(string(out), "\n") {
 		k := strings.Split(v, " ")
 		if len(k) > 0 && k[0] == tag {
-      if revRe.MatchString(k[1]) {
-        res := revRe.FindStringSubmatch(k[1])
-        rev = res[1]
-        break
-      }
+			if revRe.MatchString(k[1]) {
+				res := revRe.FindStringSubmatch(k[1])
+				rev = res[1]
+				break
+			}
 		}
 	}
 	return rev, nil

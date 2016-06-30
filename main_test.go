@@ -1,10 +1,10 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"os/exec"
 	"testing"
-	"encoding/json"
 
 	"github.com/mh-cbon/go-repo-utils/commit"
 )
@@ -304,109 +304,109 @@ func DoListCommits(path string, t *testing.T) {
 	args := []string{"list-commits", "--since", "notsemvertag"}
 	out := ExecSuccessCommand(t, cmd, path, args)
 
-  fmt.Println(string(out))
+	fmt.Println(string(out))
 
-  var commits []commit.Commit
-  err := json.Unmarshal([]byte(out), &commits)
-  if err != nil {
-    t.Errorf("Expected err=nil, got err=%q\n", err)
-  }
+	var commits []commit.Commit
+	err := json.Unmarshal([]byte(out), &commits)
+	if err != nil {
+		t.Errorf("Expected err=nil, got err=%q\n", err)
+	}
 
-	if len(commits)==0 {
+	if len(commits) == 0 {
 		t.Errorf("Expected to have commits")
 	}
 
-  found := false
-  message := "tomate 1.0.2"
-  for _, c := range commits {
-    if c.Message==message {
-      found = true
-    }
-  }
+	found := false
+	message := "tomate 1.0.2"
+	for _, c := range commits {
+		if c.Message == message {
+			found = true
+		}
+	}
 
-  if found==false {
-    t.Errorf("Expected commits to contain an entry with message=%q, but it was not found\n", message)
-  }
+	if found == false {
+		t.Errorf("Expected commits to contain an entry with message=%q, but it was not found\n", message)
+	}
 }
 func DoListCommitsBetween(path string, t *testing.T) {
 	cmd := "/vagrant/build/go-repo-utils"
 	args := []string{"list-commits", "--since", "v1.0.2", "--until", "v1.0.0"}
 	out := ExecSuccessCommand(t, cmd, path, args)
 
-  fmt.Println(string(out))
+	fmt.Println(string(out))
 
-  var commits []commit.Commit
-  err := json.Unmarshal([]byte(out), &commits)
-  if err != nil {
-    t.Errorf("Expected err=nil, got err=%q\n", err)
-  }
+	var commits []commit.Commit
+	err := json.Unmarshal([]byte(out), &commits)
+	if err != nil {
+		t.Errorf("Expected err=nil, got err=%q\n", err)
+	}
 
-	if len(commits)==0 {
+	if len(commits) == 0 {
 		t.Errorf("Expected to have commits")
 	}
 
-  found := false
-  message := "tomate 1.0.0"
-  for _, c := range commits {
-    if c.Message==message {
-      found = true
-    }
-  }
+	found := false
+	message := "tomate 1.0.0"
+	for _, c := range commits {
+		if c.Message == message {
+			found = true
+		}
+	}
 
-  if found==false {
-    t.Errorf("Expected commits to contain an entry with message=%q, but it was not found\n", message)
-  }
+	if found == false {
+		t.Errorf("Expected commits to contain an entry with message=%q, but it was not found\n", message)
+	}
 }
 func DoListCommitsSinceBeginning(path string, t *testing.T) {
 	cmd := "/vagrant/build/go-repo-utils"
 	args := []string{"list-commits", "--until", "v1.0.0"}
 	out := ExecSuccessCommand(t, cmd, path, args)
 
-  var commits []commit.Commit
-  err := json.Unmarshal([]byte(out), &commits)
-  if err != nil {
-    t.Errorf("Expected err=nil, got err=%q\n", err)
-    fmt.Println(string(out))
-  }
+	var commits []commit.Commit
+	err := json.Unmarshal([]byte(out), &commits)
+	if err != nil {
+		t.Errorf("Expected err=nil, got err=%q\n", err)
+		fmt.Println(string(out))
+	}
 
-	if len(commits)==0 {
+	if len(commits) == 0 {
 		t.Errorf("Expected to have commits")
 	}
 
-  found := false
-  message := "tomate notsemvertag"
-  for _, c := range commits {
-    if c.Message==message {
-      found = true
-    }
-  }
+	found := false
+	message := "tomate notsemvertag"
+	for _, c := range commits {
+		if c.Message == message {
+			found = true
+		}
+	}
 
-  if found==false {
-    t.Errorf("Expected commits to contain an entry with message=%q, but it was not found\n", message)
-  }
+	if found == false {
+		t.Errorf("Expected commits to contain an entry with message=%q, but it was not found\n", message)
+	}
 }
 func DoSortCommitsDesc(path string, t *testing.T) {
 	cmd := "/vagrant/build/go-repo-utils"
 	args := []string{"list-commits"}
 	out := ExecSuccessCommand(t, cmd, path, args)
 
-  var commits commit.Commits
-  err := json.Unmarshal([]byte(out), &commits)
-  if err != nil {
-    t.Errorf("Expected err=nil, got err=%q\n", err)
-    fmt.Println(string(out))
-  }
-	if len(commits)==0 {
+	var commits commit.Commits
+	err := json.Unmarshal([]byte(out), &commits)
+	if err != nil {
+		t.Errorf("Expected err=nil, got err=%q\n", err)
+		fmt.Println(string(out))
+	}
+	if len(commits) == 0 {
 		t.Errorf("Expected to have commits")
 	}
 
-  commits.OrderByDate("DESC")
+	commits.OrderByDate("DESC")
 
-  first := commits[0].GetDate()
-  last := commits[len(commits)-1].GetDate()
+	first := commits[0].GetDate()
+	last := commits[len(commits)-1].GetDate()
 
-  if first.After(*last)==false {
-    t.Errorf("Expected commits to be ordered DESC, they are not\n")
-  }
+	if first.After(*last) == false {
+		t.Errorf("Expected commits to be ordered DESC, they are not\n")
+	}
 
 }

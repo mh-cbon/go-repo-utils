@@ -4,15 +4,14 @@ package git
 import (
 	"errors"
 	"os/exec"
-	"strings"
 	"regexp"
+	"strings"
 
-	"github.com/mh-cbon/verbose"
 	"github.com/mh-cbon/go-repo-utils/commit"
+	"github.com/mh-cbon/verbose"
 )
 
 var logger = verbose.Auto()
-
 
 func getCmd(path string, args []string) (*exec.Cmd, error) {
 	bin, err := exec.LookPath("git")
@@ -21,9 +20,9 @@ func getCmd(path string, args []string) (*exec.Cmd, error) {
 		return nil, err
 	}
 	logger.Printf("%s %s (cwd=%s)", bin, args, path)
-  cmd := exec.Command(bin, args...)
-  cmd.Dir = path
-  return cmd, nil
+	cmd := exec.Command(bin, args...)
+	cmd.Dir = path
+	return cmd, nil
 }
 
 // Test if given path is managed by git with git info
@@ -51,7 +50,7 @@ func List(path string) ([]string, error) {
 	args := []string{"tag"}
 	cmd, err := getCmd(path, args)
 	if err != nil {
-    return tags, err
+		return tags, err
 	}
 
 	out, err := cmd.CombinedOutput()
@@ -75,7 +74,7 @@ func IsClean(path string) (bool, error) {
 	args := []string{"status", "--porcelain", "--untracked-files=no"}
 	cmd, err := getCmd(path, args)
 	if err != nil {
-    return false, err
+		return false, err
 	}
 
 	out, err := cmd.CombinedOutput()
@@ -97,7 +96,7 @@ func CreateTag(path string, tag string, message string) (bool, string, error) {
 	}
 	cmd, err := getCmd(path, args)
 	if err != nil {
-    return false, "", err
+		return false, "", err
 	}
 
 	out, err := cmd.CombinedOutput()
@@ -115,7 +114,7 @@ func Add(path string, file string) error {
 	}
 	cmd, err := getCmd(path, args)
 	if err != nil {
-    return err
+		return err
 	}
 
 	out, err := cmd.CombinedOutput()
@@ -137,7 +136,7 @@ func Commit(path string, message string, files []string) error {
 	}
 	cmd, err := getCmd(path, args)
 	if err != nil {
-    return err
+		return err
 	}
 
 	out, err := cmd.CombinedOutput()
@@ -148,97 +147,97 @@ func Commit(path string, message string, files []string) error {
 
 // List commits between two points
 func ListCommitsBetween(path string, since string, to string) ([]commit.Commit, error) {
-  ret := make([]commit.Commit, 0)
+	ret := make([]commit.Commit, 0)
 
 	args := []string{"log"}
-  if len(since)+len(to)>0 {
-    revset := ""
-    if since!="" {
-      revset += since+".."
-    }
-    revset += to
-    args = append(args, revset)
-  }
+	if len(since)+len(to) > 0 {
+		revset := ""
+		if since != "" {
+			revset += since + ".."
+		}
+		revset += to
+		args = append(args, revset)
+	}
 	cmd, err := getCmd(path, args)
 	if err != nil {
-  	return ret, err
+		return ret, err
 	}
 
 	out, err := cmd.CombinedOutput()
 	logger.Printf("err=%s", err)
 	logger.Printf("out=%s", string(out))
 
-  ret = ParseGitLog(string(out))
+	ret = ParseGitLog(string(out))
 
 	return ret, err
 }
 
-func ParseGitLog (logs string) []commit.Commit {
-  ret := make([]commit.Commit, 0)
+func ParseGitLog(logs string) []commit.Commit {
+	ret := make([]commit.Commit, 0)
 
-  commitRe := regexp.MustCompile(`^commit\s+(.+)$`)
-  authorRe := regexp.MustCompile(`^Author:\s+([^<]+)\s+<([^>]+)>$`)
-  dateRe := regexp.MustCompile(`^Date:\s*(.+)$`)
-  messageRe := regexp.MustCompile(`^\s+(.+)$`)
-  var c *commit.Commit
-  for _, line := range strings.Split(logs, "\n") {
-    if commitRe.MatchString(line) {
-      if c!=nil {
-        ret = append(ret, *c)
-      }
-      c = &commit.Commit{}
-      res := commitRe.FindStringSubmatch(line)
-      c.Revision = res[1]
-    } else if c!=nil && authorRe.MatchString(line) {
-      res := authorRe.FindStringSubmatch(line)
-      c.Author = strings.TrimSpace(res[1])
-      c.Email = res[2]
-    } else if c!=nil && dateRe.MatchString(line) {
-      res := dateRe.FindStringSubmatch(line)
-      c.Date = res[1]
-    } else if c!=nil && messageRe.MatchString(line) {
-      res := messageRe.FindStringSubmatch(line)
-      if c.Message=="" {
-        c.Message = strings.TrimSpace(res[1])
-      } else {
-        c.Message = c.Message+"\n"+strings.TrimSpace(res[1])
-      }
-    }
-  }
-  if c!=nil && c.Revision!="" {
-    ret = append(ret, *c)
-  }
-  return ret
+	commitRe := regexp.MustCompile(`^commit\s+(.+)$`)
+	authorRe := regexp.MustCompile(`^Author:\s+([^<]+)\s+<([^>]+)>$`)
+	dateRe := regexp.MustCompile(`^Date:\s*(.+)$`)
+	messageRe := regexp.MustCompile(`^\s+(.+)$`)
+	var c *commit.Commit
+	for _, line := range strings.Split(logs, "\n") {
+		if commitRe.MatchString(line) {
+			if c != nil {
+				ret = append(ret, *c)
+			}
+			c = &commit.Commit{}
+			res := commitRe.FindStringSubmatch(line)
+			c.Revision = res[1]
+		} else if c != nil && authorRe.MatchString(line) {
+			res := authorRe.FindStringSubmatch(line)
+			c.Author = strings.TrimSpace(res[1])
+			c.Email = res[2]
+		} else if c != nil && dateRe.MatchString(line) {
+			res := dateRe.FindStringSubmatch(line)
+			c.Date = res[1]
+		} else if c != nil && messageRe.MatchString(line) {
+			res := messageRe.FindStringSubmatch(line)
+			if c.Message == "" {
+				c.Message = strings.TrimSpace(res[1])
+			} else {
+				c.Message = c.Message + "\n" + strings.TrimSpace(res[1])
+			}
+		}
+	}
+	if c != nil && c.Revision != "" {
+		ret = append(ret, *c)
+	}
+	return ret
 }
 
-func GetRevisionTag (path string, tag string) (string, error) {
-  ret := ""
+func GetRevisionTag(path string, tag string) (string, error) {
+	ret := ""
 
-  args := []string{"log", "-n", "1", tag}
+	args := []string{"log", "-n", "1", tag}
 	cmd, err := getCmd(path, args)
 	if err != nil {
-  	return ret, err
+		return ret, err
 	}
 
-  out, err := cmd.CombinedOutput()
-  logger.Printf("err=%s", err)
-  logger.Printf("out=%s", string(out))
+	out, err := cmd.CombinedOutput()
+	logger.Printf("err=%s", err)
+	logger.Printf("out=%s", string(out))
 
-  return strings.TrimSpace(string(out)), err
+	return strings.TrimSpace(string(out)), err
 }
 
-func GetFirstRevision (path string) (string, error) {
-  ret := ""
+func GetFirstRevision(path string) (string, error) {
+	ret := ""
 
-  args := []string{"rev-list", "--max-parents=0", "HEAD"}
+	args := []string{"rev-list", "--max-parents=0", "HEAD"}
 	cmd, err := getCmd(path, args)
 	if err != nil {
-  	return ret, err
+		return ret, err
 	}
 
-  out, err := cmd.CombinedOutput()
-  logger.Printf("err=%s", err)
-  logger.Printf("out=%s", string(out))
+	out, err := cmd.CombinedOutput()
+	logger.Printf("err=%s", err)
+	logger.Printf("out=%s", string(out))
 
-  return strings.TrimSpace(string(out)), err
+	return strings.TrimSpace(string(out)), err
 }

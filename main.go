@@ -8,8 +8,8 @@ import (
 	"os"
 
 	"github.com/docopt/docopt.go"
-	"github.com/mh-cbon/go-repo-utils/repoutils"
 	"github.com/mh-cbon/go-repo-utils/commit"
+	"github.com/mh-cbon/go-repo-utils/repoutils"
 	"github.com/mh-cbon/verbose"
 )
 
@@ -145,31 +145,31 @@ func cmdListTags(arguments map[string]interface{}, vcs string, path string) {
 
 func cmdListCommits(arguments map[string]interface{}, vcs string, path string) {
 
-  since := getSince(arguments)
-  until := getUntil(arguments)
-  reversed := isReversed(arguments)
-  orderbydate := isOrderByDate(arguments)
+	since := getSince(arguments)
+	until := getUntil(arguments)
+	reversed := isReversed(arguments)
+	orderbydate := isOrderByDate(arguments)
 
-  if len(until)==0 {
-    until = "HEAD"
-  }
+	if len(until) == 0 {
+		until = "HEAD"
+	}
 
 	commits, err := repoutils.ListCommitsBetween(vcs, path, since, until)
 	exitWithError(err)
 
-  if orderbydate {
-    if reversed {
-      commit.Commits(commits).OrderByDate("DESC")
-    } else {
-      commit.Commits(commits).OrderByDate("ASC")
-    }
-  } else if reversed {
-    commit.Commits(commits).Reverse()
-  }
+	if orderbydate {
+		if reversed {
+			commit.Commits(commits).OrderByDate("DESC")
+		} else {
+			commit.Commits(commits).OrderByDate("ASC")
+		}
+	} else if reversed {
+		commit.Commits(commits).Reverse()
+	}
 
-  jsoned, err := json.MarshalIndent(commits, "", "  ")
+	jsoned, err := json.MarshalIndent(commits, "", "  ")
 	exitWithError(err)
-  fmt.Print(string(jsoned))
+	fmt.Print(string(jsoned))
 }
 
 func cmdCreateTag(arguments map[string]interface{}, vcs string, path string) {
@@ -249,7 +249,7 @@ func getTag(arguments map[string]interface{}) string {
 	tag := ""
 	if t, ok := arguments["<tag>"].(string); ok {
 		tag = t
-	}else if t, ok := arguments["--tag"].(string); ok {
+	} else if t, ok := arguments["--tag"].(string); ok {
 		tag = t
 	}
 	return tag

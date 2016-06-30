@@ -6,8 +6,8 @@ import (
 	"sort"
 
 	"github.com/Masterminds/semver"
-	"github.com/mh-cbon/go-repo-utils/commit"
 	"github.com/mh-cbon/go-repo-utils/bzr"
+	"github.com/mh-cbon/go-repo-utils/commit"
 	"github.com/mh-cbon/go-repo-utils/git"
 	"github.com/mh-cbon/go-repo-utils/hg"
 	"github.com/mh-cbon/go-repo-utils/svn"
@@ -188,7 +188,7 @@ func ReverseTags(tags []string) []string {
 
 // List commits since given tag
 func ListCommitsBetween(vcs string, path string, since string, to string) ([]commit.Commit, error) {
-  ret := make([]commit.Commit, 0)
+	ret := make([]commit.Commit, 0)
 	listCommits := map[string]DoListCommitsBetween{
 		"git": git.ListCommitsBetween,
 		"bzr": bzr.ListCommitsBetween,
