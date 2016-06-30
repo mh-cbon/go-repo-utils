@@ -1,3 +1,8 @@
+
+echo ""
+echo "################"
+echo "git"
+
 rm -fr ~/git
 
 mkdir ~/git
@@ -7,11 +12,18 @@ cd ~/git
 git init
 git config user.email "john@doe.com"
 git config user.name "John Doe"
-touch tomate
+touch tomate-notsemvertag
 git add -A
-git commit -m "re v1"
+git commit -m "tomate notsemvertag"
 git tag "notsemvertag"
+touch tomate-1.0.2
+git add -A
+git commit -m "tomate 1.0.2"
 git tag "v1.0.2"
+sleep 1 # need to ensure that at least one commit is not done within same second to test ordering
+touch tomate-1.0.0
+git add -A
+git commit -m "tomate 1.0.0"
 git tag "v1.0.0"
 
 git tag

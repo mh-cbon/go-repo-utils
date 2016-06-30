@@ -4,6 +4,9 @@ import (
 	"fmt"
 	"os/exec"
 	"testing"
+	"encoding/json"
+
+	"github.com/mh-cbon/go-repo-utils/commit"
 )
 
 func TestGit(t *testing.T) {
@@ -20,6 +23,10 @@ func TestGit(t *testing.T) {
 	DoFailCreateTag("/home/vagrant/git", t)
 	DoFailCreateTagMissTagName("/home/vagrant/git", t)
 	DoListTags("/home/vagrant/git", t)
+	DoListCommits("/home/vagrant/git", t)
+	DoListCommitsBetween("/home/vagrant/git", t)
+	DoListCommitsSinceBeginning("/home/vagrant/git", t)
+	DoSortCommitsDesc("/home/vagrant/git", t)
 }
 
 func TestHg(t *testing.T) {
@@ -36,6 +43,10 @@ func TestHg(t *testing.T) {
 	DoFailCreateTag("/home/vagrant/hg", t)
 	DoFailCreateTagMissTagName("/home/vagrant/hg", t)
 	DoListTags("/home/vagrant/hg", t)
+	DoListCommits("/home/vagrant/hg", t)
+	DoListCommitsBetween("/home/vagrant/hg", t)
+	DoListCommitsSinceBeginning("/home/vagrant/hg", t)
+	DoSortCommitsDesc("/home/vagrant/hg", t)
 }
 
 func TestSvn(t *testing.T) {
@@ -52,6 +63,10 @@ func TestSvn(t *testing.T) {
 	DoFailCreateTag("/home/vagrant/svn_work", t)
 	DoFailCreateTagMissTagName("/home/vagrant/svn_work", t)
 	DoListTags("/home/vagrant/svn_work", t)
+	DoListCommits("/home/vagrant/svn_work", t)
+	DoListCommitsBetween("/home/vagrant/svn_work", t)
+	DoListCommitsSinceBeginning("/home/vagrant/svn_work", t)
+	DoSortCommitsDesc("/home/vagrant/svn_work", t)
 }
 
 func TestBzr(t *testing.T) {
@@ -68,6 +83,10 @@ func TestBzr(t *testing.T) {
 	DoFailCreateTag("/home/vagrant/bzr", t)
 	DoFailCreateTagMissTagName("/home/vagrant/bzr", t)
 	DoListTags("/home/vagrant/bzr", t)
+	DoListCommits("/home/vagrant/bzr", t)
+	DoListCommitsBetween("/home/vagrant/bzr", t)
+	DoListCommitsSinceBeginning("/home/vagrant/bzr", t)
+	DoSortCommitsDesc("/home/vagrant/bzr", t)
 }
 
 func TestPathArgs(t *testing.T) {
@@ -279,4 +298,115 @@ func DoTestFolderIsCleanEvenWithUntrackedFiles(path string, t *testing.T) {
 	if out != expectedOut {
 		t.Errorf("Expected out=%q, got out=%q\n", expectedOut, out)
 	}
+}
+func DoListCommits(path string, t *testing.T) {
+	cmd := "/vagrant/build/go-repo-utils"
+	args := []string{"list-commits", "--since", "notsemvertag"}
+	out := ExecSuccessCommand(t, cmd, path, args)
+
+  fmt.Println(string(out))
+
+  var commits []commit.Commit
+  err := json.Unmarshal([]byte(out), &commits)
+  if err != nil {
+    t.Errorf("Expected err=nil, got err=%q\n", err)
+  }
+
+	if len(commits)==0 {
+		t.Errorf("Expected to have commits")
+	}
+
+  found := false
+  message := "tomate 1.0.2"
+  for _, c := range commits {
+    if c.Message==message {
+      found = true
+    }
+  }
+
+  if found==false {
+    t.Errorf("Expected commits to contain an entry with message=%q, but it was not found\n", message)
+  }
+}
+func DoListCommitsBetween(path string, t *testing.T) {
+	cmd := "/vagrant/build/go-repo-utils"
+	args := []string{"list-commits", "--since", "v1.0.2", "--until", "v1.0.0"}
+	out := ExecSuccessCommand(t, cmd, path, args)
+
+  fmt.Println(string(out))
+
+  var commits []commit.Commit
+  err := json.Unmarshal([]byte(out), &commits)
+  if err != nil {
+    t.Errorf("Expected err=nil, got err=%q\n", err)
+  }
+
+	if len(commits)==0 {
+		t.Errorf("Expected to have commits")
+	}
+
+  found := false
+  message := "tomate 1.0.0"
+  for _, c := range commits {
+    if c.Message==message {
+      found = true
+    }
+  }
+
+  if found==false {
+    t.Errorf("Expected commits to contain an entry with message=%q, but it was not found\n", message)
+  }
+}
+func DoListCommitsSinceBeginning(path string, t *testing.T) {
+	cmd := "/vagrant/build/go-repo-utils"
+	args := []string{"list-commits", "--until", "v1.0.0"}
+	out := ExecSuccessCommand(t, cmd, path, args)
+
+  var commits []commit.Commit
+  err := json.Unmarshal([]byte(out), &commits)
+  if err != nil {
+    t.Errorf("Expected err=nil, got err=%q\n", err)
+    fmt.Println(string(out))
+  }
+
+	if len(commits)==0 {
+		t.Errorf("Expected to have commits")
+	}
+
+  found := false
+  message := "tomate notsemvertag"
+  for _, c := range commits {
+    if c.Message==message {
+      found = true
+    }
+  }
+
+  if found==false {
+    t.Errorf("Expected commits to contain an entry with message=%q, but it was not found\n", message)
+  }
+}
+func DoSortCommitsDesc(path string, t *testing.T) {
+	cmd := "/vagrant/build/go-repo-utils"
+	args := []string{"list-commits"}
+	out := ExecSuccessCommand(t, cmd, path, args)
+
+  var commits commit.Commits
+  err := json.Unmarshal([]byte(out), &commits)
+  if err != nil {
+    t.Errorf("Expected err=nil, got err=%q\n", err)
+    fmt.Println(string(out))
+  }
+	if len(commits)==0 {
+		t.Errorf("Expected to have commits")
+	}
+
+  commits.OrderByDate("DESC")
+
+  first := commits[0].GetDate()
+  last := commits[len(commits)-1].GetDate()
+
+  if first.After(*last)==false {
+    t.Errorf("Expected commits to be ordered DESC, they are not\n")
+  }
+
 }

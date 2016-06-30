@@ -6,6 +6,7 @@ import (
 	"sort"
 
 	"github.com/Masterminds/semver"
+	"github.com/mh-cbon/go-repo-utils/commit"
 	"github.com/mh-cbon/go-repo-utils/bzr"
 	"github.com/mh-cbon/go-repo-utils/git"
 	"github.com/mh-cbon/go-repo-utils/hg"
@@ -19,6 +20,7 @@ type IsItClean func(path string) (bool, error)
 type DoCreateTag func(path string, tag string, message string) (bool, string, error)
 type DoAdd func(path string, file string) error
 type DoCommit func(path string, message string, files []string) error
+type DoListCommitsBetween func(path string, since string, to string) ([]commit.Commit, error)
 
 type isVcsResult struct {
 	name  string
@@ -176,9 +178,26 @@ func SortSemverTags(unsortedTags []string) []string {
 	return sortedTags
 }
 
+// Reverse given list of tags
 func ReverseTags(tags []string) []string {
 	for i, j := 0, len(tags)-1; i < j; i, j = i+1, j-1 {
 		tags[i], tags[j] = tags[j], tags[i]
 	}
 	return tags
+}
+
+// List commits since given tag
+func ListCommitsBetween(vcs string, path string, since string, to string) ([]commit.Commit, error) {
+  ret := make([]commit.Commit, 0)
+	listCommits := map[string]DoListCommitsBetween{
+		"git": git.ListCommitsBetween,
+		"bzr": bzr.ListCommitsBetween,
+		"hg":  hg.ListCommitsBetween,
+		"svn": svn.ListCommitsBetween,
+	}
+	doListCommits, ok := listCommits[vcs]
+	if ok == false {
+		return ret, errors.New("Unknown VCS '" + vcs + "'")
+	}
+	return doListCommits(path, since, to)
 }

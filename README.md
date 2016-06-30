@@ -27,6 +27,7 @@ Go repo utils
 Usage:
   go-repo-utils list-tags [-j|--json] [-a|--any] [-r|--reverse] [--path=<path>|-p <path>]
   go-repo-utils is-clean [-j|--json] [--path=<path>|-p=<path>]
+  go-repo-utils list-commits [--path=<path>|-p <path>] [--since=<tag>|-s <tag>] [--until=<tag>|-u <tag>] [-r|--reverse] [--orderbydate]
   go-repo-utils create-tag <tag> [-j|--json] [--path=<path>|-p <path>] [-m <message>]
   go-repo-utils -h | --help
   go-repo-utils -v | --version
@@ -35,15 +36,22 @@ Options:
   -h --help             Show this screen.
   -v --version          Show version.
   -p <c> --path=<c>     Path to lookup [default: cwd].
+  -s <c> --since=<c>    Since tag, revision, expression.
+  -u <c> --until=<c>    To tag, revision, expression.
   -j --json             Print JSON encoded data.
   -a --any              List all tags.
   -r --reverse          Reverse tags ordering.
   -m                    Message for the tag.
+  --orderbydate         Order commits by date.
 
 Notes:
-  list-tags   List only valid semver tags unless -a|--any options is provided.
-  is-clean    Ignores untracked files.
-  create-tag  With svn, it always create a new tag folder at /tags/<tag>.
+  list-tags     List only valid semver tags unless -a|--any options is provided.
+  is-clean      Ignores untracked files.
+  create-tag    With svn, it always create a new tag folder at /tags/<tag>.
+  list-commits  Can receive an expression (hg, bzr), if it does not match a tag name.
+                Expression may be automatically adjusted at runtime if it is empty (svn,hg,bzr),
+                or matching a tag name.
+                HEAD will be normalized given the target vcs (svn,hg,bzr).
 
   Examples
   # list tags
@@ -103,6 +111,9 @@ func main() {
 
 # Changelog
 
+- 0.0.7 - Add list-commits command,
+fixed bugs in vcs detection when the tree contained uncommitted files,
+code refactoring and updated tests
 - 0.0.6 - Use annotated tags for git (`git tag -a ...`)
 - 0.0.5 - Release scripts
 - 0.0.4 - Minor improvements
@@ -117,4 +128,4 @@ To run the tests, `sh vagrant/test.sh`, which will do all necessary stuff to run
 
 - https://github.com/Masterminds/vcs
 
-A way more complete api, with a different approach.
+A way more complete and better api, with a different approach.
