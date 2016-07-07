@@ -21,7 +21,7 @@ func (c Commit) GetDate() *time.Time {
 	if err == nil {
 		return &d
 	}
-	d, err := time.Parse("Mon 2006-1-2 15:04:05 -0700", c.Date)
+	d, err = time.Parse("Mon 2006-1-2 15:04:05 -0700", c.Date)
 	if err == nil {
 		return &d
 	}
