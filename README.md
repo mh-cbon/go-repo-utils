@@ -39,9 +39,10 @@ Go repo utils
 
 Usage:
   go-repo-utils list-tags [-j|--json] [-a|--any] [-r|--reverse] [--path=<path>|-p <path>]
-  go-repo-utils is-clean [-j|--json] [--path=<path>|-p=<path>]
   go-repo-utils list-commits [--path=<path>|-p <path>] [--since=<tag>|-s <tag>] [--until=<tag>|-u <tag>] [-r|--reverse] [--orderbydate]
+  go-repo-utils is-clean [-j|--json] [--path=<path>|-p=<path>]
   go-repo-utils create-tag <tag> [-j|--json] [--path=<path>|-p <path>] [-m <message>]
+  go-repo-utils first-rev [-j|--json] [--path=<path>|-p <path>]
   go-repo-utils -h | --help
   go-repo-utils -v | --version
 
@@ -66,7 +67,7 @@ Notes:
                 or matching a tag name.
                 HEAD will be normalized given the target vcs (svn,hg,bzr).
 
-  Examples
+Examples
   # list tags
   go-repo-utils list-tags
 
