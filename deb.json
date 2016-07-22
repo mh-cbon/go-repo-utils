@@ -1,5 +1,5 @@
 {
-  "name": "!name!",
+  "name": "go-repo-utils",
   "maintainer": "mh-cbon <mh-cbon@users.noreply.github.com>",
   "description": "Go tool to speak with repositories",
   "changelog-cmd": "changelog debian --vars='{\"name\":\"!name!\"}'",

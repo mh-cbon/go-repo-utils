@@ -1,5 +1,5 @@
 {
-  "name": "!name!",
+  "name": "go-repo-utils",
   "summary": "Go tool to speak with repositories",
   "description": "Go tool to speak with repositories",
   "changelog-cmd": "changelog rpm",
