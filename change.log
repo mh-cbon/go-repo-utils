@@ -1,5 +1,5 @@
 
-UNRELEASED
+0.0.11
 
   * add first-rev command
   * packaging: add rpm/deb/msi packaging
@@ -114,3 +114,5 @@ UNRELEASED
   - mh-cbon <mh-cbon@users.noreply.github.com>
 
 -- mh-cbon <mh-cbon@users.noreply.github.com>; Sun, 12 Jun 2016 16:51:53 +0200
+
+
