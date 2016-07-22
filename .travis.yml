@@ -1,0 +1,47 @@
+sudo: required
+
+services:
+  - docker
+
+language: go
+
+go:
+  - tip
+
+before_install:
+  - sudo apt-get -qq update
+  - sudo apt-get install build-essential lintian -y
+  - mkdir -p ${GOPATH}/bin
+  - cd ~
+  - curl https://glide.sh/get | sh
+  - curl -L https://raw.githubusercontent.com/mh-cbon/latest/master/install.sh | GH=mh-cbon/changelog sh -xe
+  - curl -L https://raw.githubusercontent.com/mh-cbon/latest/master/install.sh | GH=mh-cbon/go-bin-deb sh -xe
+
+install:
+  - cd $GOPATH/src/github.com/mh-cbon/go-repo-utils
+  - glide install
+  - go install
+
+script: echo "pass"
+
+before_deploy:
+  - mkdir -p build/{386,amd64}
+  - GOOS=linux GOARCH=386 go build --ldflags "-X main.VERSION=${TRAVIS_TAG}" -o build/386/go-repo-utils main.go
+  - GOOS=linux GOARCH=amd64 go build --ldflags "-X main.VERSION=${TRAVIS_TAG}" -o build/amd64/go-repo-utils main.go
+  - go-bin-deb generate -a 386 --version ${TRAVIS_TAG} -w pkg-build-386/ -o ${TRAVIS_BUILD_DIR}/go-repo-utils-386.deb
+  - go-bin-deb generate -a amd64 --version ${TRAVIS_TAG} -w pkg-build-amd64/ -o ${TRAVIS_BUILD_DIR}/go-repo-utils-amd64.deb
+  - docker run -v $PWD:/docker fedora /bin/sh -c "cd /docker && sh ./docker.sh ${TRAVIS_TAG} go-repo-utils"
+  - sudo chown travis:travis go-repo-utils-{386,amd64}.rpm
+
+deploy:
+  provider: releases
+  api_key:
+    secure: GrLbyAeItg3wPWYGERoO/p7AQOGi3Hz3I9eJz4pibwAMTaOD0eDOUqs577pTa/RUHtEFSbaZY7qLZRe2O0/WwfvSbgmbZTIu61BEK+Y1bCL6ynG/S/XQiMauizE/PA/mKKOPP5hIjbRv1EsscNOulSVXFdWbcRXRfqsWucBpBn4zyDecoQPjcCpCwsNsbEJnYOAntBkeMtdR02xKg6thDldrXiYORczObL5T/oNC8r3wRTTR2p8t2NrwAZeM4+0T7RYVSDbintJhX3DbD0UycarSFABgxMNNdfc1jVlxgZ1oZw3Qs9zjy49o+s3xzLCF0bLDazafCDSVlFgYRfooCCbtnCyWjzQWxI+kTJ6k4QU8pU4FqwcSmFNPk3MlIvLT0uQHPFOiReveMlh0syGtEBQ2hRQQE5TZzGC8rYfA1rNfwtVO3B+EQaV0OBjCK31tXld0HTLJy95/f8kl1ffj3hFrHVslxrXjQ9FYpYQY3kcZwF2Zc2dIs3cjwgnUu6hpQBPb/+JYhKx/qV4FdFRagDCQPylc3u8cVqo95NxOY4d2BTzGI4Sg3uYye7qUFji4kyD7+lBqttHPYtzq+D7LdchMOiEnckNqYdj65zyYHbrZnEOn4Xh2H2Yx6vlYL/SudXDxAWYzZHi7vE2NYWY+mgHkzEkieKcee6S7GKVuHOc=
+  file:
+    - go-repo-utils-386.deb
+    - go-repo-utils-amd64.deb
+    - go-repo-utils-386.rpm
+    - go-repo-utils-amd64.rpm
+  skip_cleanup: true
+  on:
+tags: true
