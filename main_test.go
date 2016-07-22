@@ -425,7 +425,7 @@ func DoTestFirstRevGit(path string, t *testing.T) {
 	expectedOut := "d6b486e435f8497b1b873ce8a1e0fafbf82fed0e\n"
 	if out != expectedOut {
 		// t.Errorf("Expected out=%q, got out=%q\n", expectedOut, out)
-    // git can t be tested, the hash changes at every test session
+		// git can t be tested, the hash changes at every test session
 	}
 }
 
@@ -436,7 +436,7 @@ func DoTestFirstRevHg(path string, t *testing.T) {
 	expectedOut := "065e4375921ce712e536b95109214b28e8e2c23e\n"
 	if out != expectedOut {
 		// t.Errorf("Expected out=%q, got out=%q\n", expectedOut, out)
-    // hg can t be tested, the hash changes at every test session
+		// hg can t be tested, the hash changes at every test session
 	}
 }
 
