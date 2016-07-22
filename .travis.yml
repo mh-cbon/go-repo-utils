@@ -46,4 +46,4 @@ deploy:
     - go-repo-utils-amd64.rpm
   skip_cleanup: true
   on:
-tags: true
+    tags: true
