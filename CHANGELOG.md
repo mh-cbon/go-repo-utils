@@ -1,5 +1,18 @@
 # Changelog - go-repo-utils
 
+### 0.0.12
+
+__Changes__
+
+- travis, appveyor: fix build script
+
+__Contributors__
+
+- mh-cbon
+
+Released by mh-cbon, Fri 22 Jul 2016
+______________
+
 ### 0.0.11
 
 __Changes__
