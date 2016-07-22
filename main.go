@@ -25,6 +25,7 @@ Usage:
   go-repo-utils list-commits [--path=<path>|-p <path>] [--since=<tag>|-s <tag>] [--until=<tag>|-u <tag>] [-r|--reverse] [--orderbydate]
   go-repo-utils is-clean [-j|--json] [--path=<path>|-p=<path>]
   go-repo-utils create-tag <tag> [-j|--json] [--path=<path>|-p <path>] [-m <message>]
+  go-repo-utils first-rev [-j|--json] [--path=<path>|-p <path>]
   go-repo-utils -h | --help
   go-repo-utils -v | --version
 
@@ -87,6 +88,8 @@ Examples
 		cmdIsClean(arguments, vcs, path)
 	} else if cmd == "create-tag" {
 		cmdCreateTag(arguments, vcs, path)
+	} else if cmd == "first-rev" {
+		cmdFirstRev(arguments, vcs, path)
 	} else if cmd == "" {
 		fmt.Println("Wrong usage: Missing command")
 		fmt.Println("")
@@ -197,6 +200,22 @@ func cmdCreateTag(arguments map[string]interface{}, vcs string, path string) {
 	}
 }
 
+func cmdFirstRev(arguments map[string]interface{}, vcs string, path string) {
+
+	out, err := repoutils.GetFirstRevision(vcs, path)
+	if err != nil {
+		log.Println(out)
+		exitWithError(err)
+	}
+
+	if isJson(arguments) {
+		jsoned, _ := json.Marshal(true)
+		fmt.Print(string(jsoned))
+	} else {
+		fmt.Println(string(out))
+	}
+}
+
 func getCommand(arguments map[string]interface{}) string {
 	p, ok := arguments["list-tags"]
 	if ok {
@@ -220,6 +239,12 @@ func getCommand(arguments map[string]interface{}) string {
 	if ok {
 		if b, ok := p.(bool); ok && b {
 			return "list-commits"
+		}
+	}
+	p, ok = arguments["first-rev"]
+	if ok {
+		if b, ok := p.(bool); ok && b {
+			return "first-rev"
 		}
 	}
 	return ""

@@ -328,6 +328,10 @@ func GetRevisionTag(path string, tag string) (string, error) {
 	return ret, err
 }
 
+func GetFirstRevision(path string) (string, error) {
+	return "1", nil
+}
+
 func pos(slice []string, value string) int {
 	for p, v := range slice {
 		if v == value {

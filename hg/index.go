@@ -266,3 +266,19 @@ func GetRevisionTag(path string, tag string) (string, error) {
 	}
 	return rev, nil
 }
+
+func GetFirstRevision(path string) (string, error) {
+	ret := ""
+
+	args := []string{"log", "-r", "first(0)", "--template", "{node}"}
+	cmd, err := getCmd(path, args)
+	if err != nil {
+		return ret, err
+	}
+
+	out, err := cmd.CombinedOutput()
+	logger.Printf("err=%s", err)
+	logger.Printf("out=%s", string(out))
+
+	return strings.TrimSpace(string(out)), err
+}

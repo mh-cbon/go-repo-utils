@@ -21,6 +21,7 @@ type DoCreateTag func(path string, tag string, message string) (bool, string, er
 type DoAdd func(path string, file string) error
 type DoCommit func(path string, message string, files []string) error
 type DoListCommitsBetween func(path string, since string, to string) ([]commit.Commit, error)
+type DoGetFirstRevision func(path string) (string, error)
 
 type isVcsResult struct {
 	name  string
@@ -29,7 +30,7 @@ type isVcsResult struct {
 
 // Determine the kind of VCS of given path
 func WhichVcs(path string) (string, error) {
-	vcsTester := map[string]IsIt{
+	fns := map[string]IsIt{
 		"git": git.IsIt,
 		"bzr": bzr.IsIt,
 		"hg":  hg.IsIt,
@@ -37,15 +38,15 @@ func WhichVcs(path string) (string, error) {
 	}
 	vcsTests := map[string]bool{}
 
-	out := make(chan isVcsResult, len(vcsTester))
-	for vcs, isIt := range vcsTester {
+	out := make(chan isVcsResult, len(fns))
+	for vcs, isIt := range fns {
 		go func(vcs string, isIt IsIt) {
 			out <- isVcsResult{name: vcs, found: isIt(path)}
 		}(vcs, isIt)
 	}
 	for res := range out {
 		vcsTests[res.name] = res.found
-		if len(vcsTests) == len(vcsTester) {
+		if len(vcsTests) == len(fns) {
 			close(out)
 		}
 	}
@@ -72,77 +73,77 @@ func WhichVcs(path string) (string, error) {
 
 // List tags on given path according to given vcs
 func List(vcs string, path string) ([]string, error) {
-	vcsLister := map[string]ListIt{
+	fns := map[string]ListIt{
 		"git": git.List,
 		"bzr": bzr.List,
 		"hg":  hg.List,
 		"svn": svn.List,
 	}
-	lister, ok := vcsLister[vcs]
+	fn, ok := fns[vcs]
 	if ok == false {
 		return make([]string, 0), errors.New("Unknown VCS '" + vcs + "'")
 	}
-	return lister(path)
+	return fn(path)
 }
 
 // Ensure given path does not contain uncommited files
 func IsClean(vcs string, path string) (bool, error) {
-	vcsIsClean := map[string]IsItClean{
+	fns := map[string]IsItClean{
 		"git": git.IsClean,
 		"bzr": bzr.IsClean,
 		"hg":  hg.IsClean,
 		"svn": svn.IsClean,
 	}
-	isItClean, ok := vcsIsClean[vcs]
+	fn, ok := fns[vcs]
 	if ok == false {
 		return false, errors.New("Unknown VCS '" + vcs + "'")
 	}
-	return isItClean(path)
+	return fn(path)
 }
 
 // Create tag on given path
 func CreateTag(vcs string, path string, tag string, message string) (bool, string, error) {
-	vcsCreateTag := map[string]DoCreateTag{
+	fns := map[string]DoCreateTag{
 		"git": git.CreateTag,
 		"bzr": bzr.CreateTag,
 		"hg":  hg.CreateTag,
 		"svn": svn.CreateTag,
 	}
-	createTag, ok := vcsCreateTag[vcs]
+	fn, ok := fns[vcs]
 	if ok == false {
 		return false, "", errors.New("Unknown VCS '" + vcs + "'")
 	}
-	return createTag(path, tag, message)
+	return fn(path, tag, message)
 }
 
 // Add a file
 func Add(vcs string, path string, file string) error {
-	vcsAdd := map[string]DoAdd{
+	fns := map[string]DoAdd{
 		"git": git.Add,
 		"bzr": bzr.Add,
 		"hg":  hg.Add,
 		"svn": svn.Add,
 	}
-	doAdd, ok := vcsAdd[vcs]
+	fn, ok := fns[vcs]
 	if ok == false {
 		return errors.New("Unknown VCS '" + vcs + "'")
 	}
-	return doAdd(path, file)
+	return fn(path, file)
 }
 
 // Commit files on path with message
 func Commit(vcs string, path string, message string, files []string) error {
-	vcsCommit := map[string]DoCommit{
+	fns := map[string]DoCommit{
 		"git": git.Commit,
 		"bzr": bzr.Commit,
 		"hg":  hg.Commit,
 		"svn": svn.Commit,
 	}
-	doCommit, ok := vcsCommit[vcs]
+	fn, ok := fns[vcs]
 	if ok == false {
 		return errors.New("Unknown VCS '" + vcs + "'")
 	}
-	return doCommit(path, message, files)
+	return fn(path, message, files)
 }
 
 // Filter out invalid semver tags
@@ -189,15 +190,31 @@ func ReverseTags(tags []string) []string {
 // List commits since given tag
 func ListCommitsBetween(vcs string, path string, since string, to string) ([]commit.Commit, error) {
 	ret := make([]commit.Commit, 0)
-	listCommits := map[string]DoListCommitsBetween{
+	fns := map[string]DoListCommitsBetween{
 		"git": git.ListCommitsBetween,
 		"bzr": bzr.ListCommitsBetween,
 		"hg":  hg.ListCommitsBetween,
 		"svn": svn.ListCommitsBetween,
 	}
-	doListCommits, ok := listCommits[vcs]
+	fn, ok := fns[vcs]
 	if ok == false {
 		return ret, errors.New("Unknown VCS '" + vcs + "'")
 	}
-	return doListCommits(path, since, to)
+	return fn(path, since, to)
+}
+
+// List commits since given tag
+func GetFirstRevision(vcs string, path string) (string, error) {
+	ret := ""
+	fns := map[string]DoGetFirstRevision{
+		"git": git.GetFirstRevision,
+		"bzr": bzr.GetFirstRevision,
+		"hg":  hg.GetFirstRevision,
+		"svn": svn.GetFirstRevision,
+	}
+	fn, ok := fns[vcs]
+	if ok == false {
+		return ret, errors.New("Unknown VCS '" + vcs + "'")
+	}
+	return fn(path)
 }

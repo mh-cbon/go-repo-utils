@@ -286,6 +286,10 @@ func IsTag(path string, tag string) bool {
 	return contains(tags, tag)
 }
 
+func GetFirstRevision(path string) (string, error) {
+	return "revno:1", nil
+}
+
 func contains(s []string, e string) bool {
 	for _, a := range s {
 		if a == e {

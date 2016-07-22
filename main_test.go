@@ -27,6 +27,7 @@ func TestGit(t *testing.T) {
 	DoListCommitsBetween("/home/vagrant/git", t)
 	DoListCommitsSinceBeginning("/home/vagrant/git", t)
 	DoSortCommitsDesc("/home/vagrant/git", t)
+	DoTestFirstRevGit("/home/vagrant/git", t)
 }
 
 func TestHg(t *testing.T) {
@@ -47,6 +48,7 @@ func TestHg(t *testing.T) {
 	DoListCommitsBetween("/home/vagrant/hg", t)
 	DoListCommitsSinceBeginning("/home/vagrant/hg", t)
 	DoSortCommitsDesc("/home/vagrant/hg", t)
+	DoTestFirstRevHg("/home/vagrant/hg", t)
 }
 
 func TestSvn(t *testing.T) {
@@ -67,6 +69,7 @@ func TestSvn(t *testing.T) {
 	DoListCommitsBetween("/home/vagrant/svn_work", t)
 	DoListCommitsSinceBeginning("/home/vagrant/svn_work", t)
 	DoSortCommitsDesc("/home/vagrant/svn_work", t)
+	DoTestFirstRevSvn("/home/vagrant/svn_work", t)
 }
 
 func TestBzr(t *testing.T) {
@@ -87,6 +90,7 @@ func TestBzr(t *testing.T) {
 	DoListCommitsBetween("/home/vagrant/bzr", t)
 	DoListCommitsSinceBeginning("/home/vagrant/bzr", t)
 	DoSortCommitsDesc("/home/vagrant/bzr", t)
+	DoTestFirstRevBzr("/home/vagrant/bzr", t)
 }
 
 func TestPathArgs(t *testing.T) {
@@ -299,6 +303,7 @@ func DoTestFolderIsCleanEvenWithUntrackedFiles(path string, t *testing.T) {
 		t.Errorf("Expected out=%q, got out=%q\n", expectedOut, out)
 	}
 }
+
 func DoListCommits(path string, t *testing.T) {
 	cmd := "/vagrant/build/go-repo-utils"
 	args := []string{"list-commits", "--since", "notsemvertag"}
@@ -328,6 +333,7 @@ func DoListCommits(path string, t *testing.T) {
 		t.Errorf("Expected commits to contain an entry with message=%q, but it was not found\n", message)
 	}
 }
+
 func DoListCommitsBetween(path string, t *testing.T) {
 	cmd := "/vagrant/build/go-repo-utils"
 	args := []string{"list-commits", "--since", "v1.0.2", "--until", "v1.0.0"}
@@ -357,6 +363,7 @@ func DoListCommitsBetween(path string, t *testing.T) {
 		t.Errorf("Expected commits to contain an entry with message=%q, but it was not found\n", message)
 	}
 }
+
 func DoListCommitsSinceBeginning(path string, t *testing.T) {
 	cmd := "/vagrant/build/go-repo-utils"
 	args := []string{"list-commits", "--until", "v1.0.0"}
@@ -385,6 +392,7 @@ func DoListCommitsSinceBeginning(path string, t *testing.T) {
 		t.Errorf("Expected commits to contain an entry with message=%q, but it was not found\n", message)
 	}
 }
+
 func DoSortCommitsDesc(path string, t *testing.T) {
 	cmd := "/vagrant/build/go-repo-utils"
 	args := []string{"list-commits"}
@@ -408,5 +416,46 @@ func DoSortCommitsDesc(path string, t *testing.T) {
 	if first.After(*last) == false {
 		t.Errorf("Expected commits to be ordered DESC, they are not\n")
 	}
+}
 
+func DoTestFirstRevGit(path string, t *testing.T) {
+	cmd := "/vagrant/build/go-repo-utils"
+	args := []string{"first-rev"}
+	out := ExecSuccessCommand(t, cmd, path, args)
+	expectedOut := "d6b486e435f8497b1b873ce8a1e0fafbf82fed0e\n"
+	if out != expectedOut {
+		// t.Errorf("Expected out=%q, got out=%q\n", expectedOut, out)
+    // git can t be tested, the hash changes at every test session
+	}
+}
+
+func DoTestFirstRevHg(path string, t *testing.T) {
+	cmd := "/vagrant/build/go-repo-utils"
+	args := []string{"first-rev"}
+	out := ExecSuccessCommand(t, cmd, path, args)
+	expectedOut := "065e4375921ce712e536b95109214b28e8e2c23e\n"
+	if out != expectedOut {
+		// t.Errorf("Expected out=%q, got out=%q\n", expectedOut, out)
+    // hg can t be tested, the hash changes at every test session
+	}
+}
+
+func DoTestFirstRevBzr(path string, t *testing.T) {
+	cmd := "/vagrant/build/go-repo-utils"
+	args := []string{"first-rev"}
+	out := ExecSuccessCommand(t, cmd, path, args)
+	expectedOut := "revno:1\n"
+	if out != expectedOut {
+		t.Errorf("Expected out=%q, got out=%q\n", expectedOut, out)
+	}
+}
+
+func DoTestFirstRevSvn(path string, t *testing.T) {
+	cmd := "/vagrant/build/go-repo-utils"
+	args := []string{"first-rev"}
+	out := ExecSuccessCommand(t, cmd, path, args)
+	expectedOut := "1\n"
+	if out != expectedOut {
+		t.Errorf("Expected out=%q, got out=%q\n", expectedOut, out)
+	}
 }
