@@ -1,4 +1,14 @@
 
+0.0.12
+
+  * travis, appveyor: fix build script
+
+  - mh-cbon <mh-cbon@users.noreply.github.com>
+
+-- mh-cbon <mh-cbon@users.noreply.github.com>; Fri, 22 Jul 2016 11:20:07 +0200
+
+
+
 0.0.11
 
   * add first-rev command
