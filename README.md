@@ -8,11 +8,24 @@ It can speak with `hg` `git` `bzr` `svn`
 
 # Install
 
-You can grab a pre-built binary file in the [releases page](https://github.com/mh-cbon/go-repo-utils/releases)
+Pick an msi package [here](https://github.com/mh-cbon/go-repo-utils/releases)!
+
+__deb/rpm__
 
 ```sh
-mkdir -p $GOPATH/github.com/mh-cbon
-cd $GOPATH/github.com/mh-cbon
+curl -L https://raw.githubusercontent.com/mh-cbon/latest/master/install.sh \
+| GH=mh-cbon/go-repo-utils sh -xe
+# or
+wget -q -O - --no-check-certificate \
+https://raw.githubusercontent.com/mh-cbon/latest/master/install.sh \
+| GH=mh-cbon/go-repo-utils sh -xe
+```
+
+__go__
+
+```sh
+mkdir -p $GOPATH/src/github.com/mh-cbon
+cd $GOPATH/src/github.com/mh-cbon
 git clone https://github.com/mh-cbon/go-repo-utils.git
 cd go-repo-utils
 glide install
@@ -108,17 +121,6 @@ func main() {
 }
 
 ```
-
-# Changelog
-
-- 0.0.7 - Add list-commits command,
-fixed bugs in vcs detection when the tree contained uncommitted files,
-code refactoring and updated tests
-- 0.0.6 - Use annotated tags for git (`git tag -a ...`)
-- 0.0.5 - Release scripts
-- 0.0.4 - Minor improvements
-- 0.0.2 - Add '-m' argument to set a tag message
-- 0.0.1 - initial release
 
 # Tests
 
