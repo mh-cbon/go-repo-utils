@@ -1,0 +1,116 @@
+
+UNRELEASED
+
+  * add first-rev command
+  * packaging: add rpm/deb/msi packaging
+
+  - mh-cbon <mh-cbon@users.noreply.github.com>
+
+-- mh-cbon <mh-cbon@users.noreply.github.com>; Fri, 22 Jul 2016 11:06:54 +0200
+
+
+
+0.0.10
+
+  * fix glide lock file
+
+  - mh-cbon <mh-cbon@users.noreply.github.com>
+
+-- mh-cbon <mh-cbon@users.noreply.github.com>; Mon, 11 Jul 2016 22:20:10 +0200
+
+
+
+0.0.9
+
+  * fix glide dependencies
+
+  - mh-cbon <mh-cbon@users.noreply.github.com>
+
+-- mh-cbon <mh-cbon@users.noreply.github.com>; Mon, 11 Jul 2016 18:54:36 +0200
+
+
+
+0.0.8
+
+  * fix variable initialization
+  * add more date formats
+
+  - mh-cbon <mh-cbon@users.noreply.github.com>
+
+-- mh-cbon <mh-cbon@users.noreply.github.com>; Thu, 07 Jul 2016 15:32:17 +0200
+
+
+
+0.0.7
+
+  * add list-commands
+  * fix bug when detecting a non clean vcs tree
+  * Add doc
+
+  - mh-cbon <mh-cbon@users.noreply.github.com>
+
+-- mh-cbon <mh-cbon@users.noreply.github.com>; Thu, 30 Jun 2016 13:40:00 +0200
+
+
+
+0.0.6
+
+  * Use anotated tags for git
+
+  - mh-cbon <mh-cbon@users.noreply.github.com>
+
+-- mh-cbon <mh-cbon@users.noreply.github.com>; Tue, 21 Jun 2016 08:21:13 +0200
+
+
+
+0.0.5
+
+  * release scripts
+  * update release scripts
+
+  - mh-cbon <mh-cbon@users.noreply.github.com>
+
+-- mh-cbon <mh-cbon@users.noreply.github.com>; Thu, 16 Jun 2016 22:21:47 +0200
+
+
+
+0.0.4
+
+  * update release script
+  * version update
+
+  - mh-cbon <mh-cbon@users.noreply.github.com>
+
+-- mh-cbon <mh-cbon@users.noreply.github.com>; Mon, 13 Jun 2016 21:30:49 +0200
+
+
+
+0.0.3
+
+  * fmt
+  * add commit && add methods
+
+  - mh-cbon <mh-cbon@users.noreply.github.com>
+
+-- mh-cbon <mh-cbon@users.noreply.github.com>; Mon, 13 Jun 2016 21:22:42 +0200
+
+
+
+0.0.2
+
+  * go fmt
+  * add tag message argument
+
+  - mh-cbon <mh-cbon@users.noreply.github.com>
+
+-- mh-cbon <mh-cbon@users.noreply.github.com>; Mon, 13 Jun 2016 12:38:26 +0200
+
+
+
+0.0.1
+
+  * Initial release
+
+  - mh-cbon <mh-cbon@users.noreply.github.com>
+
+-- mh-cbon <mh-cbon@users.noreply.github.com>; Sun, 12 Jun 2016 16:51:53 +0200
