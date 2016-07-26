@@ -1,4 +1,16 @@
 
+0.0.13
+
+  * git: fix first-rev to always return last hash only
+  * README: update usage/install section
+s
+
+  - mh-cbon <mh-cbon@users.noreply.github.com>
+
+-- mh-cbon <mh-cbon@users.noreply.github.com>; Tue, 26 Jul 2016 17:09:22 +0200
+
+
+
 0.0.12
 
   * travis, appveyor: fix build script
