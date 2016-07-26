@@ -1,5 +1,20 @@
 # Changelog - go-repo-utils
 
+### 0.0.13
+
+__Changes__
+
+- git: fix first-rev to always return last hash only
+- README: update usage/install section
+s
+
+__Contributors__
+
+- mh-cbon
+
+Released by mh-cbon, Tue 26 Jul 2016
+______________
+
 ### 0.0.12
 
 __Changes__
