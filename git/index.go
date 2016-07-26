@@ -239,8 +239,8 @@ func GetFirstRevision(path string) (string, error) {
 	logger.Printf("err=%s", err)
 	logger.Printf("out=%s", string(out))
 
-  // when a merge has occured, it will return multiple hash,
-  // take the last one only 
-  sout := strings.Split(strings.TrimSpace(string(out)), "\n")
+	// when a merge has occured, it will return multiple hash,
+	// take the last one only
+	sout := strings.Split(strings.TrimSpace(string(out)), "\n")
 	return sout[len(sout)-1], err
 }
