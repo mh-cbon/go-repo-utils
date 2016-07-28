@@ -10,12 +10,9 @@ go:
 
 before_install:
   - sudo apt-get -qq update
-  - sudo apt-get install build-essential lintian -y
   - mkdir -p ${GOPATH}/bin
   - cd ~
   - curl https://glide.sh/get | sh
-  - curl -L https://raw.githubusercontent.com/mh-cbon/latest/master/install.sh | GH=mh-cbon/changelog sh -xe
-  - curl -L https://raw.githubusercontent.com/mh-cbon/latest/master/install.sh | GH=mh-cbon/go-bin-deb sh -xe
 
 install:
   - cd $GOPATH/src/github.com/mh-cbon/go-repo-utils
@@ -26,14 +23,14 @@ script: echo "pass"
 
 before_deploy:
   - mkdir -p build/{386,amd64}
-  - mkdir -p pkg-build/{386,amd64}
   - GOOS=linux GOARCH=386 go build --ldflags "-X main.VERSION=${TRAVIS_TAG}" -o build/386/go-repo-utils main.go
   - GOOS=linux GOARCH=amd64 go build --ldflags "-X main.VERSION=${TRAVIS_TAG}" -o build/amd64/go-repo-utils main.go
-  - go-bin-deb generate -a 386 --version ${TRAVIS_TAG} -w pkg-build/386/ -o ${TRAVIS_BUILD_DIR}/go-repo-utils-386.deb
-  - go-bin-deb generate -a amd64 --version ${TRAVIS_TAG} -w pkg-build/amd64/ -o ${TRAVIS_BUILD_DIR}/go-repo-utils-amd64.deb
-  - rm -fr pkg-build*/
-  - docker run -v $PWD:/docker fedora /bin/sh -c "cd /docker && sh ./docker.sh ${TRAVIS_TAG} go-repo-utils"
-  - sudo chown travis:travis go-repo-utils-{386,amd64}.rpm
+  - curl -L https://raw.githubusercontent.com/mh-cbon/go-bin-deb/master/create-pkg.sh | GH=mh-cbon/go-repo-utils sh -xe
+  - curl -L https://raw.githubusercontent.com/mh-cbon/go-bin-rpm/master/create-pkg.sh | GH=mh-cbon/go-repo-utils sh -xe
+
+after_deploy:
+  - curl -L https://raw.githubusercontent.com/mh-cbon/go-bin-deb/master/setup-repository.sh | GH=mh-cbon/go-repo-utils EMAIL=mh-cbon@users.noreply.github.com sh -xe
+  - curl -L https://raw.githubusercontent.com/mh-cbon/go-bin-rpm/master/setup-repository.sh | GH=mh-cbon/go-repo-utils EMAIL=mh-cbon@users.noreply.github.com sh -xe
 
 deploy:
   provider: releases
