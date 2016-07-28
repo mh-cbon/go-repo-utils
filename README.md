@@ -10,7 +10,17 @@ It can speak with `hg` `git` `bzr` `svn`
 
 Pick an msi package [here](https://github.com/mh-cbon/go-repo-utils/releases)!
 
-__deb/rpm__
+__deb/rpm repositories__
+
+```sh
+wget -O - https://raw.githubusercontent.com/mh-cbon/latest/master/source.sh \
+| GH=mh-cbon/go-repo-utils sh -xe
+# or
+curl -L https://raw.githubusercontent.com/mh-cbon/latest/master/source.sh \
+| GH=mh-cbon/go-repo-utils sh -xe
+```
+
+__deb/rpm packages__
 
 ```sh
 curl -L https://raw.githubusercontent.com/mh-cbon/latest/master/install.sh \
