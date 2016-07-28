@@ -1,0 +1,6 @@
+[go-repo-utils]
+name=
+baseurl=https://mh-cbon.github.io/go-repo-utils/rpm/$basearch/
+enabled=1
+skip_if_unavailable=1
+gpgcheck=0
