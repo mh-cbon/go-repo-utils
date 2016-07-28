@@ -1,4 +1,14 @@
 
+0.0.14-beta2
+
+  * appveyor: update method to download latest go-msi
+
+  - mh-cbon <mh-cbon@users.noreply.github.com>
+
+-- mh-cbon <mh-cbon@users.noreply.github.com>; Thu, 28 Jul 2016 13:27:29 +0200
+
+
+
 0.0.14-beta1
 
   * travis: add persoal gh token
