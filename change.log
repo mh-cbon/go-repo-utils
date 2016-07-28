@@ -1,4 +1,16 @@
 
+0.0.14-beta1
+
+  * travis: add persoal gh token
+  * appveyor: update go-msi to handle prerelease
+  * release: apprpriately generate draft gh release, add support for body description of gh release
+
+  - mh-cbon <mh-cbon@users.noreply.github.com>
+
+-- mh-cbon <mh-cbon@users.noreply.github.com>; Thu, 28 Jul 2016 10:56:36 +0200
+
+
+
 0.0.14-beta
 
   * packaging: clean up to use centralized scripts, add support to generate rpm/deb repositories
