@@ -18,7 +18,7 @@ install:
   - curl -fsSL -o C:\gh-api-cli.msi https://github.com/mh-cbon/gh-api-cli/releases/download/2.0.1/gh-api-cli-amd64.msi
   - msiexec.exe /i C:\gh-api-cli.msi /quiet
   - set PATH=C:\Program Files\gh-api-cli\;%PATH% # need to set this manually ? ...
-  - gh-api-cli.exe dl-assets -o mh-cbon -r gh-api-cli -g "*msi" --ver latest --out "C:\go-msi.msi"
+  - gh-api-cli.exe dl-assets -o mh-cbon -r go-msi -g "amd64*msi" --ver latest --out "C:\go-msi.msi"
   - DIR C:\
   - msiexec.exe /i C:\go-msi.msi /quiet
   - set PATH=C:\Program Files\go-msi\;%PATH% # need to set this manually ? ...
