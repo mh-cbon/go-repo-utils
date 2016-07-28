@@ -1,5 +1,19 @@
 # Changelog - go-repo-utils
 
+### 0.0.14-beta3
+
+__Changes__
+
+- appveyor: fix setup of gh-api-cli
+
+__Contributors__
+
+- mh-cbon
+
+Released by mh-cbon, Thu 28 Jul 2016 -
+[see the diff](https://github.com/mh-cbon/go-repo-utils/compare/0.0.14-beta2...0.0.14-beta3#diff)
+______________
+
 ### 0.0.14-beta2
 
 __Changes__
