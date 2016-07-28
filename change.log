@@ -1,4 +1,14 @@
 
+0.0.14-beta5
+
+  * appveyor: fix setup of gh-api-cli
+
+  - mh-cbon <mh-cbon@users.noreply.github.com>
+
+-- mh-cbon <mh-cbon@users.noreply.github.com>; Thu, 28 Jul 2016 13:38:42 +0200
+
+
+
 0.0.14-beta4
 
   * appveyor: fix setup of gh-api-cli
