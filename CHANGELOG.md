@@ -1,5 +1,19 @@
 # Changelog - go-repo-utils
 
+### 0.0.14-beta
+
+__Changes__
+
+- packaging: clean up to use centralized scripts, add support to generate rpm/deb repositories
+
+__Contributors__
+
+- mh-cbon
+
+Released by mh-cbon, Thu 28 Jul 2016 -
+[see the diff](https://github.com/mh-cbon/go-repo-utils/compare/0.0.13...0.0.14-beta#diff)
+______________
+
 ### 0.0.13
 
 __Changes__
@@ -11,7 +25,8 @@ __Contributors__
 
 - mh-cbon
 
-Released by mh-cbon, Tue 26 Jul 2016
+Released by mh-cbon, Tue 26 Jul 2016 -
+[see the diff](https://github.com/mh-cbon/go-repo-utils/compare/0.0.12...0.0.13#diff)
 ______________
 
 ### 0.0.12
@@ -24,7 +39,8 @@ __Contributors__
 
 - mh-cbon
 
-Released by mh-cbon, Fri 22 Jul 2016
+Released by mh-cbon, Fri 22 Jul 2016 -
+[see the diff](https://github.com/mh-cbon/go-repo-utils/compare/0.0.11...0.0.12#diff)
 ______________
 
 ### 0.0.11
@@ -38,7 +54,8 @@ __Contributors__
 
 - mh-cbon
 
-Released by mh-cbon, Fri 22 Jul 2016
+Released by mh-cbon, Fri 22 Jul 2016 -
+[see the diff](https://github.com/mh-cbon/go-repo-utils/compare/0.0.10...0.0.11#diff)
 ______________
 
 ### 0.0.10
@@ -51,7 +68,8 @@ __Contributors__
 
 - mh-cbon
 
-Released by mh-cbon, Mon 11 Jul 2016
+Released by mh-cbon, Mon 11 Jul 2016 -
+[see the diff](https://github.com/mh-cbon/go-repo-utils/compare/0.0.9...0.0.10#diff)
 ______________
 
 ### 0.0.9
@@ -64,7 +82,8 @@ __Contributors__
 
 - mh-cbon
 
-Released by mh-cbon, Mon 11 Jul 2016
+Released by mh-cbon, Mon 11 Jul 2016 -
+[see the diff](https://github.com/mh-cbon/go-repo-utils/compare/0.0.8...0.0.9#diff)
 ______________
 
 ### 0.0.8
@@ -78,7 +97,8 @@ __Contributors__
 
 - mh-cbon
 
-Released by mh-cbon, Thu 07 Jul 2016
+Released by mh-cbon, Thu 07 Jul 2016 -
+[see the diff](https://github.com/mh-cbon/go-repo-utils/compare/0.0.7...0.0.8#diff)
 ______________
 
 ### 0.0.7
@@ -93,7 +113,8 @@ __Contributors__
 
 - mh-cbon
 
-Released by mh-cbon, Thu 30 Jun 2016
+Released by mh-cbon, Thu 30 Jun 2016 -
+[see the diff](https://github.com/mh-cbon/go-repo-utils/compare/0.0.6...0.0.7#diff)
 ______________
 
 ### 0.0.6
@@ -106,7 +127,8 @@ __Contributors__
 
 - mh-cbon
 
-Released by mh-cbon, Tue 21 Jun 2016
+Released by mh-cbon, Tue 21 Jun 2016 -
+[see the diff](https://github.com/mh-cbon/go-repo-utils/compare/0.0.5...0.0.6#diff)
 ______________
 
 ### 0.0.5
@@ -120,7 +142,8 @@ __Contributors__
 
 - mh-cbon
 
-Released by mh-cbon, Thu 16 Jun 2016
+Released by mh-cbon, Thu 16 Jun 2016 -
+[see the diff](https://github.com/mh-cbon/go-repo-utils/compare/0.0.4...0.0.5#diff)
 ______________
 
 ### 0.0.4
@@ -134,7 +157,8 @@ __Contributors__
 
 - mh-cbon
 
-Released by mh-cbon, Mon 13 Jun 2016
+Released by mh-cbon, Mon 13 Jun 2016 -
+[see the diff](https://github.com/mh-cbon/go-repo-utils/compare/0.0.3...0.0.4#diff)
 ______________
 
 ### 0.0.3
@@ -148,7 +172,8 @@ __Contributors__
 
 - mh-cbon
 
-Released by mh-cbon, Mon 13 Jun 2016
+Released by mh-cbon, Mon 13 Jun 2016 -
+[see the diff](https://github.com/mh-cbon/go-repo-utils/compare/0.0.2...0.0.3#diff)
 ______________
 
 ### 0.0.2
@@ -162,7 +187,8 @@ __Contributors__
 
 - mh-cbon
 
-Released by mh-cbon, Mon 13 Jun 2016
+Released by mh-cbon, Mon 13 Jun 2016 -
+[see the diff](https://github.com/mh-cbon/go-repo-utils/compare/0.0.1...0.0.2#diff)
 ______________
 
 ### 0.0.1
@@ -175,5 +201,8 @@ __Contributors__
 
 - mh-cbon
 
-Released by mh-cbon, Sun 12 Jun 2016
+Released by mh-cbon, Sun 12 Jun 2016 -
+[see the diff](https://github.com/mh-cbon/go-repo-utils/compare/879233b3c141ad1c371a6393d0fb86aeacf9e834...0.0.1#diff)
 ______________
+
+
