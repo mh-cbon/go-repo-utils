@@ -10,7 +10,8 @@ scripts:
     666 changelog md -o CHANGELOG.md --vars='{"name":"go-repo-utils"}' \
     && 666 commit -q -m "changelog: !newversion!" -f CHANGELOG.md \
     && 666 git push && 666 git push --tags \
-    && 666 gh-api-cli create-release -n release -o mh-cbon -r go-repo-utils --ver !newversion! \
+    && 666 gh-api-cli create-release -n release -o mh-cbon -r go-repo-utils \
+      --ver !newversion! -c "changelog ghrelease --version !newversion!" \
     && 666 go install --ldflags "-X main.VERSION=!newversion!"
 import:
 - package: github.com/docopt/docopt.go
