@@ -6,7 +6,6 @@ __Changes__
 
 - git: fix first-rev to always return last hash only
 - README: update usage/install section
-s
 
 __Contributors__
 
@@ -178,5 +177,3 @@ __Contributors__
 
 Released by mh-cbon, Sun 12 Jun 2016
 ______________
-
-

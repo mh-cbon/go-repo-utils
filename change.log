@@ -3,7 +3,6 @@
 
   * git: fix first-rev to always return last hash only
   * README: update usage/install section
-s
 
   - mh-cbon <mh-cbon@users.noreply.github.com>
 
@@ -136,5 +135,3 @@ s
   - mh-cbon <mh-cbon@users.noreply.github.com>
 
 -- mh-cbon <mh-cbon@users.noreply.github.com>; Sun, 12 Jun 2016 16:51:53 +0200
-
-
