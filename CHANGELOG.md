@@ -1,5 +1,19 @@
 # Changelog - go-repo-utils
 
+### 0.0.14-beta2
+
+__Changes__
+
+- appveyor: update method to download latest go-msi
+
+__Contributors__
+
+- mh-cbon
+
+Released by mh-cbon, Thu 28 Jul 2016 -
+[see the diff](https://github.com/mh-cbon/go-repo-utils/compare/0.0.14-beta1...0.0.14-beta2#diff)
+______________
+
 ### 0.0.14-beta1
 
 __Changes__
