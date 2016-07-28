@@ -1,4 +1,18 @@
 
+0.0.15
+
+  * packaging: add support to generate rpm/deb repositories
+  * appveyor: make use of latest to install msi apps and handle prerelease
+  * travis: add personal gh token to generate deb/rpm repositories
+  * release: appropriately generate draft gh release
+  * release: add support for body description of gh release
+
+  - mh-cbon <mh-cbon@users.noreply.github.com>
+
+-- mh-cbon <mh-cbon@users.noreply.github.com>; Thu, 28 Jul 2016 18:09:10 +0200
+
+
+
 0.0.14-beta6
 
   * appveyor: make use of latest to install msi apps
