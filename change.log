@@ -1,4 +1,20 @@
 
+0.0.14-beta6
+
+  * appveyor: make use of latest to install msi apps
+  * travis: add personal gh token
+  * appveyor: update go-msi to handle prerelease
+  * release: appropriately generate draft gh release
+  * add support for body description of gh release
+  * packaging: clean up to use centralized scripts
+  * add support to generate rpm/deb repositories
+
+  - mh-cbon <mh-cbon@users.noreply.github.com>
+
+-- mh-cbon <mh-cbon@users.noreply.github.com>; Thu, 28 Jul 2016 18:08:33 +0200
+
+
+
 0.0.14-beta5
 
   * appveyor: fix setup of gh-api-cli
