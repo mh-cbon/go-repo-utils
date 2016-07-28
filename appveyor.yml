@@ -15,7 +15,9 @@ install:
   - go version
   - go env
   - go get -u github.com/Masterminds/glide
-  - curl -fsSL -o C:\go-msi.msi https://github.com/mh-cbon/go-msi/releases/download/0.0.32/go-msi-amd64.msi
+  - curl -fsSL -o https://github.com/mh-cbon/gh-api-cli/releases/download/2.0.1/gh-api-cli-amd64.msi
+  - set PATH=C:\Program Files\gh-api-cli\;%PATH% # need to set this manually ? ...
+  - gh-api-cli.exe dl-assets -o mh-cbon -r gh-api-cli -g "*msi" --ver latest --out "C:\go-msi.msi"
   - DIR C:\
   - msiexec.exe /i C:\go-msi.msi /quiet
   - set PATH=C:\Program Files\go-msi\;%PATH% # need to set this manually ? ...
