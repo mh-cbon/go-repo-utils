@@ -1,5 +1,23 @@
 # Changelog - go-repo-utils
 
+### 0.0.15
+
+__Changes__
+
+- packaging: add support to generate rpm/deb repositories
+- appveyor: make use of latest to install msi apps and handle prerelease
+- travis: add personal gh token to generate deb/rpm repositories
+- release: appropriately generate draft gh release
+- release: add support for body description of gh release
+
+__Contributors__
+
+- mh-cbon
+
+Released by mh-cbon, Thu 28 Jul 2016 -
+[see the diff](https://github.com/mh-cbon/go-repo-utils/compare/0.0.14-beta6...0.0.15#diff)
+______________
+
 ### 0.0.14-beta6
 
 __Changes__
