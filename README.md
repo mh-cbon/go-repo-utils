@@ -10,6 +10,12 @@ It can speak with `hg` `git` `bzr` `svn`
 
 Pick an msi package [here](https://github.com/mh-cbon/go-repo-utils/releases)!
 
+__chocolatey__
+
+```sh
+choco install go-repo-utils
+```
+
 __deb/rpm repositories__
 
 ```sh
