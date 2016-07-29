@@ -1,4 +1,14 @@
 
+0.0.16
+
+  * build: add choco packaging
+
+  - mh-cbon <mh-cbon@users.noreply.github.com>
+
+-- mh-cbon <mh-cbon@users.noreply.github.com>; Sat, 30 Jul 2016 01:48:16 +0200
+
+
+
 0.0.15
 
   * packaging: add support to generate rpm/deb repositories
