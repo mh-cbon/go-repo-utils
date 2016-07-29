@@ -1,4 +1,14 @@
 
+UNRELEASED
+
+  * build: fix choco packaging to pass chocolatey validation
+
+  - mh-cbon <mh-cbon@users.noreply.github.com>
+
+-- mh-cbon <mh-cbon@users.noreply.github.com>; Sat, 30 Jul 2016 01:53:07 +0200
+
+
+
 0.0.16
 
   * build: add choco packaging
@@ -237,5 +247,3 @@
   - mh-cbon <mh-cbon@users.noreply.github.com>
 
 -- mh-cbon <mh-cbon@users.noreply.github.com>; Sun, 12 Jun 2016 16:51:53 +0200
-
-
