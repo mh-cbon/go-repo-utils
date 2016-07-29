@@ -1,5 +1,19 @@
 # Changelog - go-repo-utils
 
+### 0.0.16
+
+__Changes__
+
+- build: add choco packaging
+
+__Contributors__
+
+- mh-cbon
+
+Released by mh-cbon, Sat 30 Jul 2016 -
+[see the diff](https://github.com/mh-cbon/go-repo-utils/compare/0.0.15...0.0.16#diff)
+______________
+
 ### 0.0.15
 
 __Changes__
