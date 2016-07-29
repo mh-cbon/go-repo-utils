@@ -1,1 +1,1 @@
-deb [trusted=yes] https://mh-cbon.github.io/go-repo-utils/apt/ /binary-$(ARCH)/
+deb [trusted=yes] https://mh-cbon.github.io/go-repo-utils/apt/public/ all contrib
