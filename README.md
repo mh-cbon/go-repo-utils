@@ -6,6 +6,8 @@ It can list tags, tell if a directory is clean, create tag.
 
 It can speak with `hg` `git` `bzr` `svn`
 
+This tool is part of the [go-github-release workflow](https://github.com/mh-cbon/go-github-release)
+
 # Install
 
 Pick an msi package [here](https://github.com/mh-cbon/go-repo-utils/releases)!
