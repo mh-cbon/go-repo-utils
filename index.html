@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="UTF-8">
+    <title>Go-repo-utils by mh-cbon</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
+  </head>
+  <body>
+    <section class="page-header">
+      <h1 class="project-name">Go-repo-utils</h1>
+      <h2 class="project-tagline">Go tool to speak with repositories</h2>
+      <a href="https://github.com/mh-cbon/go-repo-utils" class="btn">View on GitHub</a>
+      <a href="https://github.com/mh-cbon/go-repo-utils/zipball/master" class="btn">Download .zip</a>
+      <a href="https://github.com/mh-cbon/go-repo-utils/tarball/master" class="btn">Download .tar.gz</a>
+    </section>
+
+    <section class="main-content">
+      <h1>
+<a id="go-repo-utils" class="anchor" href="#go-repo-utils" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>go-repo-utils</h1>
+
+<p>Go tool to speak with repositories.</p>
+
+<p>It can list tags, tell if a directory is clean, create tag.</p>
+
+<p>It can speak with <code>hg</code> <code>git</code> <code>bzr</code> <code>svn</code></p>
+
+<p>This tool is part of the <a href="https://github.com/mh-cbon/go-github-release">go-github-release workflow</a></p>
+
+<h1>
+<a id="install" class="anchor" href="#install" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Install</h1>
+
+<p>Pick an msi package <a href="https://github.com/mh-cbon/go-repo-utils/releases">here</a>!</p>
+
+<p><strong>chocolatey</strong></p>
+
+<div class="highlight highlight-source-shell"><pre>choco install go-repo-utils</pre></div>
+
+<p><strong>deb/rpm repositories</strong></p>
+
+<div class="highlight highlight-source-shell"><pre>wget -O - https://raw.githubusercontent.com/mh-cbon/latest/master/source.sh \
+<span class="pl-k">|</span> GH=mh-cbon/go-repo-utils sh -xe
+<span class="pl-c"># or</span>
+curl -L https://raw.githubusercontent.com/mh-cbon/latest/master/source.sh \
+<span class="pl-k">|</span> GH=mh-cbon/go-repo-utils sh -xe</pre></div>
+
+<p><strong>deb/rpm packages</strong></p>
+
+<div class="highlight highlight-source-shell"><pre>curl -L https://raw.githubusercontent.com/mh-cbon/latest/master/install.sh \
+<span class="pl-k">|</span> GH=mh-cbon/go-repo-utils sh -xe
+<span class="pl-c"># or</span>
+wget -q -O - --no-check-certificate \
+https://raw.githubusercontent.com/mh-cbon/latest/master/install.sh \
+<span class="pl-k">|</span> GH=mh-cbon/go-repo-utils sh -xe</pre></div>
+
+<p><strong>go</strong></p>
+
+<div class="highlight highlight-source-shell"><pre>mkdir -p <span class="pl-smi">$GOPATH</span>/src/github.com/mh-cbon
+<span class="pl-c1">cd</span> <span class="pl-smi">$GOPATH</span>/src/github.com/mh-cbon
+git clone https://github.com/mh-cbon/go-repo-utils.git
+<span class="pl-c1">cd</span> go-repo-utils
+glide install
+go install</pre></div>
+
+<h1>
+<a id="usage" class="anchor" href="#usage" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Usage</h1>
+
+<div class="highlight highlight-source-shell"><pre>Go repo utils
+
+Usage:
+  go-repo-utils list-tags [-j<span class="pl-k">|</span>--json] [-a<span class="pl-k">|</span>--any] [-r<span class="pl-k">|</span>--reverse] [--path<span class="pl-k">=&lt;</span>path<span class="pl-k">&gt;</span><span class="pl-k">|</span>-p <span class="pl-k">&lt;</span>path<span class="pl-k">&gt;</span>]
+  go-repo-utils list-commits [--path<span class="pl-k">=&lt;</span>path<span class="pl-k">&gt;</span><span class="pl-k">|</span>-p <span class="pl-k">&lt;</span>path<span class="pl-k">&gt;</span>] [--since<span class="pl-k">=&lt;</span>tag<span class="pl-k">&gt;</span><span class="pl-k">|</span>-s <span class="pl-k">&lt;</span>tag<span class="pl-k">&gt;</span>] [--<span class="pl-k">until</span>=<span class="pl-k">&lt;</span>tag<span class="pl-k">&gt;</span><span class="pl-k">|</span>-u <span class="pl-k">&lt;</span>tag<span class="pl-k">&gt;</span>] [-r<span class="pl-k">|</span>--reverse] [--orderbydate]
+  go-repo-utils is-clean [-j<span class="pl-k">|</span>--json] [--path<span class="pl-k">=&lt;</span>path<span class="pl-k">&gt;</span><span class="pl-k">|</span>-p<span class="pl-k">=&lt;</span>path<span class="pl-k">&gt;</span>]
+  go-repo-utils create-tag <span class="pl-k">&lt;</span>tag<span class="pl-k">&gt;</span> [-j<span class="pl-k">|</span>--json] [--path<span class="pl-k">=&lt;</span>path<span class="pl-k">&gt;</span><span class="pl-k">|</span>-p <span class="pl-k">&lt;</span>path<span class="pl-k">&gt;</span>] [-m <span class="pl-k">&lt;</span>message<span class="pl-k">&gt;</span>]
+  go-repo-utils first-rev [-j<span class="pl-k">|</span>--json] [--path<span class="pl-k">=&lt;</span>path<span class="pl-k">&gt;</span><span class="pl-k">|</span>-p <span class="pl-k">&lt;</span>path<span class="pl-k">&gt;</span>]
+  go-repo-utils -h <span class="pl-k">|</span> --help
+  go-repo-utils -v <span class="pl-k">|</span> --version
+
+Options:
+  -h --help             Show this screen.
+  -v --version          Show version.
+  -p <span class="pl-k">&lt;</span>c<span class="pl-k">&gt;</span> --path=<span class="pl-k">&lt;</span>c<span class="pl-k">&gt;</span>     Path to lookup [default: cwd].
+  -s <span class="pl-k">&lt;</span>c<span class="pl-k">&gt;</span> --since=<span class="pl-k">&lt;</span>c<span class="pl-k">&gt;</span>    Since tag, revision, expression.
+  -u <span class="pl-k">&lt;</span>c<span class="pl-k">&gt;</span> --<span class="pl-k">until</span>=<span class="pl-k">&lt;</span>c<span class="pl-k">&gt;</span>    To tag, revision, expression.
+  -j --json             Print JSON encoded data.
+  -a --any              List all tags.
+  -r --reverse          Reverse tags ordering.
+  -m                    Message <span class="pl-k">for</span> the tag.
+  --orderbydate         Order commits by date.
+
+Notes:
+  list-tags     List only valid semver tags unless -a<span class="pl-k">|</span>--any options is provided.
+  is-clean      Ignores untracked files.
+  create-tag    With svn, it always create a new tag folder at /tags/<span class="pl-k">&lt;</span>tag<span class="pl-k">&gt;</span>.
+  list-commits  Can receive an expression (hg, bzr), <span class="pl-k">if</span> it does not match a tag name.
+                Expression may be automatically adjusted at runtime <span class="pl-k">if</span> it is empty (svn,hg,bzr),
+                or matching a tag name.
+                HEAD will be normalized given the target vcs (svn,hg,bzr).
+
+Examples
+  <span class="pl-c"># list tags</span>
+  go-repo-utils list-tags
+
+  <span class="pl-c"># list tags with json response</span>
+  go-repo-utils list-tags -j --path=/some/where
+
+  <span class="pl-c"># check if a directory is clean</span>
+  go-repo-utis is-clean -p /some/where
+
+  <span class="pl-c"># create tag</span>
+  go-repo-utils create-tag 1.0.3 -m <span class="pl-s"><span class="pl-pds">"</span>tag message<span class="pl-pds">"</span></span></pre></div>
+
+<h4>
+<a id="enable-debug-messages" class="anchor" href="#enable-debug-messages" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Enable debug messages</h4>
+
+<p>To enable debug messages, just set <code>VERBOSE=go-repo-utils</code> before running the command.</p>
+
+<div class="highlight highlight-source-shell"><pre>VERBOSE=go-repo-utils go-repo-utils is-clean</pre></div>
+
+<h1>
+<a id="usage-as-lib" class="anchor" href="#usage-as-lib" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Usage as lib</h1>
+
+<div class="highlight highlight-source-go"><pre><span class="pl-k">package</span> main
+
+<span class="pl-k">import</span> (
+  <span class="pl-s"><span class="pl-pds">"</span>fmt<span class="pl-pds">"</span></span>
+
+  <span class="pl-s"><span class="pl-pds">"</span>github.com/mh-cbon/go-repo-utils/repoutils<span class="pl-pds">"</span></span>
+)
+
+<span class="pl-k">func</span> <span class="pl-en">main</span>() {
+
+  <span class="pl-smi">path</span> <span class="pl-k">:=</span> <span class="pl-s"><span class="pl-pds">"</span>path/to/folder<span class="pl-pds">"</span></span>
+
+  <span class="pl-smi">vcs</span>, <span class="pl-smi">err</span> <span class="pl-k">:=</span> repoutils.<span class="pl-c1">WhichVcs</span>(path)
+  <span class="pl-k">if</span> err!=<span class="pl-c1">nil</span> {
+    log.<span class="pl-c1">Println</span>(err)
+    os.<span class="pl-c1">Exit</span>(<span class="pl-c1">1</span>)
+  }
+
+  <span class="pl-smi">tags</span> <span class="pl-k">:=</span> <span class="pl-c1">make</span>([]<span class="pl-k">string</span>, <span class="pl-c1">0</span>)
+  <span class="pl-smi">tags</span>, <span class="pl-smi">_</span> <span class="pl-k">:=</span> repoutils.<span class="pl-c1">List</span>(vcs, path)
+  fmt.<span class="pl-c1">Println</span>(tags)
+
+  <span class="pl-smi">isClean</span>, <span class="pl-smi">_</span> <span class="pl-k">:=</span> repoutils.<span class="pl-c1">IsClean</span>(vcs, path)
+  fmt.<span class="pl-c1">Println</span>(isClean)
+
+  <span class="pl-smi">ok</span>, <span class="pl-smi">_</span>, <span class="pl-smi">_</span> <span class="pl-k">:=</span> repoutils.<span class="pl-c1">CreateTag</span>(vcs, path, <span class="pl-s"><span class="pl-pds">"</span>1.0.3<span class="pl-pds">"</span></span>)
+  fmt.<span class="pl-c1">Println</span>(ok)
+}
+</pre></div>
+
+<h1>
+<a id="tests" class="anchor" href="#tests" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Tests</h1>
+
+<p>To run the tests, <code>sh vagrant/test.sh</code>, which will do all necessary stuff to run the tests</p>
+
+<h1>
+<a id="see-also" class="anchor" href="#see-also" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>See also</h1>
+
+<ul>
+<li><a href="https://github.com/Masterminds/vcs">https://github.com/Masterminds/vcs</a></li>
+</ul>
+
+<p>A way more complete and better api, with a different approach.</p>
+
+      <footer class="site-footer">
+        <span class="site-footer-owner"><a href="https://github.com/mh-cbon/go-repo-utils">Go-repo-utils</a> is maintained by <a href="https://github.com/mh-cbon">mh-cbon</a>.</span>
+
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
+      </footer>
+
+    </section>
+
+  
+  </body>
+</html>
