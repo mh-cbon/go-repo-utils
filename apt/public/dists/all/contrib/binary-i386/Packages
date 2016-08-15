@@ -5,6 +5,24 @@ Installed-Size: 2.7 kB
 Maintainer: mh-cbon <mh-cbon@users.noreply.github.com>
 Architecture: i386
 Source: go-repo-utils
+Version: 0.0.17
+Filename: pool/contrib/g/go-repo-utils/go-repo-utils-0.0.17_386.deb
+Size: 763296
+MD5sum: 4ee852b15143e48cc41d487baaf21dbf
+SHA1: 351a6bcb164040b15193ae0d5ce8bdf34ee8ad63
+SHA256: 1341c391dd93a89f520078569ff400127f7dca0e6cecefef4521ff00759412ff
+SHA512: 21d61276a03c536e2bbd0bd5f3f212a9a6182b2bd9354d8a04d38a4277f903de63e634a4faea9838dddfd81332fcbe11aaa5793907dcf59453e4157d2d9e6bac
+Description: Go tool to speak with repositories
+Package-Type: deb
+Homepage: http://github.com/mh-cbon/go-repo-utils
+
+Package: go-repo-utils
+Priority: extra
+Section: unknown
+Installed-Size: 2.7 kB
+Maintainer: mh-cbon <mh-cbon@users.noreply.github.com>
+Architecture: i386
+Source: go-repo-utils
 Version: 0.0.16
 Filename: pool/contrib/g/go-repo-utils/go-repo-utils-0.0.16_386.deb
 Size: 763394
@@ -31,8 +49,8 @@ SHA1: 390a8ec83794305556f2457246c8dc48b9c99dcd
 SHA256: 71eb5bf23f310f11fa5789dbd25d9a8ac8dc1d8cd494983ec5e7428284aba113
 SHA512: 8e89b6f05dddeb9123ca6de80f7ae7f87002db14d4350bce788a77f4357d5c7af8d6d3ed07bcc2a69625d71462cba40d0292917cb2574f438bd0e6b35ccd1d5b
 Description: Go tool to speak with repositories
-Homepage: http://github.com/mh-cbon/go-repo-utils
 Package-Type: deb
+Homepage: http://github.com/mh-cbon/go-repo-utils
 
 Package: go-repo-utils
 Priority: extra
@@ -85,8 +103,8 @@ SHA1: f90d22147bbc1befe44b080dddfe1609105b3cca
 SHA256: e999bc4caf4f6eab6051281c063a173d000a726c3ab9c3dd238d08cd1a4eafe5
 SHA512: dca2ce8b5cb78b8a0d6acb0d9c61427af33b8137b48f0522e1afefd040e4a5bbe71e3a787c23bea8208d1fe946e6b2caaac62f000df43a8dc23880f998934987
 Description: Go tool to speak with repositories
-Homepage: http://github.com/mh-cbon/go-repo-utils
 Package-Type: deb
+Homepage: http://github.com/mh-cbon/go-repo-utils
 
 Package: go-repo-utils
 Priority: extra
@@ -103,8 +121,8 @@ SHA1: 96812068a541f74bd44862fb75553c11ab94b455
 SHA256: 98c35e45fbbbcbcc3625529932d36c5457f06985ac16ac86eedb22753c47d728
 SHA512: e996bf9f1436012e9c2754e7f7439aace544b6a1d42d34cc91926546d410d5557702c624806da6b0c9fae2b1e8d4594fb7b43c557b430eaf43fecf9a558aed01
 Description: Go tool to speak with repositories
-Homepage: http://github.com/mh-cbon/go-repo-utils
 Package-Type: deb
+Homepage: http://github.com/mh-cbon/go-repo-utils
 
 Package: go-repo-utils
 Priority: extra
@@ -139,8 +157,8 @@ SHA1: 07ba3b84d8b57366bb09ea38a46e5a7f4f23d165
 SHA256: e6a0fd5cf050e858a0e8cdb0ee863b96c97540f42a28b210c44fdc30fc6f2ec2
 SHA512: 50bb920bbb0d2f187aea645c86040877fef2ed05293ede05a3893ac23a995fb3d42131dcda9687bc6aa273d300b5deb1f88546f60a7f20bbe2b22f71065e436b
 Description: Go tool to speak with repositories
-Package-Type: deb
 Homepage: http://github.com/mh-cbon/go-repo-utils
+Package-Type: deb
 
 Package: go-repo-utils
 Priority: extra
