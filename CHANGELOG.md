@@ -1,5 +1,21 @@
 # Changelog - go-repo-utils
 
+### 0.0.17
+
+__Changes__
+
+- appveyor: update choco key
+- glide: fix package name
+- build: fix choco packaging to pass chocolatey validation
+
+__Contributors__
+
+- mh-cbon
+
+Released by mh-cbon, Mon 15 Aug 2016 -
+[see the diff](https://github.com/mh-cbon/go-repo-utils/compare/0.0.16...0.0.17#diff)
+______________
+
 ### 0.0.16
 
 __Changes__
