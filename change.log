@@ -1,11 +1,13 @@
 
-UNRELEASED
+0.0.17
 
+  * appveyor: update choco key
+  * glide: fix package name
   * build: fix choco packaging to pass chocolatey validation
 
   - mh-cbon <mh-cbon@users.noreply.github.com>
 
--- mh-cbon <mh-cbon@users.noreply.github.com>; Sat, 30 Jul 2016 01:53:07 +0200
+-- mh-cbon <mh-cbon@users.noreply.github.com>; Mon, 15 Aug 2016 18:45:32 +0200
 
 
 
@@ -247,3 +249,5 @@ UNRELEASED
   - mh-cbon <mh-cbon@users.noreply.github.com>
 
 -- mh-cbon <mh-cbon@users.noreply.github.com>; Sun, 12 Jun 2016 16:51:53 +0200
+
+
