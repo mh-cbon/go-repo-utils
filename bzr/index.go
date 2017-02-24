@@ -1,4 +1,4 @@
-// Bazaar implementation of go-reop-utils
+// Package bzr implements go-repo-utils interfaces.
 package bzr
 
 import (
@@ -25,7 +25,7 @@ func getCmd(path string, args []string) (*exec.Cmd, error) {
 	return cmd, nil
 }
 
-// Test if given path is managed by bzr with bzr info
+// IsIt Test if given path is managed by bzr with bzr info
 func IsIt(path string) bool {
 
 	args := []string{"info"}
@@ -70,7 +70,7 @@ func List(path string) ([]string, error) {
 	return tags, nil
 }
 
-// Check uncommited files with bzr status
+// IsClean Check uncommited files with bzr status
 func IsClean(path string) (bool, error) {
 
 	args := []string{"status"}
@@ -101,7 +101,7 @@ func IsClean(path string) (bool, error) {
 	return len(changes) == 0, nil
 }
 
-// Create given tag on path with the provided message
+// CreateTag Create given tag on path with the provided message
 func CreateTag(path string, tag string, message string) (bool, string, error) {
 
 	tags, err := List(path)
@@ -170,7 +170,7 @@ func Commit(path string, message string, files []string) error {
 	return err
 }
 
-// List commits between two points
+// ListCommitsBetween List commits between two points
 func ListCommitsBetween(path string, since string, to string) ([]commit.Commit, error) {
 	ret := make([]commit.Commit, 0)
 
@@ -204,6 +204,7 @@ func ListCommitsBetween(path string, since string, to string) ([]commit.Commit, 
 	return ret, err
 }
 
+// ParseBzrLogs parses bzr log output to a list of commits
 func ParseBzrLogs(log string) []commit.Commit {
 	ret := make([]commit.Commit, 0)
 
@@ -248,7 +249,7 @@ func ParseBzrLogs(log string) []commit.Commit {
 	return ret
 }
 
-// Get revision of a tag
+// GetRevisionTag Get revision of a tag
 func GetRevisionTag(path string, tag string) (string, error) {
 	ret := ""
 
@@ -277,6 +278,7 @@ func GetRevisionTag(path string, tag string) (string, error) {
 	return ret, nil
 }
 
+// IsTag tells if given string is a tag
 func IsTag(path string, tag string) bool {
 	tags, err := List(path)
 	if err != nil {
@@ -286,6 +288,7 @@ func IsTag(path string, tag string) bool {
 	return contains(tags, tag)
 }
 
+// GetFirstRevision  returns the first revision of the repository.
 func GetFirstRevision(path string) (string, error) {
 	return "revno:1", nil
 }
