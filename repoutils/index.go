@@ -1,4 +1,4 @@
-// proxy implemntation to a vcs implementation
+// Package repoutils is a proxy to specifics vcs implementations.
 package repoutils
 
 import (
@@ -28,7 +28,7 @@ type isVcsResult struct {
 	found bool
 }
 
-// Determine the kind of VCS of given path
+// WhichVcs Determine the kind of VCS of given path
 func WhichVcs(path string) (string, error) {
 	fns := map[string]IsIt{
 		"git": git.IsIt,
@@ -86,7 +86,7 @@ func List(vcs string, path string) ([]string, error) {
 	return fn(path)
 }
 
-// Ensure given path does not contain uncommited files
+// IsClean Ensure given path does not contain uncommited files
 func IsClean(vcs string, path string) (bool, error) {
 	fns := map[string]IsItClean{
 		"git": git.IsClean,
@@ -101,7 +101,7 @@ func IsClean(vcs string, path string) (bool, error) {
 	return fn(path)
 }
 
-// Create tag on given path
+// CreateTag Create tag on given path
 func CreateTag(vcs string, path string, tag string, message string) (bool, string, error) {
 	fns := map[string]DoCreateTag{
 		"git": git.CreateTag,
@@ -146,7 +146,7 @@ func Commit(vcs string, path string, message string, files []string) error {
 	return fn(path, message, files)
 }
 
-// Filter out invalid semver tags
+// FilterSemverTags Filter out invalid semver tags
 func FilterSemverTags(dirtyTags []string) []string {
 	tags := make([]string, 0)
 	for _, tag := range dirtyTags {
@@ -158,7 +158,7 @@ func FilterSemverTags(dirtyTags []string) []string {
 	return tags
 }
 
-// Sort given list of semver tags, invalid semver tags are appended to the end
+// SortSemverTags Sorts given list of semver tags, invalid semver tags are appended to the end
 func SortSemverTags(unsortedTags []string) []string {
 	dirtyTags := make([]string, 0)
 	vs := make([]*semver.Version, 0)
@@ -179,7 +179,7 @@ func SortSemverTags(unsortedTags []string) []string {
 	return sortedTags
 }
 
-// Reverse given list of tags
+// ReverseTags Reverse given list of tags
 func ReverseTags(tags []string) []string {
 	for i, j := 0, len(tags)-1; i < j; i, j = i+1, j-1 {
 		tags[i], tags[j] = tags[j], tags[i]
@@ -187,7 +187,7 @@ func ReverseTags(tags []string) []string {
 	return tags
 }
 
-// List commits since given tag
+// ListCommitsBetween Lists commits between given tag
 func ListCommitsBetween(vcs string, path string, since string, to string) ([]commit.Commit, error) {
 	ret := make([]commit.Commit, 0)
 	fns := map[string]DoListCommitsBetween{
@@ -203,7 +203,7 @@ func ListCommitsBetween(vcs string, path string, since string, to string) ([]com
 	return fn(path, since, to)
 }
 
-// List commits since given tag
+// GetFirstRevision Returns the first revision of the repostiory.
 func GetFirstRevision(vcs string, path string) (string, error) {
 	ret := ""
 	fns := map[string]DoGetFirstRevision{
