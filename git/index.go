@@ -1,4 +1,4 @@
-// Git implementation of go-reop-utils
+// Package git implements go-repo-utils interfaces.
 package git
 
 import (
@@ -25,7 +25,7 @@ func getCmd(path string, args []string) (*exec.Cmd, error) {
 	return cmd, nil
 }
 
-// Test if given path is managed by git with git info
+// IsIt Test if given path is managed by git with git info
 func IsIt(path string) bool {
 	args := []string{"rev-parse"}
 	cmd, err := getCmd(path, args)
@@ -68,7 +68,7 @@ func List(path string) ([]string, error) {
 	return tags, nil
 }
 
-// Check uncommited files with git status --porcelain --untracked-files=no
+// IsClean Check uncommited files with git status --porcelain --untracked-files=no
 func IsClean(path string) (bool, error) {
 
 	args := []string{"status", "--porcelain", "--untracked-files=no"}
@@ -87,7 +87,7 @@ func IsClean(path string) (bool, error) {
 	return len(string(out)) == 0, nil
 }
 
-// Create given tag on path with the provided message
+// CreateTag Create given tag on path with the provided message
 func CreateTag(path string, tag string, message string) (bool, string, error) {
 
 	args := []string{"tag", "-a", tag}
@@ -145,7 +145,7 @@ func Commit(path string, message string, files []string) error {
 	return err
 }
 
-// List commits between two points
+// ListCommitsBetween List commits between two points
 func ListCommitsBetween(path string, since string, to string) ([]commit.Commit, error) {
 	ret := make([]commit.Commit, 0)
 
@@ -172,6 +172,7 @@ func ListCommitsBetween(path string, since string, to string) ([]commit.Commit, 
 	return ret, err
 }
 
+// ParseGitLog parses git loh output to a list of commits.
 func ParseGitLog(logs string) []commit.Commit {
 	ret := make([]commit.Commit, 0)
 
@@ -210,6 +211,7 @@ func ParseGitLog(logs string) []commit.Commit {
 	return ret
 }
 
+// GetRevisionTag get the revision of a tag
 func GetRevisionTag(path string, tag string) (string, error) {
 	ret := ""
 
@@ -226,6 +228,7 @@ func GetRevisionTag(path string, tag string) (string, error) {
 	return strings.TrimSpace(string(out)), err
 }
 
+// GetFirstRevision returns the first revision of the repostiory
 func GetFirstRevision(path string) (string, error) {
 	ret := ""
 
