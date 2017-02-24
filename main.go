@@ -1,3 +1,4 @@
+// Package go-repo_utils helps to work with VCS.
 package main
 
 import (

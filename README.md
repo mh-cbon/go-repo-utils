@@ -1,6 +1,10 @@
 # go-repo-utils
 
-Go tool to speak with repositories.
+[![travis Status](https://travis-ci.org/mh-cbon/go-repo-utils.svg?branch=master)](https://travis-ci.org/mh-cbon/go-repo-utils)[![appveyor Status](https://ci.appveyor.com/api/projects/status/github/mh-cbon/go-repo-utils?branch=master&svg=true)](https://ci.appveyor.com/project/mh-cbon/go-repo-utils)
+[![GoDoc](https://godoc.org/github.com/mh-cbon/go-repo-utils?status.svg)](http://godoc.org/github.com/mh-cbon/go-repo-utils)
+
+
+Package go-repo_utils helps to work with VCS.
 
 It can list tags, tell if a directory is clean, create tag.
 
@@ -10,16 +14,25 @@ This tool is part of the [go-github-release workflow](https://github.com/mh-cbon
 
 # Install
 
-Pick an msi package [here](https://github.com/mh-cbon/go-repo-utils/releases)!
+Check the [release page](https://github.com/mh-cbon/go-repo-utils/releases)!
 
-__chocolatey__
+#### Glide
 
+```sh
+mkdir -p $GOPATH/src/github.com/mh-cbon/go-repo-utils
+cd $GOPATH/src/github.com/mh-cbon/go-repo-utils
+git clone https://github.com/mh-cbon/go-repo-utils.git .
+glide install
+go install
+```
+
+
+#### Chocolatey
 ```sh
 choco install go-repo-utils
 ```
 
-__deb/rpm repositories__
-
+#### linux rpm/deb repository
 ```sh
 wget -O - https://raw.githubusercontent.com/mh-cbon/latest/master/source.sh \
 | GH=mh-cbon/go-repo-utils sh -xe
@@ -28,8 +41,7 @@ curl -L https://raw.githubusercontent.com/mh-cbon/latest/master/source.sh \
 | GH=mh-cbon/go-repo-utils sh -xe
 ```
 
-__deb/rpm packages__
-
+#### linux rpm/deb standalone package
 ```sh
 curl -L https://raw.githubusercontent.com/mh-cbon/latest/master/install.sh \
 | GH=mh-cbon/go-repo-utils sh -xe
@@ -39,19 +51,9 @@ https://raw.githubusercontent.com/mh-cbon/latest/master/install.sh \
 | GH=mh-cbon/go-repo-utils sh -xe
 ```
 
-__go__
-
-```sh
-mkdir -p $GOPATH/src/github.com/mh-cbon
-cd $GOPATH/src/github.com/mh-cbon
-git clone https://github.com/mh-cbon/go-repo-utils.git
-cd go-repo-utils
-glide install
-go install
-```
-
 # Usage
 
+__$ go-repo-utils -h__
 ```sh
 Go repo utils
 
@@ -109,36 +111,38 @@ VERBOSE=go-repo-utils go-repo-utils is-clean
 
 # Usage as lib
 
+__> main_example.go__
 ```go
 package main
 
 import (
-  "fmt"
+	"fmt"
+	"log"
+	"os"
 
-  "github.com/mh-cbon/go-repo-utils/repoutils"
+	"github.com/mh-cbon/go-repo-utils/repoutils"
 )
 
-func main() {
+// ExampleMain demonstrate go-repo-utils api
+func ExampleMain() {
 
-  path := "path/to/folder"
+	path := "path/to/folder"
 
-  vcs, err := repoutils.WhichVcs(path)
-  if err!=nil {
-    log.Println(err)
-    os.Exit(1)
-  }
+	vcs, err := repoutils.WhichVcs(path)
+	if err != nil {
+		log.Println(err)
+		os.Exit(1)
+	}
 
-  tags := make([]string, 0)
-  tags, _ := repoutils.List(vcs, path)
-  fmt.Println(tags)
+	tags, _ := repoutils.List(vcs, path)
+	fmt.Println(tags)
 
-  isClean, _ := repoutils.IsClean(vcs, path)
-  fmt.Println(isClean)
+	isClean, _ := repoutils.IsClean(vcs, path)
+	fmt.Println(isClean)
 
-  ok, _, _ := repoutils.CreateTag(vcs, path, "1.0.3")
-  fmt.Println(ok)
+	ok, _, _ := repoutils.CreateTag(vcs, path, "1.0.3", "the new tag")
+	fmt.Println(ok)
 }
-
 ```
 
 # Tests
