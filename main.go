@@ -15,6 +15,7 @@ import (
 
 var logger = verbose.Auto()
 
+// VERSION contains the last build version.
 var VERSION = "0.0.0"
 
 func main() {
@@ -105,7 +106,7 @@ func cmdIsClean(arguments map[string]interface{}, vcs string, path string) {
 	isClean, err := repoutils.IsClean(vcs, path)
 	exitWithError(err)
 
-	if isJson(arguments) {
+	if isJSON(arguments) {
 		jsoned, _ := json.Marshal(isClean)
 		fmt.Print(string(jsoned))
 	} else {
@@ -134,7 +135,7 @@ func cmdListTags(arguments map[string]interface{}, vcs string, path string) {
 		tags = repoutils.ReverseTags(tags)
 	}
 
-	if isJson(arguments) {
+	if isJSON(arguments) {
 		jsoned, _ := json.Marshal(tags)
 		fmt.Print(string(jsoned))
 	} else {
@@ -192,7 +193,7 @@ func cmdCreateTag(arguments map[string]interface{}, vcs string, path string) {
 		exitWithError(err)
 	}
 
-	if isJson(arguments) {
+	if isJSON(arguments) {
 		jsoned, _ := json.Marshal(true)
 		fmt.Print(string(jsoned))
 	} else {
@@ -208,7 +209,7 @@ func cmdFirstRev(arguments map[string]interface{}, vcs string, path string) {
 		exitWithError(err)
 	}
 
-	if isJson(arguments) {
+	if isJSON(arguments) {
 		jsoned, _ := json.Marshal(true)
 		fmt.Print(string(jsoned))
 	} else {
@@ -217,53 +218,34 @@ func cmdFirstRev(arguments map[string]interface{}, vcs string, path string) {
 }
 
 func getCommand(arguments map[string]interface{}) string {
-	p, ok := arguments["list-tags"]
-	if ok {
-		if b, ok := p.(bool); ok && b {
-			return "list-tags"
-		}
+	cmds := []string{
+		"list-tags",
+		"is-clean",
+		"create-tag",
+		"list-commits",
+		"first-rev",
 	}
-	p, ok = arguments["is-clean"]
-	if ok {
-		if b, ok := p.(bool); ok && b {
-			return "is-clean"
-		}
-	}
-	p, ok = arguments["create-tag"]
-	if ok {
-		if b, ok := p.(bool); ok && b {
-			return "create-tag"
-		}
-	}
-	p, ok = arguments["list-commits"]
-	if ok {
-		if b, ok := p.(bool); ok && b {
-			return "list-commits"
-		}
-	}
-	p, ok = arguments["first-rev"]
-	if ok {
-		if b, ok := p.(bool); ok && b {
-			return "first-rev"
+	for _, cmd := range cmds {
+		if p, ok := arguments[cmd]; ok {
+			if b, ok := p.(bool); ok && b {
+				return cmd
+			}
 		}
 	}
 	return ""
 }
 
 func getPath(arguments map[string]interface{}) string {
-	p, ok := arguments["--path"]
-	if ok {
-		if str, ok := p.(string); ok {
-			if str != "cwd" {
-				return str
-			}
-		}
+	args := []string{
+		"--path",
+		"-p",
 	}
-	p, ok = arguments["-p"]
-	if ok {
-		if str, ok := p.(string); ok {
-			if str != "cwd" {
-				return str
+	for _, arg := range args {
+		if p, ok := arguments[arg]; ok {
+			if b, ok2 := p.(string); ok2 {
+				if b != "cwd" {
+					return b
+				}
 			}
 		}
 	}
@@ -316,10 +298,10 @@ func isAny(arguments map[string]interface{}) bool {
 	return any
 }
 
-func isJson(arguments map[string]interface{}) bool {
+func isJSON(arguments map[string]interface{}) bool {
 	json := false
-	if isJson, ok := arguments["--json"].(bool); ok {
-		json = isJson
+	if isIt, ok := arguments["--json"].(bool); ok {
+		json = isIt
 	} else {
 		if isJ, ok := arguments["-j"].(bool); ok {
 			json = isJ
