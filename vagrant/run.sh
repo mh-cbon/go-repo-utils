@@ -1,6 +1,12 @@
 
 go build -o build/go-repo-utils main.go
-vagrant ssh -c "sh /vagrant/vagrant/git.sh && sh /vagrant/vagrant/bzr.sh && sh /vagrant/vagrant/hg.sh && sh /vagrant/vagrant/svn.sh"
+vagrant ssh -c "\
+sh /vagrant/vagrant/bzr.sh && \
+sh /vagrant/vagrant/git.sh && \
+sh /vagrant/vagrant/hg.sh && \
+sh /vagrant/vagrant/svn.sh && \
+echo ok"
+
 echo ""
 echo "################"
 echo "test"
