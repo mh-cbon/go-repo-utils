@@ -3,98 +3,128 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"log"
+	"os"
 	"os/exec"
 	"testing"
 
 	"github.com/mh-cbon/go-repo-utils/commit"
 )
 
+func init() {
+	t := &TestingStub{}
+	mustFileExists(t, "/home/vagrant")
+}
+
+type TestingStub struct{}
+
+func (t *TestingStub) Errorf(s string, a ...interface{}) {
+	log.Fatalf(s+"\n", a...)
+}
+
+type TestingExiter struct{ t *testing.T }
+
+func (t *TestingExiter) Errorf(s string, a ...interface{}) {
+	panic(
+		fmt.Errorf(s, a...),
+	)
+}
+
+type Errorer interface {
+	Errorf(string, ...interface{})
+}
+
 func TestGit(t *testing.T) {
-	DoTestFolderUnderVcs("/home/vagrant/git", t)
-	DoTestFolderUnderVcsAsJson("/home/vagrant/git", t)
-	DoTestFolderUnderVcsAny("/home/vagrant/git", t)
-	DoTestFolderUnderVcsAnyReversed("/home/vagrant/git", t)
-	DoTestFolderIsClean("/home/vagrant/git", t)
-	DoTestFolderIsCleanJson("/home/vagrant/git", t)
-	DoTestFolderIsDirty("/home/vagrant/git_dirty", t)
-	DoTestFolderIsCleanEvenWithUntrackedFiles("/home/vagrant/git_untracked", t)
-	DoCreateTag("/home/vagrant/git", t)
-	DoCreateTagWithMessage("/home/vagrant/git", t)
-	DoFailCreateTag("/home/vagrant/git", t)
-	DoFailCreateTagMissTagName("/home/vagrant/git", t)
-	DoListTags("/home/vagrant/git", t)
-	DoListCommits("/home/vagrant/git", t)
-	DoListCommitsBetween("/home/vagrant/git", t)
-	DoListCommitsSinceBeginning("/home/vagrant/git", t)
-	DoSortCommitsDesc("/home/vagrant/git", t)
-	DoTestFirstRevGit("/home/vagrant/git", t)
+	tt := &TestingExiter{t}
+	DoTestFolderUnderVcs("/home/vagrant/git", tt)
+	DoTestFolderUnderVcsAsJSON("/home/vagrant/git", tt)
+	DoTestFolderUnderVcsAny("/home/vagrant/git", tt)
+	DoTestFolderUnderVcsAnyReversed("/home/vagrant/git", tt)
+	DoTestFolderIsClean("/home/vagrant/git", tt)
+	DoTestFolderIsCleanJSON("/home/vagrant/git", tt)
+	DoTestFolderIsDirty("/home/vagrant/git_dirty", tt)
+	DoTestFolderIsCleanEvenWithUntrackedFiles("/home/vagrant/git_untracked", tt)
+	DoCreateTag("/home/vagrant/git", tt)
+	DoCreateTagWithMessage("/home/vagrant/git", tt)
+	DoFailCreateTag("/home/vagrant/git", tt)
+	DoFailCreateTagMissTagName("/home/vagrant/git", tt)
+	DoListTags("/home/vagrant/git", tt)
+	DoListCommits("/home/vagrant/git", tt)
+	DoListCommitsBetween("/home/vagrant/git", tt)
+	DoListCommitsSinceBeginning("/home/vagrant/git", tt)
+	DoSortCommitsDesc("/home/vagrant/git", tt)
+	DoTestFirstRevGit("/home/vagrant/git", tt)
 }
 
 func TestHg(t *testing.T) {
-	DoTestFolderUnderVcs("/home/vagrant/hg", t)
-	DoTestFolderUnderVcsAsJson("/home/vagrant/hg", t)
-	DoTestFolderUnderVcsAny("/home/vagrant/hg", t)
-	DoTestFolderUnderVcsAnyReversed("/home/vagrant/hg", t)
-	DoTestFolderIsClean("/home/vagrant/hg", t)
-	DoTestFolderIsCleanJson("/home/vagrant/hg", t)
-	DoTestFolderIsDirty("/home/vagrant/hg_dirty", t)
-	DoTestFolderIsCleanEvenWithUntrackedFiles("/home/vagrant/hg_untracked", t)
-	DoCreateTag("/home/vagrant/hg", t)
-	DoCreateTagWithMessage("/home/vagrant/hg", t)
-	DoFailCreateTag("/home/vagrant/hg", t)
-	DoFailCreateTagMissTagName("/home/vagrant/hg", t)
-	DoListTags("/home/vagrant/hg", t)
-	DoListCommits("/home/vagrant/hg", t)
-	DoListCommitsBetween("/home/vagrant/hg", t)
-	DoListCommitsSinceBeginning("/home/vagrant/hg", t)
-	DoSortCommitsDesc("/home/vagrant/hg", t)
-	DoTestFirstRevHg("/home/vagrant/hg", t)
+	tt := &TestingExiter{t}
+	DoTestFolderUnderVcs("/home/vagrant/hg", tt)
+	DoTestFolderUnderVcsAsJSON("/home/vagrant/hg", tt)
+	DoTestFolderUnderVcsAny("/home/vagrant/hg", tt)
+	DoTestFolderUnderVcsAnyReversed("/home/vagrant/hg", tt)
+	DoTestFolderIsClean("/home/vagrant/hg", tt)
+	DoTestFolderIsCleanJSON("/home/vagrant/hg", tt)
+	DoTestFolderIsDirty("/home/vagrant/hg_dirty", tt)
+	DoTestFolderIsCleanEvenWithUntrackedFiles("/home/vagrant/hg_untracked", tt)
+	DoCreateTag("/home/vagrant/hg", tt)
+	DoCreateTagWithMessage("/home/vagrant/hg", tt)
+	DoFailCreateTag("/home/vagrant/hg", tt)
+	DoFailCreateTagMissTagName("/home/vagrant/hg", tt)
+	DoListTags("/home/vagrant/hg", tt)
+	DoListCommits("/home/vagrant/hg", tt)
+	DoListCommitsBetween("/home/vagrant/hg", tt)
+	DoListCommitsSinceBeginning("/home/vagrant/hg", tt)
+	DoSortCommitsDesc("/home/vagrant/hg", tt)
+	DoTestFirstRevHg("/home/vagrant/hg", tt)
 }
 
 func TestSvn(t *testing.T) {
-	DoTestFolderUnderVcs("/home/vagrant/svn_work", t)
-	DoTestFolderUnderVcsAsJson("/home/vagrant/svn_work", t)
-	DoTestFolderUnderVcsAny("/home/vagrant/svn_work", t)
-	DoTestFolderUnderVcsAnyReversed("/home/vagrant/svn_work", t)
-	DoTestFolderIsClean("/home/vagrant/svn_work", t)
-	DoTestFolderIsCleanJson("/home/vagrant/svn_work", t)
-	DoTestFolderIsDirty("/home/vagrant/svn_dirty_work", t)
-	DoTestFolderIsCleanEvenWithUntrackedFiles("/home/vagrant/svn_untracked_work", t)
-	DoCreateTag("/home/vagrant/svn_work", t)
-	DoCreateTagWithMessage("/home/vagrant/svn_work", t)
-	DoFailCreateTag("/home/vagrant/svn_work", t)
-	DoFailCreateTagMissTagName("/home/vagrant/svn_work", t)
-	DoListTags("/home/vagrant/svn_work", t)
-	DoListCommits("/home/vagrant/svn_work", t)
-	DoListCommitsBetween("/home/vagrant/svn_work", t)
-	DoListCommitsSinceBeginning("/home/vagrant/svn_work", t)
-	DoSortCommitsDesc("/home/vagrant/svn_work", t)
-	DoTestFirstRevSvn("/home/vagrant/svn_work", t)
+	tt := &TestingExiter{t}
+	DoTestFolderUnderVcs("/home/vagrant/svn_work", tt)
+	DoTestFolderUnderVcsAsJSON("/home/vagrant/svn_work", tt)
+	DoTestFolderUnderVcsAny("/home/vagrant/svn_work", tt)
+	DoTestFolderUnderVcsAnyReversed("/home/vagrant/svn_work", tt)
+	DoTestFolderIsClean("/home/vagrant/svn_work", tt)
+	DoTestFolderIsCleanJSON("/home/vagrant/svn_work", tt)
+	DoTestFolderIsDirty("/home/vagrant/svn_dirty_work", tt)
+	DoTestFolderIsCleanEvenWithUntrackedFiles("/home/vagrant/svn_untracked_work", tt)
+	DoCreateTag("/home/vagrant/svn_work", tt)
+	DoCreateTagWithMessage("/home/vagrant/svn_work", tt)
+	DoFailCreateTag("/home/vagrant/svn_work", tt)
+	DoFailCreateTagMissTagName("/home/vagrant/svn_work", tt)
+	DoListTags("/home/vagrant/svn_work", tt)
+	DoListCommits("/home/vagrant/svn_work", tt)
+	DoListCommitsBetween("/home/vagrant/svn_work", tt)
+	DoListCommitsSinceBeginning("/home/vagrant/svn_work", tt)
+	DoSortCommitsDesc("/home/vagrant/svn_work", tt)
+	DoTestFirstRevSvn("/home/vagrant/svn_work", tt)
 }
 
 func TestBzr(t *testing.T) {
-	DoTestFolderUnderVcs("/home/vagrant/bzr", t)
-	DoTestFolderUnderVcsAsJson("/home/vagrant/bzr", t)
-	DoTestFolderUnderVcsAny("/home/vagrant/bzr", t)
-	DoTestFolderUnderVcsAnyReversed("/home/vagrant/bzr", t)
-	DoTestFolderIsClean("/home/vagrant/bzr", t)
-	DoTestFolderIsCleanJson("/home/vagrant/bzr", t)
-	DoTestFolderIsDirty("/home/vagrant/bzr_dirty", t)
-	DoTestFolderIsCleanEvenWithUntrackedFiles("/home/vagrant/bzr_untracked", t)
-	DoCreateTag("/home/vagrant/bzr", t)
-	DoCreateTagWithMessage("/home/vagrant/bzr", t)
-	DoFailCreateTag("/home/vagrant/bzr", t)
-	DoFailCreateTagMissTagName("/home/vagrant/bzr", t)
-	DoListTags("/home/vagrant/bzr", t)
-	DoListCommits("/home/vagrant/bzr", t)
-	DoListCommitsBetween("/home/vagrant/bzr", t)
-	DoListCommitsSinceBeginning("/home/vagrant/bzr", t)
-	DoSortCommitsDesc("/home/vagrant/bzr", t)
-	DoTestFirstRevBzr("/home/vagrant/bzr", t)
+	tt := &TestingExiter{t}
+	DoTestFolderUnderVcs("/home/vagrant/bzr", tt)
+	DoTestFolderUnderVcsAsJSON("/home/vagrant/bzr", tt)
+	DoTestFolderUnderVcsAny("/home/vagrant/bzr", tt)
+	DoTestFolderUnderVcsAnyReversed("/home/vagrant/bzr", tt)
+	DoTestFolderIsClean("/home/vagrant/bzr", tt)
+	DoTestFolderIsCleanJSON("/home/vagrant/bzr", tt)
+	DoTestFolderIsDirty("/home/vagrant/bzr_dirty", tt)
+	DoTestFolderIsCleanEvenWithUntrackedFiles("/home/vagrant/bzr_untracked", tt)
+	DoCreateTag("/home/vagrant/bzr", tt)
+	DoCreateTagWithMessage("/home/vagrant/bzr", tt)
+	DoFailCreateTag("/home/vagrant/bzr", tt)
+	DoFailCreateTagMissTagName("/home/vagrant/bzr", tt)
+	DoListTags("/home/vagrant/bzr", tt)
+	DoListCommits("/home/vagrant/bzr", tt)
+	DoListCommitsBetween("/home/vagrant/bzr", tt)
+	DoListCommitsSinceBeginning("/home/vagrant/bzr", tt)
+	DoSortCommitsDesc("/home/vagrant/bzr", tt)
+	DoTestFirstRevBzr("/home/vagrant/bzr", tt)
 }
 
 func TestPathArgs(t *testing.T) {
-	DoTestFolderUnderVcsWithPath("/home/vagrant/git", t)
+	tt := &TestingExiter{t}
+	DoTestFolderUnderVcsWithPath("/home/vagrant/git", tt)
 	DoTestFolderIsCleanWithPath("/home/vagrant/bzr", t)
 }
 
@@ -113,7 +143,7 @@ func TestFolderNotUnderVcs(t *testing.T) {
 	}
 }
 
-func ExecSuccessCommand(t *testing.T, cmd string, cwd string, args []string) string {
+func ExecSuccessCommand(t Errorer, cmd string, cwd string, args []string) string {
 	fmt.Printf("%s: %s %s\n", cwd, cmd, args)
 	execCmd := exec.Command(cmd, args...)
 	execCmd.Dir = cwd
@@ -132,7 +162,7 @@ func ExecSuccessCommand(t *testing.T, cmd string, cwd string, args []string) str
 	return string(out)
 }
 
-func DoTestFolderUnderVcsWithPath(path string, t *testing.T) {
+func DoTestFolderUnderVcsWithPath(path string, t Errorer) {
 	cmd := "/vagrant/build/go-repo-utils"
 	args := []string{"list-tags", "-p", path}
 	out := ExecSuccessCommand(t, cmd, "/home", args)
@@ -143,7 +173,7 @@ func DoTestFolderUnderVcsWithPath(path string, t *testing.T) {
 	}
 }
 
-func DoTestFolderIsCleanWithPath(path string, t *testing.T) {
+func DoTestFolderIsCleanWithPath(path string, t Errorer) {
 	cmd := "/vagrant/build/go-repo-utils"
 	args := []string{"is-clean", "--path=" + path}
 	out := ExecSuccessCommand(t, cmd, "/home", args)
@@ -154,7 +184,7 @@ func DoTestFolderIsCleanWithPath(path string, t *testing.T) {
 	}
 }
 
-func DoCreateTagWithMessage(path string, t *testing.T) {
+func DoCreateTagWithMessage(path string, t Errorer) {
 	cmd := "/vagrant/build/go-repo-utils"
 	args := []string{"create-tag", "1.0.4", "-m", "new tag"}
 	out := ExecSuccessCommand(t, cmd, path, args)
@@ -165,7 +195,7 @@ func DoCreateTagWithMessage(path string, t *testing.T) {
 	}
 }
 
-func DoListTags(path string, t *testing.T) {
+func DoListTags(path string, t Errorer) {
 	cmd := "/vagrant/build/go-repo-utils"
 	args := []string{"list-tags"}
 	out := ExecSuccessCommand(t, cmd, path, args)
@@ -176,7 +206,7 @@ func DoListTags(path string, t *testing.T) {
 	}
 }
 
-func DoCreateTag(path string, t *testing.T) {
+func DoCreateTag(path string, t Errorer) {
 	cmd := "/vagrant/build/go-repo-utils"
 	args := []string{"create-tag", "1.0.3"}
 	out := ExecSuccessCommand(t, cmd, path, args)
@@ -187,7 +217,7 @@ func DoCreateTag(path string, t *testing.T) {
 	}
 }
 
-func DoFailCreateTag(path string, t *testing.T) {
+func DoFailCreateTag(path string, t Errorer) {
 	args := []string{"create-tag", "1.0.3"}
 	cmd := exec.Command("/vagrant/build/go-repo-utils", args...)
 	cmd.Dir = path
@@ -202,7 +232,7 @@ func DoFailCreateTag(path string, t *testing.T) {
 	}
 }
 
-func DoFailCreateTagMissTagName(path string, t *testing.T) {
+func DoFailCreateTagMissTagName(path string, t Errorer) {
 	args := []string{"create-tag"}
 	cmd := exec.Command("/vagrant/build/go-repo-utils", args...)
 	cmd.Dir = path
@@ -217,7 +247,7 @@ func DoFailCreateTagMissTagName(path string, t *testing.T) {
 	}
 }
 
-func DoTestFolderUnderVcs(path string, t *testing.T) {
+func DoTestFolderUnderVcs(path string, t Errorer) {
 	cmd := "/vagrant/build/go-repo-utils"
 	args := []string{"list-tags"}
 	out := ExecSuccessCommand(t, cmd, path, args)
@@ -228,7 +258,7 @@ func DoTestFolderUnderVcs(path string, t *testing.T) {
 	}
 }
 
-func DoTestFolderUnderVcsAsJson(path string, t *testing.T) {
+func DoTestFolderUnderVcsAsJSON(path string, t Errorer) {
 	cmd := "/vagrant/build/go-repo-utils"
 	args := []string{"list-tags", "-j"}
 	out := ExecSuccessCommand(t, cmd, path, args)
@@ -239,7 +269,7 @@ func DoTestFolderUnderVcsAsJson(path string, t *testing.T) {
 	}
 }
 
-func DoTestFolderUnderVcsAny(path string, t *testing.T) {
+func DoTestFolderUnderVcsAny(path string, t Errorer) {
 	cmd := "/vagrant/build/go-repo-utils"
 	args := []string{"list-tags", "-a"}
 	out := ExecSuccessCommand(t, cmd, path, args)
@@ -250,7 +280,7 @@ func DoTestFolderUnderVcsAny(path string, t *testing.T) {
 	}
 }
 
-func DoTestFolderUnderVcsAnyReversed(path string, t *testing.T) {
+func DoTestFolderUnderVcsAnyReversed(path string, t Errorer) {
 	cmd := "/vagrant/build/go-repo-utils"
 	args := []string{"list-tags", "-a", "-r"}
 	out := ExecSuccessCommand(t, cmd, path, args)
@@ -261,7 +291,7 @@ func DoTestFolderUnderVcsAnyReversed(path string, t *testing.T) {
 	}
 }
 
-func DoTestFolderIsClean(path string, t *testing.T) {
+func DoTestFolderIsClean(path string, t Errorer) {
 	cmd := "/vagrant/build/go-repo-utils"
 	args := []string{"is-clean"}
 	out := ExecSuccessCommand(t, cmd, path, args)
@@ -272,7 +302,7 @@ func DoTestFolderIsClean(path string, t *testing.T) {
 	}
 }
 
-func DoTestFolderIsCleanJson(path string, t *testing.T) {
+func DoTestFolderIsCleanJSON(path string, t Errorer) {
 	cmd := "/vagrant/build/go-repo-utils"
 	args := []string{"is-clean", "-j"}
 	out := ExecSuccessCommand(t, cmd, path, args)
@@ -283,7 +313,7 @@ func DoTestFolderIsCleanJson(path string, t *testing.T) {
 	}
 }
 
-func DoTestFolderIsDirty(path string, t *testing.T) {
+func DoTestFolderIsDirty(path string, t Errorer) {
 	cmd := "/vagrant/build/go-repo-utils"
 	args := []string{"is-clean"}
 	out := ExecSuccessCommand(t, cmd, path, args)
@@ -293,7 +323,7 @@ func DoTestFolderIsDirty(path string, t *testing.T) {
 		t.Errorf("Expected out=%q, got out=%q\n", expectedOut, out)
 	}
 }
-func DoTestFolderIsCleanEvenWithUntrackedFiles(path string, t *testing.T) {
+func DoTestFolderIsCleanEvenWithUntrackedFiles(path string, t Errorer) {
 	cmd := "/vagrant/build/go-repo-utils"
 	args := []string{"is-clean"}
 	out := ExecSuccessCommand(t, cmd, path, args)
@@ -304,7 +334,7 @@ func DoTestFolderIsCleanEvenWithUntrackedFiles(path string, t *testing.T) {
 	}
 }
 
-func DoListCommits(path string, t *testing.T) {
+func DoListCommits(path string, t Errorer) {
 	cmd := "/vagrant/build/go-repo-utils"
 	args := []string{"list-commits", "--since", "notsemvertag"}
 	out := ExecSuccessCommand(t, cmd, path, args)
@@ -334,7 +364,7 @@ func DoListCommits(path string, t *testing.T) {
 	}
 }
 
-func DoListCommitsBetween(path string, t *testing.T) {
+func DoListCommitsBetween(path string, t Errorer) {
 	cmd := "/vagrant/build/go-repo-utils"
 	args := []string{"list-commits", "--since", "v1.0.2", "--until", "v1.0.0"}
 	out := ExecSuccessCommand(t, cmd, path, args)
@@ -364,7 +394,7 @@ func DoListCommitsBetween(path string, t *testing.T) {
 	}
 }
 
-func DoListCommitsSinceBeginning(path string, t *testing.T) {
+func DoListCommitsSinceBeginning(path string, t Errorer) {
 	cmd := "/vagrant/build/go-repo-utils"
 	args := []string{"list-commits", "--until", "v1.0.0"}
 	out := ExecSuccessCommand(t, cmd, path, args)
@@ -393,7 +423,7 @@ func DoListCommitsSinceBeginning(path string, t *testing.T) {
 	}
 }
 
-func DoSortCommitsDesc(path string, t *testing.T) {
+func DoSortCommitsDesc(path string, t Errorer) {
 	cmd := "/vagrant/build/go-repo-utils"
 	args := []string{"list-commits"}
 	out := ExecSuccessCommand(t, cmd, path, args)
@@ -418,29 +448,29 @@ func DoSortCommitsDesc(path string, t *testing.T) {
 	}
 }
 
-func DoTestFirstRevGit(path string, t *testing.T) {
+func DoTestFirstRevGit(path string, t Errorer) {
 	cmd := "/vagrant/build/go-repo-utils"
 	args := []string{"first-rev"}
 	out := ExecSuccessCommand(t, cmd, path, args)
 	expectedOut := "d6b486e435f8497b1b873ce8a1e0fafbf82fed0e\n"
 	if out != expectedOut {
-		// t.Errorf("Expected out=%q, got out=%q\n", expectedOut, out)
+		// t.Errorf("Expected=%q, got out=%q\n", expectedOut, out)
 		// git can t be tested, the hash changes at every test session
 	}
 }
 
-func DoTestFirstRevHg(path string, t *testing.T) {
+func DoTestFirstRevHg(path string, t Errorer) {
 	cmd := "/vagrant/build/go-repo-utils"
 	args := []string{"first-rev"}
 	out := ExecSuccessCommand(t, cmd, path, args)
 	expectedOut := "065e4375921ce712e536b95109214b28e8e2c23e\n"
 	if out != expectedOut {
-		// t.Errorf("Expected out=%q, got out=%q\n", expectedOut, out)
+		// t.Errorf("Expected=%q, got out=%q\n", expectedOut, out)
 		// hg can t be tested, the hash changes at every test session
 	}
 }
 
-func DoTestFirstRevBzr(path string, t *testing.T) {
+func DoTestFirstRevBzr(path string, t Errorer) {
 	cmd := "/vagrant/build/go-repo-utils"
 	args := []string{"first-rev"}
 	out := ExecSuccessCommand(t, cmd, path, args)
@@ -450,7 +480,7 @@ func DoTestFirstRevBzr(path string, t *testing.T) {
 	}
 }
 
-func DoTestFirstRevSvn(path string, t *testing.T) {
+func DoTestFirstRevSvn(path string, t Errorer) {
 	cmd := "/vagrant/build/go-repo-utils"
 	args := []string{"first-rev"}
 	out := ExecSuccessCommand(t, cmd, path, args)
@@ -458,4 +488,11 @@ func DoTestFirstRevSvn(path string, t *testing.T) {
 	if out != expectedOut {
 		t.Errorf("Expected out=%q, got out=%q\n", expectedOut, out)
 	}
+}
+func mustFileExists(t Errorer, p string) bool {
+	if _, err := os.Stat(p); os.IsNotExist(err) {
+		t.Errorf("file mut exists %q", p)
+		return false
+	}
+	return true
 }
